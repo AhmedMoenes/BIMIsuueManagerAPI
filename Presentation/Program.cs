@@ -1,4 +1,7 @@
 using Application.Extensions;
+using Application.Validators;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
 
@@ -12,9 +15,10 @@ namespace Presentation
 
             #region Services
             builder.Services.AddControllers();
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateIssueDtoValidator>();
+            builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddApplication();
             builder.Services.AddInfrastructure(builder.Configuration);
-
             // Allow CORS
             builder.Services.AddCors(options =>
                 options.AddPolicy("CORS_Policy", policy =>
