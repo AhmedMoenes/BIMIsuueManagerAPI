@@ -1,6 +1,4 @@
-﻿using Domain.Repositories;
-
-namespace Infrastructure.Repositories
+﻿namespace Infrastructure.Repositories
 {
     public class IssueLabelRepository : Repository<IssueLabel>, IIssueLabelRepository
     {

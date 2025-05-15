@@ -1,6 +1,6 @@
-﻿namespace Domain.Repositories
+﻿namespace Domain.Interfaces
 {
-    public interface ISubscriberRepository : IRepository<Subscriber>
+    public interface ISubscriberRepository
     {
     }
 }

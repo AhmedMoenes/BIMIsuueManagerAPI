@@ -1,6 +1,4 @@
-﻿using Domain.Repositories;
-
-namespace Infrastructure.Repositories
+﻿namespace Infrastructure.Repositories
 {
     public class LabelRepository : Repository<Label>, ILabelRepository
     {

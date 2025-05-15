@@ -1,6 +1,6 @@
-﻿namespace Domain.Repositories
+﻿namespace Domain.Interfaces
 {
-    public interface IRevitElementRepository : IRepository<RevitElement>
+    public interface IRevitElementRepository
     {
     }
 }
