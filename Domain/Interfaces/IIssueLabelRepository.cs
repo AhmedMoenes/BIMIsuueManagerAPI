@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Repositories
+﻿namespace Domain.Repositories
 {
     public interface IIssueLabelRepository : IRepository<IssueLabel>
     {
