@@ -1,6 +1,6 @@
-﻿namespace Domain.Repositories
+﻿namespace Domain.Interfaces
 {
-    public interface ILabelRepository : IRepository<Label>
+    public interface ILabelRepository
     {
     }
 }
