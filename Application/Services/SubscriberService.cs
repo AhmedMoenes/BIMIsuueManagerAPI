@@ -1,6 +1,6 @@
 ﻿namespace Application.Services
 {
-    public class SubscriberService
+    public class SubscriberService : ISubscriberService
     {
         private readonly ISubscriberRepository _repo;
 

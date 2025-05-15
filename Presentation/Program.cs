@@ -1,4 +1,5 @@
-
+using Application.Extensions;
+using Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
 
 namespace Presentation
@@ -9,9 +10,16 @@ namespace Presentation
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            #region Services
             builder.Services.AddControllers();
+            builder.Services.AddApplication();
+            builder.Services.AddInfrastructure(builder.Configuration);
+
+            // Allow CORS
+            builder.Services.AddCors(options =>
+                options.AddPolicy("CORS_Policy", policy =>
+                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()
+                ));
 
             #region Swagger Settings
             builder.Services.AddEndpointsApiExplorer();
@@ -52,7 +60,9 @@ namespace Presentation
             });
             #endregion
 
+            #endregion
 
+            #region App
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -69,6 +79,8 @@ namespace Presentation
             app.MapControllers();
 
             app.Run();
+            #endregion
+
         }
     }
 }
