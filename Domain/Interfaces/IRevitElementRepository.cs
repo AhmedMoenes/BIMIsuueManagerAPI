@@ -1,6 +1,8 @@
-﻿namespace Domain.Interfaces
+﻿using Domain.Entities;
+
+namespace Domain.Interfaces
 {
-    public interface IRevitElementRepository
+    public interface IRevitElementRepository : IRepository<RevitElement>
     {
     }
 }
