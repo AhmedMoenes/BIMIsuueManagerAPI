@@ -11,27 +11,50 @@
 
         public async Task<IEnumerable<CommentDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            IEnumerable<Comment> comments = await _commentRepo.GetAllAsync();
+            return comments.Select(comment => new CommentDto
+            {
+                CommentId = comment.CommentId,
+                Content = comment.Content
+            });
         }
 
         public async Task<CommentDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            Comment comment = await _commentRepo.GetByIdAsync(id);
+            return new CommentDto()
+            {
+                CommentId = comment.CommentId,
+                Content = comment.Content
+            };
         }
 
         public async Task CreateAsync(CommentDto dto)
         {
-            throw new NotImplementedException();
+            var comment = new Comment
+            {
+                CommentId = dto.CommentId,
+                Content = dto.Content
+            };
+            await _commentRepo.AddAsync(comment);
+            await _commentRepo.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(int id, CommentDto dto)
         {
-            throw new NotImplementedException();
+            Comment comment = await _commentRepo.GetByIdAsync(id);
+            comment.CommentId = dto.CommentId;
+            comment.Content = dto.Content;
+
+            _commentRepo.Update(comment);
+            await _commentRepo.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            Comment comment = await _commentRepo.GetByIdAsync(id);
+            _commentRepo.Delete(comment);
+            await _commentRepo.SaveChangesAsync();
         }
     }
 }
