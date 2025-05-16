@@ -5,7 +5,7 @@
         public CreateCommentDtoValidator()
         {
             RuleFor(x => x.Content)
-                .NotEmpty();
+                .NotEmpty().WithMessage("Comment can't be empty");
 
             RuleFor(x => x.IssueId)
                 .NotEmpty().GreaterThan(1)
