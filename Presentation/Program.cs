@@ -4,7 +4,6 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Presentation
 {
@@ -16,16 +15,10 @@ namespace Presentation
 
             #region Services
             builder.Services.AddControllers();
+            builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddApplication();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateIssueDtoValidator>();
             builder.Services.AddFluentValidationAutoValidation();
-            builder.Services.AddApplication();
-            builder.Services.AddInfrastructure(builder.Configuration);
-
-            // Register DataContext with Connection String
-            builder.Services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("CS")
-                ));
-
 
             // Allow CORS
             builder.Services.AddCors(options =>

@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
@@ -12,6 +12,10 @@ namespace Infrastructure.Extensions
             services.AddDbContext<DbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("CS"),
                     sqlOptions => sqlOptions.MigrationsAssembly("Application")));
+
+            services.AddIdentityCore<User>(options =>
+                options.User.RequireUniqueEmail = true)
+                .AddRoles<IdentityRole>().AddEntityFrameworkStores<DbContext>();
 
             services.AddScoped<ISubscriberRepository, SubscriberRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
