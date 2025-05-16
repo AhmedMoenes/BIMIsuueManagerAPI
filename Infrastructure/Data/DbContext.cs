@@ -14,6 +14,8 @@
         public DbSet<RevitElement> RevitElements { get; set; }
         public DbSet<Label> Labels { get; set; }
         public DbSet<IssueLabel> IssueLabels { get; set; }
+        public DbSet<Area> Areas { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

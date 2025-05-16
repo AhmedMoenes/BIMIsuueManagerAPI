@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Domain.Entities
 {
     public class Subscriber
     {

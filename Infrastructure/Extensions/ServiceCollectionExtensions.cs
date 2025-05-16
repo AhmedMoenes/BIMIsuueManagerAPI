@@ -28,5 +28,6 @@ namespace Infrastructure.Extensions
             services.AddScoped<IIssueLabelRepository, IssueLabelRepository>();
             return services;
         }
+
     }
 }
