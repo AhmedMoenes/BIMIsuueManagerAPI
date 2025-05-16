@@ -20,4 +20,5 @@
                 .NotEmpty()
                 .WithMessage("CreatedByUserId is required");
         }
+    }
 }
