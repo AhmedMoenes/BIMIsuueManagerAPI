@@ -23,6 +23,8 @@ namespace Infrastructure.Extensions
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IProjectTeamMemberRepository, ProjectTeamMemberRepository>();
             services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<IAreaRepository, AreaRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IRevitElementRepository, RevitElementRepository>();
             services.AddScoped<ILabelRepository, LabelRepository>();
             services.AddScoped<IIssueLabelRepository, IssueLabelRepository>();
