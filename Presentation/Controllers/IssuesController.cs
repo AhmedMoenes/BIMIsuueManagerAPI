@@ -17,7 +17,7 @@ namespace Presentation.Controllers
 
         //Get All Issues
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IssueDto>>> GetAkk()
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetAll()
         {
           IEnumerable<IssueDto> issues = await _issueService.GetAllAsync();
             return Ok(issues);
