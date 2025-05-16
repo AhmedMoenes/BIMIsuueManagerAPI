@@ -11,6 +11,8 @@ namespace Application.Extensions
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILabelService, LabelService>();
+            services.AddScoped<IAreaService, AreaService>();
+            services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<ISubscriberService, SubscriberService>();
             services.AddScoped<IRevitElementService, RevitElementService>();
