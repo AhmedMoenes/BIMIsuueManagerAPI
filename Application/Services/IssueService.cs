@@ -21,7 +21,7 @@
             });
         }
 
-        public async Task<IssueDto> GeyByIdAsync(int id)
+        public async Task<IssueDto> GetByIdAsync(int id)
         {
             Issue issue = await _issueRepo.GetByIdAsync(id);
             return new IssueDto()
