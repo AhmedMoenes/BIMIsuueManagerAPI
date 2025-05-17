@@ -9,7 +9,7 @@
             _repo = repo;
         }
 
-        public async Task AssignLabelToIssueAsync(AssignLabelToIssueDto dto)
+        public async Task<AssignLabelToIssueDto> AssignLabelToIssueAsync(AssignLabelToIssueDto dto)
         {
             var link = new IssueLabel
             {
@@ -17,15 +17,21 @@
                 LabelId = dto.LabelId
             };
 
-            await _repo.AddAsync(link);
-            await _repo.SaveChangesAsync();
+            var created = await _repo.AddAsync(link);
+
+            return new AssignLabelToIssueDto
+            {
+                IssueId = created.IssueId,
+                LabelId = created.LabelId
+            };
         }
 
-        public async Task RemoveLabelFromIssueAsync(int issueId, int labelId)
+        public async Task<bool> RemoveLabelFromIssueAsync(int issueId, int labelId)
         {
-            IssueLabel link = await _repo.GetByIdAsync(new { issueId, labelId });
-            _repo.Delete(link);
-            await _repo.SaveChangesAsync();
+            var link = await _repo.GetByIdAsync(new { issueId, labelId });
+            if (link == null) return false;
+
+            return await _repo.DeleteAsync(new { issueId, labelId });
         }
     }
 }

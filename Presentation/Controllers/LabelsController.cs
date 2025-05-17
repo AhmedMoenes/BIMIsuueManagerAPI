@@ -57,7 +57,7 @@ namespace Presentation.Controllers
             return StatusCode(201);
         }
 
-        //Update label
+        //UpdateAsync label
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateLabelDto dto)
         {
@@ -67,7 +67,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //Delete Label
+        //DeleteAsync Label
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -5,8 +5,8 @@ namespace Application.Interfaces
     {
         Task<IEnumerable<CommentDto>> GetAllAsync();
         Task<CommentDto> GetByIdAsync(int id);
-        Task CreateAsync(CommentDto dto);
-        Task UpdateAsync(int id, CommentDto dto);
-        Task DeleteAsync(int id);
+        Task <CommentDto> CreateAsync(CommentDto dto);
+        Task<bool> UpdateAsync(int id, CommentDto dto);
+        Task<bool> DeleteAsync(int id);
     }
 }

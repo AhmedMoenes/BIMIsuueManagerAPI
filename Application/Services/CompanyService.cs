@@ -31,33 +31,38 @@
             };
         }
 
-        public async Task CreateAsync(CreateCompanyDto dto)
+        public async Task<CompanyDto> CreateAsync(CreateCompanyDto dto)
         {
-            Company company = new Company
+            var company = new Company
             {
                 CompanyName = dto.CompanyName,
                 SubscriberId = dto.SubscriberId
             };
 
-            await _repo.AddAsync(company);
-            await _repo.SaveChangesAsync();
+            var created = await _repo.AddAsync(company);
+
+            return new CompanyDto
+            {
+                CompanyId = created.CompanyId,
+                CompanyName = created.CompanyName,
+                SubscriberId = created.SubscriberId
+            };
         }
 
-        public async Task UpdateAsync(int id, UpdateCompanyDto dto)
+        public async Task<bool> UpdateAsync(int id, UpdateCompanyDto dto)
         {
-            Company company = await _repo.GetByIdAsync(id);
+            var company = await _repo.GetByIdAsync(id);
+            if (company == null) return false;
+
             company.CompanyName = dto.CompanyName;
             company.SubscriberId = dto.SubscriberId;
 
-            _repo.Update(company);
-            await _repo.SaveChangesAsync();
+            return await _repo.UpdateAsync(company);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            Company company = await _repo.GetByIdAsync(id);
-            _repo.Delete(company);
-            await _repo.SaveChangesAsync();
+            return await _repo.DeleteAsync(id);
         }
     }
 }

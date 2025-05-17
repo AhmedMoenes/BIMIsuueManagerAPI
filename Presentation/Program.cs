@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
+using Presentation.Extensions;
 
 namespace Presentation
 {
@@ -17,14 +18,11 @@ namespace Presentation
             builder.Services.AddControllers();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
+            builder.Services.ConfigureIdentity();
+            builder.Services.ConfigureCors();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateIssueDtoValidator>();
             builder.Services.AddFluentValidationAutoValidation();
-
-            // Allow CORS
-            builder.Services.AddCors(options =>
-                options.AddPolicy("CORS_Policy", policy =>
-                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()
-                ));
+            #endregion
 
             #region Swagger Settings
             builder.Services.AddEndpointsApiExplorer();
@@ -63,8 +61,6 @@ namespace Presentation
                     }
                 });
             });
-            #endregion
-
             #endregion
 
             #region App

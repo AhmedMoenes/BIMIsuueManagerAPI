@@ -25,7 +25,7 @@
             });
         }
 
-        public async Task AddAsync(RevitElementDto dto)
+        public async Task<RevitElementDto> AddAsync(RevitElementDto dto)
         {
             var element = new RevitElement
             {
@@ -36,15 +36,22 @@
                 IssueId = dto.IssueId
             };
 
-            await _repo.AddAsync(element);
-            await _repo.SaveChangesAsync();
+            var created = await _repo.AddAsync(element);
+
+            return new RevitElementDto
+            {
+                RevitElementId = created.RevitElementId,
+                ElementId = created.ElementId,
+                ElementUniqueId = created.ElementUniqueId,
+                ViewpointCameraPosition = created.ViewpointCameraPosition,
+                SnapshotImagePath = created.SnapshotImagePath,
+                IssueId = created.IssueId
+            };
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var element = await _repo.GetByIdAsync(id);
-            _repo.Delete(element);
-            await _repo.SaveChangesAsync();
+            return await _repo.DeleteAsync(id);
         }
     }
 }

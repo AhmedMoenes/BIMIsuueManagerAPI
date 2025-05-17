@@ -41,48 +41,55 @@ namespace Application.Services
             };
         }
 
-        public async Task RegisterAsync(RegisterUserDto dto)
+        public async Task<UserDto> RegisterAsync(RegisterUserDto dto)
         {
-            User user = new User
+            var user = new User
             {
-                UserName = dto.UserName,
-                Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
+                UserName = dto.UserName,
+                Email = dto.Email,
                 CompanyId = dto.CompanyId
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
-
             if (!result.Succeeded)
             {
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                throw new Exception($"User creation failed: {errors}");
+                throw new Exception($"Registration failed: {errors}");
             }
 
             if (!string.IsNullOrEmpty(dto.Role))
             {
                 await _userManager.AddToRoleAsync(user, dto.Role);
             }
+
+            return new UserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Email = user.Email,
+                CompanyId = user.CompanyId
+            };
         }
 
-        public async Task UpdateAsync(string id, UpdateUserDto dto)
+        public async Task<bool> UpdateAsync(string id, UpdateUserDto dto)
         {
-            User user = await _userRepo.GetByIdAsync(id);
+            var user = await _userRepo.GetByIdAsync(id);
+            if (user == null) return false;
 
             user.FirstName = dto.FirstName;
             user.LastName = dto.LastName;
             user.CompanyId = dto.CompanyId;
 
-            _userRepo.Update(user);
-            await _userRepo.SaveChangesAsync();
+            return await _userRepo.UpdateAsync(user);
         }
-
-        public async Task DeleteAsync(string id)
+        
+        public async Task<bool> DeleteAsync(string id)
         {
-            User user = await _userRepo.GetByIdAsync(id);
-            _userRepo.Delete(user);
-            await _userRepo.SaveChangesAsync();
+            return await _userRepo.DeleteAsync(id);
         }
     }
 }

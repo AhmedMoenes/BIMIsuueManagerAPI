@@ -31,32 +31,35 @@ namespace Application.Services
             };
         }
 
-        public async Task CreateAsync(AreaDto dto)
+        public async Task<AreaDto> CreateAsync(AreaDto dto)
         {
             var area = new Area
             {
-                AreaId = dto.AreaId,
                 AreaName = dto.AreaName
             };
-            await _areaRepo.AddAsync(area);
-            await _areaRepo.SaveChangesAsync();
+
+            var created = await _areaRepo.AddAsync(area);
+
+            return new AreaDto
+            {
+                AreaId = created.AreaId,
+                AreaName = created.AreaName
+            };
         }
 
-        public async Task UpdateAsync(int id, AreaDto dto)
+        public async Task<bool> UpdateAsync(int id, AreaDto dto)
         {
-            Area area = await _areaRepo.GetByIdAsync(id);
-            area.AreaId = dto.AreaId;
+            var area = await _areaRepo.GetByIdAsync(id);
+            if (area == null) return false;
+
             area.AreaName = dto.AreaName;
 
-            _areaRepo.Update(area);
-            await _areaRepo.SaveChangesAsync();
+            return await _areaRepo.UpdateAsync(area);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            Area area = await _areaRepo.GetByIdAsync(id);
-            _areaRepo.Delete(area);
-            await _areaRepo.SaveChangesAsync();
+            return await _areaRepo.DeleteAsync(id);
         }
     }
 }

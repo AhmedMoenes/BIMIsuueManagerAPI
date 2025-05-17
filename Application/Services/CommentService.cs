@@ -29,32 +29,35 @@
             };
         }
 
-        public async Task CreateAsync(CommentDto dto)
+        public async Task<CommentDto> CreateAsync(CommentDto dto)
         {
             var comment = new Comment
             {
-                CommentId = dto.CommentId,
                 Content = dto.Content
             };
-            await _commentRepo.AddAsync(comment);
-            await _commentRepo.SaveChangesAsync();
+
+            var created = await _commentRepo.AddAsync(comment);
+
+            return new CommentDto
+            {
+                CommentId = created.CommentId,
+                Content = created.Content
+            };
         }
 
-        public async Task UpdateAsync(int id, CommentDto dto)
+        public async Task<bool> UpdateAsync(int id, CommentDto dto)
         {
-            Comment comment = await _commentRepo.GetByIdAsync(id);
-            comment.CommentId = dto.CommentId;
+            var comment = await _commentRepo.GetByIdAsync(id);
+            if (comment == null) return false;
+
             comment.Content = dto.Content;
 
-            _commentRepo.Update(comment);
-            await _commentRepo.SaveChangesAsync();
+            return await _commentRepo.UpdateAsync(comment);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            Comment comment = await _commentRepo.GetByIdAsync(id);
-            _commentRepo.Delete(comment);
-            await _commentRepo.SaveChangesAsync();
+            return await _commentRepo.DeleteAsync(id);
         }
     }
 }

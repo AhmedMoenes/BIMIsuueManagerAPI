@@ -48,14 +48,14 @@
             Subscriber subscriber = await _repo.GetByIdAsync(id);
             subscriber.SubscriberName = dto.SubscriberName;
 
-            _repo.Update(subscriber);
+            _repo.UpdateAsync(subscriber);
             await _repo.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
             Subscriber subscriber = await _repo.GetByIdAsync(id);
-            _repo.Delete(subscriber);
+            _repo.DeleteAsync(subscriber);
             await _repo.SaveChangesAsync();
         }
     }

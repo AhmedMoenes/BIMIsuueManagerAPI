@@ -15,27 +15,24 @@ namespace Presentation.Controllers
             _issueService = issueService;
         }
 
-        //Get All Issues
-        [HttpGet]
+        [HttpGet("")]
         public async Task<ActionResult<IEnumerable<IssueDto>>> GetAll()
         {
           IEnumerable<IssueDto> issues = await _issueService.GetAllAsync();
             return Ok(issues);
         }
 
-        //Get Issue By Id
         [HttpGet("{id}")]
         public async Task<ActionResult<IssueDto>> GetById(int id)
         {
             IssueDto issue = await _issueService.GetByIdAsync(id);
-            if (issue == null)
+            if (issue is null)
             {
                 return NotFound();
             }
             return Ok(issue);
         }
 
-        //Create Issue
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateIssueDto dto)
         {
@@ -48,7 +45,7 @@ namespace Presentation.Controllers
             return StatusCode(201);
         }
 
-        //Update Issue
+        //UpdateAsync Issue
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateIssueDto dto)
         {
@@ -61,7 +58,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //Delete Issue
+        //DeleteAsync Issue
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

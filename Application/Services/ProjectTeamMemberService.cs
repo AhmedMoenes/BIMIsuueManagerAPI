@@ -21,7 +21,7 @@
             });
         }
 
-        public async Task AssignAsync(AssignUserToProjectDto dto)
+        public async Task<ProjectTeamMemberDto> AssignAsync(AssignUserToProjectDto dto)
         {
             var member = new ProjectTeamMember
             {
@@ -29,15 +29,21 @@
                 UserId = dto.UserId
             };
 
-            await _repo.AddAsync(member);
-            await _repo.SaveChangesAsync();
+            var created = await _repo.AddAsync(member);
+
+            return new ProjectTeamMemberDto
+            {
+                ProjectId = created.ProjectId,
+                UserId = created.UserId
+            };
         }
 
-        public async Task RemoveAsync(int projectId, string userId)
+        public async Task<bool> RemoveAsync(int projectId, string userId)
         {
             var member = await _repo.GetByIdAsync(new { projectId, userId });
-            _repo.Delete(member);
-            await _repo.SaveChangesAsync();
+            if (member == null) return false;
+
+            return await _repo.DeleteAsync(new { projectId, userId });
         }
     }
 }

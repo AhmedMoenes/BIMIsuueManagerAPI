@@ -33,9 +33,9 @@
             };
         }
 
-        public async Task CreateAsync(CreateIssueDto dto)
+        public async Task<IssueDto> CreateAsync(CreateIssueDto dto)
         {
-            var issue = new Issue
+            var entity = new Issue
             {
                 Title = dto.Title,
                 Description = dto.Description,
@@ -44,26 +44,32 @@
                 AssignedToUserId = dto.AssignedToUserId
             };
 
-            await _issueRepo.AddAsync(issue);
-            await _issueRepo.SaveChangesAsync();
+            var created = await _issueRepo.AddAsync(entity);
+
+            return new IssueDto
+            {
+                IssueId = created.IssueId,
+                Title = created.Title,
+                Description = created.Description,
+                ProjectId = created.ProjectId
+            };
         }
 
-        public async Task UpdateAsync(int id, UpdateIssueDto dto)
+        public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)
         {
-            Issue issue = await _issueRepo.GetByIdAsync(id);
+            var issue = await _issueRepo.GetByIdAsync(id);
+            if (issue == null) return false;
+
             issue.Title = dto.Title;
             issue.Description = dto.Description;
             issue.AssignedToUserId = dto.AssignedToUserId;
 
-            _issueRepo.Update(issue);
-            await _issueRepo.SaveChangesAsync();
+            return await _issueRepo.UpdateAsync(issue);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            Issue issue = await _issueRepo.GetByIdAsync(id);
-            _issueRepo.Delete(issue);
-            await _issueRepo.SaveChangesAsync();
+            return await _issueRepo.DeleteAsync(id);
         }
     }
 }

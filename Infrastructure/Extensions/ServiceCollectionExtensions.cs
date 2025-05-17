@@ -13,9 +13,7 @@ namespace Infrastructure.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("CS"),
                     sqlOptions => sqlOptions.MigrationsAssembly("Application")));
 
-            services.AddIdentityCore<User>(options =>
-                options.User.RequireUniqueEmail = true)
-                .AddRoles<IdentityRole>().AddEntityFrameworkStores<DbContext>();
+          
 
             services.AddScoped<ISubscriberRepository, SubscriberRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();

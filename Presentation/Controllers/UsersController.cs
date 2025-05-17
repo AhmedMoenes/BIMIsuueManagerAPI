@@ -48,7 +48,7 @@ namespace Presentation.Controllers
             return StatusCode(201);
         }
 
-        //Update User
+        //UpdateAsync User
         [HttpPut("{id:alpha}")]
         public async Task<ActionResult> Update(string id, [FromBody] UpdateUserDto dto)
         {
@@ -60,7 +60,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //Delete User
+        //DeleteAsync User
         [HttpDelete("{id:alpha}")]
         public async Task<ActionResult> Delete(string id)
         {

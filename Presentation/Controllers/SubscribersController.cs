@@ -49,7 +49,7 @@ namespace Presentation.Controllers
             return StatusCode(201);
         }
 
-        //Update Subscriber
+        //UpdateAsync Subscriber
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateSubscriberDto dto)
         {
@@ -62,7 +62,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //Delete Subscriber
+        //DeleteAsync Subscriber
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

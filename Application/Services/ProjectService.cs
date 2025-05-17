@@ -35,37 +35,44 @@
             };
         }
 
-        public async Task CreateAsync(CreateProjectDto dto)
+        public async Task<ProjectDto> CreateAsync(CreateProjectDto dto)
+    {
+        var project = new Project
         {
-            Project project = new Project
-            {
-                ProjectName = dto.ProjectName,
-                CompanyId = dto.CompanyId,
-                StartDate = dto.StartDate,
-                EndDate = dto.EndDate
-            };
+            ProjectName = dto.ProjectName,
+            CompanyId = dto.CompanyId,
+            StartDate = dto.StartDate,
+            EndDate = dto.EndDate
+        };
 
-            await _repo.AddAsync(project);
-            await _repo.SaveChangesAsync();
-        }
+        var created = await _repo.AddAsync(project);
 
-        public async Task UpdateAsync(int id, UpdateProjectDto dto)
+        return new ProjectDto
         {
-            Project project = await _repo.GetByIdAsync(id);
-            project.ProjectName = dto.ProjectName;
-            project.CompanyId = dto.CompanyId;
-            project.StartDate = dto.StartDate;
-            project.EndDate = dto.EndDate;
+            ProjectId = created.ProjectId,
+            ProjectName = created.ProjectName,
+            CompanyId = created.CompanyId,
+            StartDate = created.StartDate,
+            EndDate = created.EndDate
+        };
+    }
 
-            _repo.Update(project);
-            await _repo.SaveChangesAsync();
-        }
+    public async Task<bool> UpdateAsync(int id, UpdateProjectDto dto)
+    {
+        var p = await _repo.GetByIdAsync(id);
+        if (p == null) return false;
 
-        public async Task DeleteAsync(int id)
-        {
-            var project = await _repo.GetByIdAsync(id);
-            _repo.Delete(project);
-            await _repo.SaveChangesAsync();
-        }
+        p.ProjectName = dto.ProjectName;
+        p.CompanyId = dto.CompanyId;
+        p.StartDate = dto.StartDate;
+        p.EndDate = dto.EndDate;
+
+        return await _repo.UpdateAsync(p);
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        return await _repo.DeleteAsync(id);
+    }
     }
 }

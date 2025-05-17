@@ -4,8 +4,8 @@
     {
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task<UserDto> GetByIdAsync(string id);
-        Task RegisterAsync(RegisterUserDto dto);
-        Task UpdateAsync(string id, UpdateUserDto dto);
-        Task DeleteAsync(string id);
+        Task<UserDto> RegisterAsync(RegisterUserDto dto);     
+        Task<bool> UpdateAsync(string id, UpdateUserDto dto); 
+        Task<bool> DeleteAsync(string id);                    
     }
 }

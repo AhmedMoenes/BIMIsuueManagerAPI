@@ -51,7 +51,7 @@ namespace Presentation.Controllers
             return StatusCode(201);
         }
 
-        //Update Project
+        //UpdateAsync Project
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
         {
@@ -64,7 +64,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //Delete Project
+        //DeleteAsync Project
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

@@ -29,31 +29,35 @@
             };
         }
 
-        public async Task CreateAsync(CreateLabelDto dto)
+        public async Task<LabelDto> CreateAsync(CreateLabelDto dto)
         {
-            Label label = new Label
+            var label = new Label
             {
                 LabelName = dto.LabelName
             };
 
-            await _repo.AddAsync(label);
-            await _repo.SaveChangesAsync();
+            var created = await _repo.AddAsync(label);
+
+            return new LabelDto
+            {
+                LabelId = created.LabelId,
+                LabelName = created.LabelName
+            };
         }
 
-        public async Task UpdateAsync(int id, UpdateLabelDto dto)
+        public async Task<bool> UpdateAsync(int id, UpdateLabelDto dto)
         {
-            Label label = await _repo.GetByIdAsync(id);
+            var label = await _repo.GetByIdAsync(id);
+            if (label == null) return false;
+
             label.LabelName = dto.LabelName;
 
-            _repo.Update(label);
-            await _repo.SaveChangesAsync();
+            return await _repo.UpdateAsync(label);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            Label label = await _repo.GetByIdAsync(id);
-            _repo.Delete(label);
-            await _repo.SaveChangesAsync();
+            return await _repo.DeleteAsync(id);
         }
     }
 }

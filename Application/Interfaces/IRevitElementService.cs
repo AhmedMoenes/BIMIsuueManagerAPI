@@ -3,7 +3,7 @@
     public interface IRevitElementService
     {
         Task<IEnumerable<RevitElementDto>> GetByIssueIdAsync(int issueId);
-        Task AddAsync(RevitElementDto dto);
-        Task DeleteAsync(int id);
+        Task<RevitElementDto> AddAsync(RevitElementDto dto);   
+        Task<bool> DeleteAsync(int id);                        
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IIssueLabelService
     {
-        Task AssignLabelToIssueAsync(AssignLabelToIssueDto dto);
-        Task RemoveLabelFromIssueAsync(int issueId, int labelId);
+        Task<AssignLabelToIssueDto> AssignLabelToIssueAsync(AssignLabelToIssueDto dto); 
+        Task<bool> RemoveLabelFromIssueAsync(int issueId, int labelId);         
     }
 }
