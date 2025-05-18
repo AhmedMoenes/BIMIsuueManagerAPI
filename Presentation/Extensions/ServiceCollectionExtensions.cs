@@ -1,12 +1,4 @@
-﻿using System.Text;
-using Domain.Entities;
-using Infrastructure.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-
-namespace Presentation.Extensions
+﻿namespace Presentation.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -17,15 +9,6 @@ namespace Presentation.Extensions
                     policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()
                 ));
         }
-        public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
-        {
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<DbContext>().AddDefaultTokenProviders();
-            return services;
-        }
-
-        
-
         public static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
@@ -52,8 +35,7 @@ namespace Presentation.Extensions
 
             return services;
         }
-
-        //For Swagger  Testing Authentication  Button 
+        //For Swagger With Authentication Testing
         public static IServiceCollection ConfigureSwaggerWithJwtSupport(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>

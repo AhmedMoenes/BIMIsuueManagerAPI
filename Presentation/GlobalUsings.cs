@@ -1,2 +1,15 @@
 ﻿global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
+global using System.Text;
+global using Domain.Entities;
+global using Infrastructure.Data;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.IdentityModel.Tokens;
+global using Microsoft.OpenApi.Models;
+global using Application.Extensions;
+global using Application.Validators;
+global using FluentValidation.AspNetCore;
+global using FluentValidation;
+global using Infrastructure.Extensions;
+global using Presentation.Extensions;

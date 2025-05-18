@@ -18,6 +18,7 @@ namespace Application.Extensions
             services.AddScoped<IRevitElementService, RevitElementService>();
             services.AddScoped<IProjectTeamMemberService, ProjectTeamMemberService>();
             services.AddScoped<IIssueLabelService, IssueLabelService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             return services;
         }
     }

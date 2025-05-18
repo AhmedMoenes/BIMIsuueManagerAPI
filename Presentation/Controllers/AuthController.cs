@@ -1,7 +1,4 @@
 ﻿using Application.DTOs;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Application.Interfaces;
 
 namespace Presentation.Controllers
@@ -10,9 +7,9 @@ namespace Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthenticationServices _authService;
+        private readonly IAuthenticationService _authService;
 
-        public AuthController(IAuthenticationServices authService)
+        public AuthController(IAuthenticationService authService)
         {
             _authService = authService;
         }
