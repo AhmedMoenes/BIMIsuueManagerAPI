@@ -12,7 +12,6 @@
         public static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            var secretKey = Environment.GetEnvironmentVariable("SECRET");
 
             services.AddAuthentication(opt =>
                 {
@@ -29,7 +28,10 @@
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = jwtSettings["validIssuer"],
                         ValidAudience = jwtSettings["validAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(
+                                configuration["JwtSettings:key"]
+                                ?? throw new InvalidOperationException("JWT:key is missing in appsettings.json")))
                     };
                 });
 
