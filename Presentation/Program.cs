@@ -19,6 +19,8 @@ namespace Presentation
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
             builder.Services.ConfigureIdentity();
+            builder.Services.ConfigureJwt(builder.Configuration);
+            builder.Services.ConfigureSwaggerWithJwtSupport();
             builder.Services.ConfigureCors();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateIssueDtoValidator>();
             builder.Services.AddFluentValidationAutoValidation();
@@ -72,7 +74,11 @@ namespace Presentation
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
