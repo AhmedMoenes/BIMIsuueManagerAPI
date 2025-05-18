@@ -11,9 +11,12 @@ namespace Infrastructure.Extensions
         {
             services.AddDbContext<DbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("CS"),
-                    sqlOptions => sqlOptions.MigrationsAssembly("Application")));
+                    sqlOptions => sqlOptions.MigrationsAssembly("Infrastructure")));
 
-          
+            services.AddIdentityCore<User>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<DbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddScoped<ISubscriberRepository, SubscriberRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();

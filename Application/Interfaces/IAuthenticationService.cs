@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IAuthenticationServices
+    public interface IAuthenticationService
     {
         Task<bool> ValidateUserAsync(UserForAuthenticationDto dto);
         Task<string> CreateTokenAsync();
