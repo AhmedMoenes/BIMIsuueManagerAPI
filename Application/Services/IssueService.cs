@@ -16,7 +16,6 @@ namespace Application.Services
             IEnumerable<Issue> issues = await _issueRepo.GetAllAsync();
             return issues.Select(issue => new IssueDto
             {
-                IssueId = issue.IssueId,
                 Title = issue.Title,
                 Description = issue.Description,
                 ProjectId = issue.ProjectId
@@ -28,7 +27,6 @@ namespace Application.Services
             Issue issue = await _issueRepo.GetByIdAsync(id);
             return new IssueDto()
             {
-                IssueId = issue.IssueId,
                 Title = issue.Title,
                 Description = issue.Description,
                 ProjectId = issue.ProjectId
@@ -37,7 +35,7 @@ namespace Application.Services
 
         public async Task<IssueDto> CreateAsync(CreateIssueDto dto)
         {
-            var entity = new Issue
+            Issue entity = new Issue
             {
                 Title = dto.Title,
                 Description = dto.Description,
@@ -73,7 +71,6 @@ namespace Application.Services
 
             return new IssueDto
             {
-                IssueId = created.IssueId,
                 Title = created.Title,
                 Description = created.Description,
                 ProjectId = created.ProjectId,
