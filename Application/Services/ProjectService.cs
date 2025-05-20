@@ -1,19 +1,20 @@
 ﻿using Application.DTOs.Projects;
+using Microsoft.AspNetCore.Components;
 
 namespace Application.Services
 {
     public class ProjectService : IProjectService
     {
-        private readonly IProjectRepository _repo;
+        private readonly IProjectRepository _projectRepo;
 
-        public ProjectService(IProjectRepository repo)
+        public ProjectService(IProjectRepository projectRepo)
         {
-            _repo = repo;
+            _projectRepo = projectRepo;
         }
 
         public async Task<IEnumerable<ProjectDto>> GetAllAsync()
         {
-            IEnumerable<Project> projects = await _repo.GetAllAsync();
+            IEnumerable<Project> projects = await _projectRepo.GetAllAsync();
             return projects.Select(p => new ProjectDto
             {
                 ProjectId = p.ProjectId,
@@ -26,7 +27,7 @@ namespace Application.Services
 
         public async Task<ProjectDto> GetByIdAsync(int id)
         {
-            Project p = await _repo.GetByIdAsync(id);
+            Project p = await _projectRepo.GetByIdAsync(id);
             return new ProjectDto
             {
                 ProjectId = p.ProjectId,
@@ -39,29 +40,48 @@ namespace Application.Services
 
         public async Task<ProjectDto> CreateAsync(CreateProjectDto dto)
         {
-            var project = new Project
+            Project project = new Project
             {
                 ProjectName = dto.ProjectName,
-                CompanyId = dto.CompanyId,
+                Description = dto.Description,
                 StartDate = dto.StartDate,
-                EndDate = dto.EndDate
+                EndDate = dto.EndDate,
+                CompanyId = dto.CompanyId
             };
 
-            var created = await _repo.AddAsync(project);
+            IEnumerable<ProjectTeamMember> teamMembers = dto.TeamMemberUserIds.Select(userId => new ProjectTeamMember
+            {
+                ProjectId = project.ProjectId,
+                UserId = userId
+            }).ToList();
+
+            IEnumerable<Label> labels = dto.Labels.Select(label => new Label
+            {
+                LabelName = label.LabelName,
+                ProjectId = project.ProjectId
+            }).ToList();
+            IEnumerable<Area> areas = dto.Areas.Select(area => new Area
+            {
+                AreaName = area.AreaName,
+                ProjectId = project.ProjectId
+            }).ToList();
+
+            Project created = await _projectRepo.AddAsync(project);
 
             return new ProjectDto
             {
                 ProjectId = created.ProjectId,
                 ProjectName = created.ProjectName,
-                CompanyId = created.CompanyId,
+                Description = created.Description,
                 StartDate = created.StartDate,
-                EndDate = created.EndDate
+                EndDate = created.EndDate,
+                CompanyId = created.CompanyId
             };
         }
 
         public async Task<bool> UpdateAsync(int id, UpdateProjectDto dto)
         {
-            var p = await _repo.GetByIdAsync(id);
+            var p = await _projectRepo.GetByIdAsync(id);
             if (p == null) return false;
 
             p.ProjectName = dto.ProjectName;
@@ -69,17 +89,17 @@ namespace Application.Services
             p.StartDate = dto.StartDate;
             p.EndDate = dto.EndDate;
 
-            return await _repo.UpdateAsync(p);
+            return await _projectRepo.UpdateAsync(p);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            return await _repo.DeleteAsync(id);
+            return await _projectRepo.DeleteAsync(id);
         }
 
         public async Task<IEnumerable<ProjectOverviewDto>> GetForSubscriberAsync()
         {
-            return await _repo.GetProjectOverviewsAsync(async project =>
+            return await _projectRepo.GetProjectOverviewsAsync(async project =>
             {
                 return new ProjectOverviewDto
                 {
@@ -99,7 +119,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<ProjectOverviewDto>> GetForCompanyAsync(int companyId)
         {
-            var all = await _repo.GetProjectOverviewsAsync(async project =>
+            var all = await _projectRepo.GetProjectOverviewsAsync(async project =>
             {
                 return new ProjectOverviewDto
                 {
@@ -125,7 +145,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<ProjectOverviewDto>> GetForUserAsync(string userId)
         {
-            var all = await _repo.GetProjectOverviewsAsync(async project =>
+            var all = await _projectRepo.GetProjectOverviewsAsync(async project =>
             {
                 return new ProjectOverviewDto()
                 {
@@ -143,8 +163,8 @@ namespace Application.Services
                         .FirstOrDefault(m => m.UserId == userId)?.Role
                 };
             });
-        return all.Where(p => p.UserRoleInProject != null);
-    }
+            return all.Where(p => p.UserRoleInProject != null);
+        }
 
-}
+    }
 }
