@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Users;
+﻿using Application.DTOs.Login;
+using Application.DTOs.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services
@@ -118,6 +119,11 @@ namespace Application.Services
         {
             User user = await _userRepo.GetByIdAsync(userId);
             return user.CompanyId;
+        }
+
+        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);
+        {
+
 
         }
     }
