@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs.Area
+﻿namespace Application.DTOs.Areas
 {
     public class AreaDto
     {

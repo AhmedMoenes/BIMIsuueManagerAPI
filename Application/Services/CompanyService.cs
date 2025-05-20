@@ -1,4 +1,4 @@
-﻿using Application.DTOs.Company;
+﻿using Application.DTOs.Companies;
 
 namespace Application.Services
 {

@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.DTOs.User;
+using Application.DTOs.Users;
 using Application.Interfaces;
 
 namespace Presentation.Controllers

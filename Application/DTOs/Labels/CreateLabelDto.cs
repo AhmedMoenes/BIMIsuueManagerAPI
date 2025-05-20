@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs.Label
+﻿namespace Application.DTOs.Labels
 {
     public class CreateLabelDto
     {

@@ -1,4 +1,4 @@
-﻿using Application.DTOs.Issue;
+﻿using Application.DTOs.Issues;
 
 namespace Application.Interfaces
 {

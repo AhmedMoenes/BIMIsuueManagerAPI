@@ -1,4 +1,4 @@
-﻿using Application.DTOs.Label;
+﻿using Application.DTOs.Labels;
 
 namespace Application.Interfaces
 {

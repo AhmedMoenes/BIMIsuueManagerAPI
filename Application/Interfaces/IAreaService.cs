@@ -1,5 +1,5 @@
 ﻿
-using Application.DTOs.Area;
+using Application.DTOs.Areas;
 
 namespace Application.Interfaces
 {

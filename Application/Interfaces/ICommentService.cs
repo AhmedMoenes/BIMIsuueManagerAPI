@@ -1,5 +1,5 @@
 ﻿
-using Application.DTOs.Comment;
+using Application.DTOs.Comments;
 
 namespace Application.Interfaces
 {

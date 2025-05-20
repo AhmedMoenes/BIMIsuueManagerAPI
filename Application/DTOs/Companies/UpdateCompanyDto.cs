@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs.Company
+﻿namespace Application.DTOs.Companies
 {
     public class UpdateCompanyDto
     {

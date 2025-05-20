@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.DTOs.Issue;
+using Application.DTOs.Issues;
 using Application.Interfaces;
 using Domain.Entities;
 

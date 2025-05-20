@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs.Issue
+﻿namespace Application.DTOs.Issues
 {
     public class UpdateIssueDto
     {

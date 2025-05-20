@@ -1,8 +1,7 @@
-﻿namespace Application.DTOs.Project
+﻿namespace Application.DTOs.Projects
 {
-    public class ProjectDto
+    public class CreateProjectDto
     {
-        public int ProjectId { get; set; }
         public string ProjectName { get; set; }
         public int CompanyId { get; set; }
         public DateTime? StartDate { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs.RevitElement
+﻿namespace Application.DTOs.RevitElements
 {
     public class RevitElementDto
     {

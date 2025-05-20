@@ -1,4 +1,4 @@
-﻿using Application.DTOs.User;
+﻿using Application.DTOs.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services
@@ -86,7 +86,7 @@ namespace Application.Services
 
             return await _userRepo.UpdateAsync(user);
         }
-        
+
         public async Task<bool> DeleteAsync(string id)
         {
             return await _userRepo.DeleteAsync(id);
@@ -112,10 +112,12 @@ namespace Application.Services
                 };
             });
         }
+
         public async Task<int> GetCompanyIdAsync(string userId)
         {
             User user = await _userRepo.GetByIdAsync(userId);
             return user.CompanyId;
 
         }
+    }
 }
