@@ -133,7 +133,7 @@ namespace Application.Services
                         .Select(m => m.User.Company.CompanyName)
                         .Distinct()
                         .ToList()
-                };
+                }; 
             });
 
             return all.Where(project =>

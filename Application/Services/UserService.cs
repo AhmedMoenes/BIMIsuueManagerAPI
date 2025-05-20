@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Login;
 using Application.DTOs.Users;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services
@@ -9,11 +10,14 @@ namespace Application.Services
         private readonly IUserRepository _userRepo;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        //private readonly IJwtService _jwtService;
-        public UserService(IUserRepository userRepo, UserManager<User> userManager)
+        private readonly IJwtService _jwtService;
+
+        public UserService(IUserRepository userRepo, UserManager<User> userManager, IJwtService jwtService,
+            SignInManager<User> signInManager)
         {
             _userRepo = userRepo;
             _userManager = userManager;
+            _jwtService = jwtService;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllAsync()
@@ -44,6 +48,7 @@ namespace Application.Services
             };
         }
 
+        // To Be Deleted
         public async Task<UserDto> RegisterAsync(RegisterUserDto dto)
         {
             var user = new User
@@ -121,10 +126,26 @@ namespace Application.Services
             return user.CompanyId;
         }
 
-        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);
+        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
         {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null)
+                throw new UnauthorizedAccessException("Invalid credentials");
 
+            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+            if (!result.Succeeded)
+                throw new UnauthorizedAccessException("Invalid credentials");
 
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwtService.GenerateToken(user, roles.First());
+
+            return new LoginResponseDto
+            {
+                Token = token,
+                Role = roles.First(),
+                FullName = $"{user.FirstName} {user.LastName}",
+                Email = user.Email
+            };
         }
     }
 }
