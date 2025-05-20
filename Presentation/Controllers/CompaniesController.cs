@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.DTOs.Company;
 using Application.Interfaces;
 
 namespace Presentation.Controllers

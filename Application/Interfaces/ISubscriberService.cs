@@ -1,4 +1,6 @@
-﻿namespace Application.Interfaces
+﻿using Application.DTOs.User;
+
+namespace Application.Interfaces
 {
     public interface ISubscriberService
     {

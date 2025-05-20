@@ -1,4 +1,6 @@
-﻿namespace Application.Validators
+﻿using Application.DTOs.Company;
+
+namespace Application.Validators
 {
     public class UpdateCompanyDtoValidator : AbstractValidator<UpdateCompanyDto>
     {

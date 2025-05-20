@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Application.DTOs.Issue;
+
+namespace Application.Services
 {
     public class IssueService : IIssueService
     {

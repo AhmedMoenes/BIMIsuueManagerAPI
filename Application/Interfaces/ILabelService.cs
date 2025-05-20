@@ -1,4 +1,6 @@
-﻿namespace Application.Interfaces
+﻿using Application.DTOs.Label;
+
+namespace Application.Interfaces
 {
     public interface ILabelService
     {

@@ -1,4 +1,7 @@
-﻿namespace Application.Interfaces
+﻿using Application.DTOs.Project;
+using Application.DTOs.User;
+
+namespace Application.Interfaces
 {
     public interface IProjectTeamMemberService
     {

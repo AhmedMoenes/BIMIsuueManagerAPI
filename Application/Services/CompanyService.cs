@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Application.DTOs.Company;
+
+namespace Application.Services
 {
     public class CompanyService : ICompanyService
     {

@@ -1,4 +1,6 @@
 ﻿
+using Application.DTOs.Comment;
+
 namespace Application.Interfaces
 {
     public interface ICommentService

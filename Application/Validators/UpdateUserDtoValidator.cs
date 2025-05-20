@@ -1,4 +1,6 @@
-﻿namespace Application.Validators
+﻿using Application.DTOs.User;
+
+namespace Application.Validators
 {
     public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDto>
     {

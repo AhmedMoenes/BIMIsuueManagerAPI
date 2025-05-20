@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Application.DTOs.Comment;
+
+namespace Application.Services
 {
     public class CommentService : ICommentService
     {

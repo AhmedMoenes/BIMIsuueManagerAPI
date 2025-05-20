@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Comment;
 using Application.Interfaces;
 using Application.Services;
 using System;

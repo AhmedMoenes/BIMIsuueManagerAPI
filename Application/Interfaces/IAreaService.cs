@@ -1,4 +1,6 @@
 ﻿
+using Application.DTOs.Area;
+
 namespace Application.Interfaces
 {
     public interface IAreaService

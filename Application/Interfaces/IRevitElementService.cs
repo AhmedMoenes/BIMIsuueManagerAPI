@@ -1,4 +1,6 @@
-﻿namespace Application.Interfaces
+﻿using Application.DTOs.RevitElement;
+
+namespace Application.Interfaces
 {
     public interface IRevitElementService
     {

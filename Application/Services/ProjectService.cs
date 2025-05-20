@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Application.DTOs.Project;
+
+namespace Application.Services
 {
     public class ProjectService : IProjectService
     {

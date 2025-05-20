@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Application.DTOs;
+using Application.DTOs.Project;
 using Application.Interfaces;
 using Application.Services;
 using Domain.Constants;

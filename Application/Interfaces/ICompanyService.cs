@@ -1,4 +1,6 @@
-﻿namespace Application.Interfaces
+﻿using Application.DTOs.Company;
+
+namespace Application.Interfaces
 {
     public interface ICompanyService
     {

@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Area;
 using Application.Interfaces;
 using Application.Services;
 using Domain.Entities;

@@ -1,6 +1,6 @@
-﻿namespace Application.DTOs
+﻿namespace Application.DTOs.Project
 {
-    public class AssignUserToProjectDto
+    public class ProjectTeamMemberDto
     {
         public int ProjectId { get; set; }
         public string UserId { get; set; }

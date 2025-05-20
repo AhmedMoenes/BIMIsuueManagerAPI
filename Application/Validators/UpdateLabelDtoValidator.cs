@@ -1,4 +1,6 @@
-﻿namespace Application.Validators
+﻿using Application.DTOs.Label;
+
+namespace Application.Validators
 {
     public class UpdateLabelDtoValidator : AbstractValidator<UpdateLabelDto>
     {

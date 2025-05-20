@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Application.DTOs.User;
+
+namespace Application.Services
 {
     public class SubscriberService : ISubscriberService
     {
