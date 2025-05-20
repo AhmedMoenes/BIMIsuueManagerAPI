@@ -6,7 +6,9 @@ namespace Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.HasKey(x => x.CommentId);
-            builder.Property(p => p.Message).IsRequired();
+
+            builder.Property(p => p.Message)
+                .IsRequired();
 
             builder.HasOne(x => x.Issue)
                 .WithMany(i => i.Comments)
