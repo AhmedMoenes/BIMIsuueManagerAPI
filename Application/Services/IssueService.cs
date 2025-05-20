@@ -41,10 +41,33 @@ namespace Application.Services
             {
                 Title = dto.Title,
                 Description = dto.Description,
+                AreaId = dto.AreaId,
+                Priority = dto.Priority,
+                AssignedToUserId = dto.AssignedToUserId,
                 ProjectId = dto.ProjectId,
                 CreatedByUserId = dto.CreatedByUserId,
-                AssignedToUserId = dto.AssignedToUserId
+                CreatedAt = DateTime.UtcNow
             };
+
+            var comments = dto.Comments?.Select(c => new Comment
+            {
+                Message = c.Message,
+                CreatedAt = DateTime.UtcNow,
+                CreatedByUserId = dto.CreatedByUserId
+            }).ToList();
+
+            var revitElements = dto.RevitElements?.Select(r => new RevitElement
+            {
+                ElementId = r.ElementId,
+                ElementUniqueId = r.ElementUniqueId,
+                ViewpointCameraPosition = r.ViewpointCameraPosition,
+                SnapshotImagePath = r.SnapshotImagePath
+            }).ToList();
+
+            var labels = dto.Labels?.Select(i => new IssueLabel
+            {
+                LabelId = i.LabelId
+            }).ToList();
 
             var created = await _issueRepo.AddAsync(entity);
 
@@ -53,7 +76,7 @@ namespace Application.Services
                 IssueId = created.IssueId,
                 Title = created.Title,
                 Description = created.Description,
-                ProjectId = created.ProjectId
+                ProjectId = created.ProjectId,
             };
         }
 

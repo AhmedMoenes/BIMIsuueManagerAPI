@@ -18,6 +18,11 @@
                 .HasForeignKey(x => x.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(x => x.Area)
+                .WithMany(a => a.Issues)
+                .HasForeignKey(x => x.ProjectId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             builder.HasOne(x => x.CreatedByUser)
                 .WithMany()
                 .HasForeignKey(x => x.CreatedByUserId)
@@ -27,6 +32,10 @@
                 .WithMany()
                 .HasForeignKey(x => x.AssignedToUserId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Property(x => x.Priority)
+                .IsRequired();
+
         }
     }
 }

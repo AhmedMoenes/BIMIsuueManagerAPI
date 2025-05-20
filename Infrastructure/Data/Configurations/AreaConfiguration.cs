@@ -6,7 +6,10 @@ namespace Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Area> builder)
         {
             builder.HasKey(x => x.AreaId);
-            builder.Property(p => p.AreaName);
+
+            builder.Property(p => p.AreaName)
+                .IsRequired()
+                .HasMaxLength(200);
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public UpdateCommentDtoValidator()
         {
-            RuleFor(x => x.Content)
+            RuleFor(x => x.Message)
                 .NotEmpty().WithMessage("Comment can not be left empty.");
 
         }
