@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Users;
+﻿using Application.DTOs.Login;
+using Application.DTOs.Users;
 
 namespace Application.Interfaces
 {
@@ -11,6 +12,7 @@ namespace Application.Interfaces
         Task<bool> DeleteAsync(string id);
         Task<IEnumerable<UserOverviewDto>> GetUserOverviewAsync();
         Task<int> GetCompanyIdAsync(string userId);
+        Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);
 
     }
 }

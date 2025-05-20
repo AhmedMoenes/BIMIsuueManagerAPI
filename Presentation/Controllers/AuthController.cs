@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.DTOs.Login;
 using Application.Interfaces;
 
 namespace Presentation.Controllers
@@ -7,65 +8,33 @@ namespace Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthenticationService _authService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthenticationService authService)
+        public AuthController(IUserService userService)
         {
-            _authService = authService;
+            _userService = userService;
         }
 
-        // POST: api/auth/register
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _authService.RegisterUserAsync(dto);
-
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(e => e.Description);
-                return BadRequest(new { Errors = errors });
-            }
-
-           
-            var user = await _authService.GetUserByUsernameAsync(dto.UserName);
-
-            var userDto = new UserDto
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                CompanyId = user.CompanyId
-            };
-
-            return CreatedAtAction(
-                actionName: nameof(UsersController.GetById),
-                controllerName: "Users",
-                routeValues: new { id = user.Id },
-                value: userDto
-            );
-        }
-
-      
+        /// <summary>
+        /// Login with email and password, returns JWT token and user info.
+        /// </summary>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserForAuthenticationDto dto)
+        public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var isValid = await _authService.ValidateUserAsync(dto);
-            if (!isValid)
-                return Unauthorized(new { Message = "Invalid credentials" });
-
-            var token = await _authService.CreateTokenAsync();
-            return Ok(new { Token = token });
+            try
+            {
+                var result = await _userService.LoginAsync(dto);
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized(new { message = "Invalid email or password." });
+            }
         }
 
-       
-      
+
     }
 }

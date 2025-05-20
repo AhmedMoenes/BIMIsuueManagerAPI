@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Data;
+using Application.Interfaces;
+using Application.Services;
 namespace Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
@@ -9,13 +12,13 @@ namespace Infrastructure.Extensions
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
                                                             IConfiguration configuration)
         {
-            services.AddDbContext<DbContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("CS"),
                     sqlOptions => sqlOptions.MigrationsAssembly("Infrastructure")));
 
             services.AddIdentityCore<User>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<DbContext>()
+                .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddScoped<ISubscriberRepository, SubscriberRepository>();
@@ -29,8 +32,11 @@ namespace Infrastructure.Extensions
             services.AddScoped<IRevitElementRepository, RevitElementRepository>();
             services.AddScoped<ILabelRepository, LabelRepository>();
             services.AddScoped<IIssueLabelRepository, IssueLabelRepository>();
+            services.AddScoped<IJwtService, JwtService>();
             return services;
         }
 
     }
+
+    
 }

@@ -1,8 +1,8 @@
 ﻿namespace Infrastructure.Data
 {
-    public class DbContext :IdentityDbContext<User>
+    public class AppDbContext :IdentityDbContext<User>
     {
-        public DbContext(DbContextOptions<DbContext> options):base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
         {
         }
         public DbSet<Subscriber> Subscribers { get; set; }
@@ -19,7 +19,7 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfigurationsFromAssembly(typeof(DbContext).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
     }
 }

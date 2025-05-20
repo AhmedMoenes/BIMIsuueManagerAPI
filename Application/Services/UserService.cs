@@ -7,7 +7,8 @@ namespace Application.Services
     {
         private readonly IUserRepository _userRepo;
         private readonly UserManager<User> _userManager;
-
+        private readonly SignInManager<User> _signInManager;
+        //private readonly IJwtService _jwtService;
         public UserService(IUserRepository userRepo, UserManager<User> userManager)
         {
             _userRepo = userRepo;
