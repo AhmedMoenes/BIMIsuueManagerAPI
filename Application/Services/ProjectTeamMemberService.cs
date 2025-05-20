@@ -26,7 +26,8 @@
             var member = new ProjectTeamMember
             {
                 ProjectId = dto.ProjectId,
-                UserId = dto.UserId
+                UserId = dto.UserId,
+                Role = dto.Role
             };
 
             var created = await _repo.AddAsync(member);
@@ -34,7 +35,8 @@
             return new ProjectTeamMemberDto
             {
                 ProjectId = created.ProjectId,
-                UserId = created.UserId
+                UserId = created.UserId,
+                Role = dto.Role
             };
         }
 

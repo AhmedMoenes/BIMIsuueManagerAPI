@@ -2,8 +2,8 @@
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly DbContext _context;
-        private readonly DbSet<T> _dbSet;
+        public readonly DbContext _context;
+        public readonly DbSet<T> _dbSet;
 
         public Repository(DbContext context)
         {

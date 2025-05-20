@@ -7,7 +7,7 @@
             builder.HasKey(x => new { x.ProjectId, x.UserId });
 
             builder.HasOne(x => x.Project)
-                .WithMany(p => p.TeamMembers)
+                .WithMany(p => p.ProjectTeamMembers)
                 .HasForeignKey(x => x.ProjectId);
 
             builder.HasOne(x => x.User)

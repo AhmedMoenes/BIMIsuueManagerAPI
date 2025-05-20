@@ -82,7 +82,6 @@ namespace Application.Services
 
             user.FirstName = dto.FirstName;
             user.LastName = dto.LastName;
-            user.CompanyId = dto.CompanyId;
 
             return await _userRepo.UpdateAsync(user);
         }
@@ -91,5 +90,31 @@ namespace Application.Services
         {
             return await _userRepo.DeleteAsync(id);
         }
-    }
+
+        public async Task<IEnumerable<UserOverviewDto>> GetUserOverviewAsync()
+        {
+            return await _userRepo.GetUserOverviewAsync(async user =>
+            {
+                var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+                return new UserOverviewDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    CompanyName = user.Company?.CompanyName,
+                    Role = role,
+                    CreatedOn = user.CreatedOn,
+                    ProjectsIncludedCount = user.ProjectMemberships?.Count ?? 0,
+                    IssuesCreatedCount = user.CreatedIssues?.Count ?? 0
+                };
+            });
+        }
+        public async Task<int> GetCompanyIdAsync(string userId)
+        {
+            User user = await _userRepo.GetByIdAsync(userId);
+            return user.CompanyId;
+
+        }
 }

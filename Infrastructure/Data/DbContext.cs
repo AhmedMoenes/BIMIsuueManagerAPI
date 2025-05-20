@@ -7,7 +7,6 @@
         }
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
         public DbSet<Issue> Issues { get; set; }

@@ -1,6 +1,9 @@
-﻿using Application.DTOs;
+﻿using System.Security.Claims;
+using Application.DTOs;
 using Application.Interfaces;
 using Application.Services;
+using Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -11,10 +14,12 @@ namespace Presentation.Controllers
     {
 
         private readonly IProjectService _projectService;
+        private readonly IUserService _userService;
 
-        public ProjectsController(IProjectService projectService)
+        public ProjectsController(IProjectService projectService, IUserService userService)
         {
             _projectService = projectService;
+            _userService = userService;
         }
 
         //Get All Projects
@@ -73,6 +78,32 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [HttpGet("overview/subscriber")]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
+        public async Task<IActionResult> GetForSubscriber()
+        {
+            var result = await _projectService.GetForSubscriberAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("overview/company")]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> GetForCompany()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var companyId = await _userService.GetCompanyIdAsync(userId);
+            var result = await _projectService.GetForCompanyAsync(companyId);
+            return Ok(result);
+        }
+
+        [HttpGet("overview/user")]
+        [Authorize]
+        public async Task<IActionResult> GetForUser()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var result = await _projectService.GetForUserAsync(userId);
+            return Ok(result);
+        }
 
 
 
