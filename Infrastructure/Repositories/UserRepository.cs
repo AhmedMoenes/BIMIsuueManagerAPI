@@ -5,7 +5,7 @@
         public UserRepository(DbContext context) : base(context) { }
         public async Task<IEnumerable<T>> GetUserOverviewAsync<T>(Func<User, Task<T>> selector)
         {
-            var users = await _dbSet
+            var users = await DbSet
                 .Include(u => u.Company)
                 .Include(u => u.ProjectMemberships)
                 .Include(u => u.CreatedIssues)
@@ -22,7 +22,7 @@
         }
         public async Task<int> GetCompanyIdAsync(string userId)
         {
-            var companyId = await _dbSet
+            var companyId = await DbSet
                 .Where(u => u.Id == userId)
                 .Select(u => u.CompanyId)
                 .FirstOrDefaultAsync();

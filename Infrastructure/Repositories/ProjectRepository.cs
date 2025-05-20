@@ -6,7 +6,7 @@
 
         public async Task<IEnumerable<T>> GetProjectOverviewsAsync<T>(Func<Project, Task<T>> selector)
         {
-            var projects = await _dbSet
+            var projects = await DbSet
                 .Include(p => p.Issues)
                 .Include(p => p.ProjectTeamMembers)
                 .ThenInclude(m => m.User)

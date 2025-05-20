@@ -17,7 +17,7 @@ namespace Application.Services
             return comments.Select(comment => new CommentDto
             {
                 CommentId = comment.CommentId,
-                Content = comment.Content
+                Content = comment.Message
             });
         }
 
@@ -27,7 +27,7 @@ namespace Application.Services
             return new CommentDto()
             {
                 CommentId = comment.CommentId,
-                Content = comment.Content
+                Content = comment.Message
             };
         }
 
@@ -35,7 +35,7 @@ namespace Application.Services
         {
             var comment = new Comment
             {
-                Content = dto.Content
+                Message = dto.Content
             };
 
             var created = await _commentRepo.AddAsync(comment);
@@ -43,7 +43,7 @@ namespace Application.Services
             return new CommentDto
             {
                 CommentId = created.CommentId,
-                Content = created.Content
+                Content = created.Message
             };
         }
 
@@ -52,7 +52,7 @@ namespace Application.Services
             var comment = await _commentRepo.GetByIdAsync(id);
             if (comment == null) return false;
 
-            comment.Content = dto.Content;
+            comment.Message = dto.Content;
 
             return await _commentRepo.UpdateAsync(comment);
         }

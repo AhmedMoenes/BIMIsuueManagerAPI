@@ -1,7 +1,6 @@
 ﻿using Application.DTOs;
 using Application.DTOs.Issues;
 using Application.Interfaces;
-using Domain.Entities;
 
 namespace Presentation.Controllers
 {
@@ -35,15 +34,10 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] CreateIssueDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateIssueDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _issueService.CreateAsync(dto);
-            // To Be Edited
-            return StatusCode(201);
+            var result = await _issueService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = result.IssueId }, result);
         }
 
         //UpdateAsync Issue
@@ -67,5 +61,6 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+     
     }
 }

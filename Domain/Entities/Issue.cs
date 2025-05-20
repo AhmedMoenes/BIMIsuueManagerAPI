@@ -18,8 +18,12 @@
         public User CreatedByUser { get; set; }
         public string? AssignedToUserId { get; set; }
         public User AssignedToUser { get; set; }
+        public int AreaId { get; set; }
+        public Area Area { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public Priority Priority { get; set; }
         public ICollection<RevitElement> RevitElements { get; set; }
         public ICollection<IssueLabel> Labels { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
     }
 }
