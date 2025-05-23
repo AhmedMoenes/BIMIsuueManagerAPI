@@ -15,7 +15,7 @@ namespace Presentation.Controllers
             _userService = userService;
         }
 
-        //Get All Users
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
@@ -23,7 +23,7 @@ namespace Presentation.Controllers
             return Ok(users);
         }
 
-        //Get User By Id
+        
 
         [HttpGet ("{id:alpha}")]
         public async Task<ActionResult<UserDto>> GetById(string id )
@@ -36,20 +36,25 @@ namespace Presentation.Controllers
             return Ok(user);
         }
 
-        //Create User
-        [HttpPost]
+        //Review This Method For RegisterUserDto 
+        [HttpPost ("")]
         public async Task<ActionResult> Create([FromBody] RegisterUserDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _userService.RegisterAsync(dto);
-            // To Be Edited
-            return StatusCode(201);
+            var createdUser = await _userService.RegisterAsync(dto);
+            return CreatedAtAction(
+                nameof(GetById),
+                controllerName:"Users",
+                routeValues: new{ id = createdUser.Id },
+                value: createdUser
+            );
+
         }
 
-        //UpdateAsync User
+        
         [HttpPut("{id:alpha}")]
         public async Task<ActionResult> Update(string id, [FromBody] UpdateUserDto dto)
         {
@@ -61,7 +66,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //DeleteAsync User
+        
         [HttpDelete("{id:alpha}")]
         public async Task<ActionResult> Delete(string id)
         {
