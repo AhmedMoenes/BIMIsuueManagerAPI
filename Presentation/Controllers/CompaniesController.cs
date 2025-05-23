@@ -15,15 +15,15 @@ namespace Presentation.Controllers
             _companyService = companyService;
         }
 
-        //Get All Companies
-        [HttpGet]
+        
+        [HttpGet("")]
         public async Task<ActionResult<IEnumerable<CompanyDto>>> GetAll()
         {
             IEnumerable<CompanyDto> companies = await _companyService.GetAllAsync();
             return Ok(companies);
         }
 
-        //Get Company By Id
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<CompanyDto>> GetById(int id)
         {
@@ -35,20 +35,24 @@ namespace Presentation.Controllers
             return Ok(company);
         }
 
-        //Create Company
-        [HttpPost]
+        
+        [HttpPost("")]
         public async Task<ActionResult> Create([FromBody] CreateCompanyDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _companyService.CreateAsync(dto);
-            // To Be Edited
-            return StatusCode(201);
+            var createdCompany = await _companyService.CreateAsync(dto);
+
+            return CreatedAtAction(
+                nameof(GetById),              
+                new { id = createdCompany.CompanyId }, 
+                createdCompany               
+            );
         }
 
-        //UpdateAsync Company
+       
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateCompanyDto dto)
         {
@@ -60,7 +64,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //DeleteAsync Company
+       
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

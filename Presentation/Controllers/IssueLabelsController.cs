@@ -15,19 +15,23 @@ namespace Presentation.Controllers
             _issueLabelService = issueLabelService;
         }
 
-        //Assign a label to an issue 
-        [HttpPost]
+        
+        [HttpPost("")]
         public async Task<IActionResult> AssignLabel([FromBody] AssignLabelToIssueDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            await _issueLabelService.AssignLabelToIssueAsync(dto);
+            var assignedLabel = await _issueLabelService.AssignLabelToIssueAsync(dto);
+            return CreatedAtAction(
+                nameof(AssignLabel),
+                new { issueId = dto.IssueId, labelId = dto.LabelId },
+                assignedLabel
+            );
             return StatusCode(201);
         }
 
-        //Remove a label from an issue
-        [HttpDelete]
+        
+        [HttpDelete("")]
         public async Task<IActionResult> RemoveLabel([FromQuery] int issueId, [FromQuery] int labelId)
         {
             await _issueLabelService.RemoveLabelFromIssueAsync(issueId, labelId);
