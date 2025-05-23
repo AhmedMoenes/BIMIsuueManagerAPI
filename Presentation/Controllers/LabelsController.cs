@@ -16,15 +16,15 @@ namespace Presentation.Controllers
             _labelService = labelService;
         }
 
-        // Get All Labels
-        [HttpGet]
+        
+        [HttpGet("")]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable <LabelDto> labels = await _labelService.GetAllAsync();
             return Ok(labels);
         }
 
-        //Get Label By Id
+       
         [HttpGet("{Id:int}")]
         public async Task<ActionResult<LabelDto>> GetById(int id)
         {
@@ -35,29 +35,32 @@ namespace Presentation.Controllers
             return Ok(label);
         }
 
-        // Get Label By Name
-        //[HttpGet("{name:alpha}")]
-        //public async Task<ActionResult<LabelDto>> GetById(string name)
-        //{
-        //    LabelDto label = await _labelService.GetByIdAsync(name);
-        //    if (label == null)
-        //        return NotFound();
+       // Get Label By Name
+       //[HttpGet("{name:alpha}")]
+       // public async Task<ActionResult<LabelDto>> GetById(string name)
+       // {
+       //     LabelDto label = await _labelService.GetByIdAsync(name);
+       //     if (label == null)
+       //         return NotFound();
 
-        //    return Ok(label);
-        //}
+       //     return Ok(label);
+       // }
 
-        //Create Label
-        [HttpPost]
+
+        [HttpPost("")]
         public async Task<ActionResult> Create([FromBody] CreateLabelDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            await _labelService.CreateAsync(dto);
-            //To Be Edited
-            return StatusCode(201);
+            var createdLabel = await _labelService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById),
+                new { id = createdLabel.LabelId },
+                createdLabel);
+
+           
         }
 
-        //UpdateAsync label
+        
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateLabelDto dto)
         {
@@ -67,7 +70,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //DeleteAsync Label
+        
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
