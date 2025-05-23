@@ -33,7 +33,7 @@ namespace Application.Services
             };
         }
 
-        public async Task CreateAsync(CreateSubscriberDto dto)
+        public async Task<SubscriberDto> CreateAsync(CreateSubscriberDto dto)
         {
             Subscriber subscriber = new Subscriber
             {
@@ -43,6 +43,12 @@ namespace Application.Services
 
             await _repo.AddAsync(subscriber);
             await _repo.SaveChangesAsync();
+            return new SubscriberDto
+            {
+                SubscriberId = subscriber.SubscriberId,
+                SubscriberName = subscriber.SubscriberName,
+                CreatedAt = subscriber.CreatedAt
+            };
         }
 
         public async Task UpdateAsync(int id, UpdateSubscriberDto dto)

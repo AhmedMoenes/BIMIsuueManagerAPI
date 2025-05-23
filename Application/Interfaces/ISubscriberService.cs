@@ -6,7 +6,7 @@ namespace Application.Interfaces
     {
         Task<IEnumerable<SubscriberDto>> GetAllAsync();
         Task<SubscriberDto> GetByIdAsync(int id);
-        Task CreateAsync(CreateSubscriberDto dto);
+        Task<SubscriberDto> CreateAsync(CreateSubscriberDto dto);
         Task UpdateAsync(int id, UpdateSubscriberDto dto);
         Task DeleteAsync(int id);
     }

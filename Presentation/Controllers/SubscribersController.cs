@@ -15,15 +15,15 @@ namespace Presentation.Controllers
             _subscriberService = subscriberService;
         }
 
-        //Get All Subscribers
-        [HttpGet]
+        
+        [HttpGet("")]
         public async Task<ActionResult<IEnumerable<SubscriberDto>>> GetAll()
         {
             IEnumerable<SubscriberDto> subscribers = await _subscriberService.GetAllAsync();
             return Ok(subscribers);
         }
 
-        //Get Subscriber By Id
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<SubscriberDto>> GetById(int id)
         {
@@ -36,21 +36,24 @@ namespace Presentation.Controllers
             return Ok(subscriber);
         }
 
-        //Create Subscriber
-        [HttpPost]
+        
+        [HttpPost("")]
         public async Task<ActionResult> Create([FromBody] CreateSubscriberDto dto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            await _subscriberService.CreateAsync(dto);
-            // To Be Edited
-            return StatusCode(201);
+            var createdSubscriber = await _subscriberService.CreateAsync(dto);
+
+            return CreatedAtAction(
+                actionName: nameof(GetById),
+                controllerName: "Subscribers",
+                routeValues: new { id = createdSubscriber.SubscriberId },
+                value: createdSubscriber
+            );
         }
 
-        //UpdateAsync Subscriber
+
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateSubscriberDto dto)
         {
@@ -63,7 +66,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //DeleteAsync Subscriber
+        
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
