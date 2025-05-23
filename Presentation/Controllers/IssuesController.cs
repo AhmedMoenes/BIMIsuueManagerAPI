@@ -33,14 +33,14 @@ namespace Presentation.Controllers
             return Ok(issue);
         }
 
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> Create([FromBody] CreateIssueDto dto)
         {
             var result = await _issueService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = result.IssueId }, result);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
-        //UpdateAsync Issue
+      
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateIssueDto dto)
         {
@@ -53,7 +53,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //DeleteAsync Issue
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
