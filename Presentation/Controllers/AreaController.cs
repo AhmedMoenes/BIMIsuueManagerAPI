@@ -30,11 +30,16 @@ namespace Presentation.Controllers
             return Ok(area);
         }
 
-        [HttpPost]
+        [HttpPost("")]
         public async Task<ActionResult> Create([FromBody] AreaDto dto)
         {
-            await _areaService.CreateAsync(dto);
-            return Created("", dto); ////////////////////////////????????????????????
+            var createdArea= await _areaService.CreateAsync(dto);
+            return CreatedAtAction(
+
+                nameof(GetById),
+                new { id = createdArea.AreaId },
+                createdArea
+            );
         }
 
         [HttpPatch("{id}")]
