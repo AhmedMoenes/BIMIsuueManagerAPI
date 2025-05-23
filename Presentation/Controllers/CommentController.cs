@@ -30,11 +30,16 @@ namespace Presentation.Controllers
             return Ok(comment);
         }
 
-        [HttpPost]
+        [HttpPost("")]
         public async Task<ActionResult> Create([FromBody] CommentDto dto)
         {
-            await _commentService.CreateAsync(dto);
-            return Created("",dto); ////////////////////////////????????????????????
+           var createdComment = await _commentService.CreateAsync(dto);
+           return CreatedAtAction(
+
+                nameof(GetById),
+                new { id = createdComment.CommentId },
+                createdComment
+           );
         }
 
         [HttpPatch("{id}")]
