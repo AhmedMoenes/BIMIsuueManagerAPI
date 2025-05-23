@@ -14,7 +14,7 @@ namespace Presentation.Controllers
             _revitElementService = revitElementService;
         }
 
-        //Get all Revit elements by issue ID
+       
         [HttpGet("issue/{issueId}")]
         public async Task<ActionResult<IEnumerable<RevitElementDto>>> GetByIssueId(int issueId)
         {
@@ -23,8 +23,8 @@ namespace Presentation.Controllers
         }
 
 
-        //Adding Revit element 
-        [HttpPost]
+        
+        [HttpPost("")]
         public async Task<IActionResult> AddRevitElement([FromBody] RevitElementDto dto)
         {
             if (!ModelState.IsValid)

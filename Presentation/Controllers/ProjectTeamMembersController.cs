@@ -23,22 +23,31 @@ namespace Presentation.Controllers
         }
 
 
-        //Assign User To Project 
-        [HttpPost]
+
+        [HttpPost("")]
         public async Task<IActionResult> AssignUserToProject([FromBody] AssignUserToProjectDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _service.AssignAsync(dto);
-            return StatusCode(201);
+            var result = await _service.AssignAsync(dto);
+
+            return CreatedAtAction(
+                nameof(GetByProjectId),
+                controllerName: "ProjectTeamMembers",
+                new { projectId = dto.ProjectId },
+                result
+            );
         }
 
-        //Remove User From Project
-        [HttpDelete]
-        public async Task<IActionResult> RemoveUserFromProject([FromQuery] int projectId, [FromQuery] string userId)
+
+        [HttpDelete("project/{projectId}/user/{userId}")]
+        public async Task<IActionResult> RemoveUserFromProject( int projectId,  string userId)
         {
-            await _service.RemoveAsync(projectId, userId);
+            var removed = await _service.RemoveAsync(projectId, userId);
+            if (!removed)
+                return NotFound();
+
             return NoContent();
         }
 
