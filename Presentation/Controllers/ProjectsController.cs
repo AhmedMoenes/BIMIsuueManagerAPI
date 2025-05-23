@@ -23,15 +23,15 @@ namespace Presentation.Controllers
             _userService = userService;
         }
 
-        //Get All Projects
-        [HttpGet]
+       
+        [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAll()
         {
             IEnumerable<ProjectDto> projects = await _projectService.GetAllAsync();
             return Ok(projects);
         }
 
-        //Get Project By Id
+       
         
         [HttpGet("{id}")]
         public async Task<ActionResult<IssueDto>> GetById(int id)
@@ -44,20 +44,25 @@ namespace Presentation.Controllers
             return Ok(issue);
         }
 
-        //Create Project
-        [HttpPost]
+        
+        [HttpPost("")]
         public async Task<ActionResult> Create([FromBody] CreateProjectDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await _projectService.CreateAsync(dto);
-            // To Be Edited
-            return StatusCode(201);
+            var createdProject = await _projectService.CreateAsync(dto);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = createdProject.ProjectId },
+                createdProject
+
+            );
         }
 
-        //UpdateAsync Project
+        
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
         {
@@ -70,7 +75,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
-        //DeleteAsync Project
+       
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
