@@ -8,11 +8,13 @@
 
             builder.HasOne(x => x.Issue)
                 .WithMany(i => i.Labels)
-                .HasForeignKey(x => x.IssueId);
+                .HasForeignKey(x => x.IssueId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Label)
                 .WithMany(l => l.Issues)
-                .HasForeignKey(x => x.LabelId);
+                .HasForeignKey(x => x.LabelId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
