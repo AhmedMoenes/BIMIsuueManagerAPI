@@ -1,7 +1,4 @@
 ﻿using Application.DTOs.Comments;
-using Application.Interfaces;
-using Application.Services;
-using System;
 
 namespace Presentation.Controllers
 {

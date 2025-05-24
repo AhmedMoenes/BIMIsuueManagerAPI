@@ -1,11 +1,7 @@
 ﻿using System.Security.Claims;
-using Application.DTOs;
 using Application.DTOs.Projects;
-using Application.Interfaces;
-using Application.Services;
 using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {

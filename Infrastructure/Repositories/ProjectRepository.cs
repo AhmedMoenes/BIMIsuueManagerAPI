@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Infrastructure.Repositories
+﻿namespace Infrastructure.Repositories
 {
     public class ProjectRepository : Repository<Project>, IProjectRepository
     {

@@ -1,6 +1,5 @@
 ﻿using Application.DTOs.Login;
 using Application.DTOs.Users;
-using Application.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services

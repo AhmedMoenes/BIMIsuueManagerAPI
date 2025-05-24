@@ -13,3 +13,5 @@ global using FluentValidation.AspNetCore;
 global using FluentValidation;
 global using Infrastructure.Extensions;
 global using Presentation.Extensions;
+global using Application.DTOs;
+global using Application.Interfaces;

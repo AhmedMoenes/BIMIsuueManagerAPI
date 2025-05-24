@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Projects;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Interfaces
 {
