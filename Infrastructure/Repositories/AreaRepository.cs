@@ -2,6 +2,6 @@
 {
     public class AreaRepository : Repository<Area>, IAreaRepository
     {
-        public AreaRepository(DbContext context) : base(context) { }
+        public AreaRepository(AppDbContext context) : base(context) { }
     }
 }

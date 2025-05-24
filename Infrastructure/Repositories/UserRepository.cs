@@ -1,8 +1,17 @@
-﻿namespace Infrastructure.Repositories
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Infrastructure.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        public UserRepository(DbContext context) : base(context) { }
+        private readonly AppDbContext _context;
+        private readonly UserManager<User> _userManager;
+
+        public UserRepository(AppDbContext context, UserManager<User> userManager) : base(context)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
         public async Task<IEnumerable<T>> GetUserOverviewAsync<T>(Func<User, Task<T>> selector)
         {
             var users = await DbSet

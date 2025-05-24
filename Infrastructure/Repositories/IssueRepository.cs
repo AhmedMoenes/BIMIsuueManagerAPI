@@ -6,7 +6,7 @@
         public readonly IRevitElementRepository _revitElementRepository;
         private readonly IIssueLabelRepository _issueLabelRepository;
 
-        public IssueRepository(DbContext context, ICommentRepository commentRepository,
+        public IssueRepository(AppDbContext context, ICommentRepository commentRepository,
                                IRevitElementRepository revitElementRepository,
                                IIssueLabelRepository issueLabelRepository) : base(context)
         {

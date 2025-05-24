@@ -1,5 +1,4 @@
-﻿
-namespace Infrastructure.Data.Configurations
+﻿namespace Infrastructure.Data.Configurations
 {
     public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
@@ -10,10 +9,18 @@ namespace Infrastructure.Data.Configurations
             builder.Property(p => p.Message)
                 .IsRequired();
 
+            builder.Property(p => p.CreatedAt)
+                .IsRequired();
+
             builder.HasOne(x => x.Issue)
                 .WithMany(i => i.Comments)
                 .HasForeignKey(x => x.IssueId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(c => c.CreatedByUser)
+                .WithMany(u => u.CommentsCreated)
+                .HasForeignKey(f => f.CreatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

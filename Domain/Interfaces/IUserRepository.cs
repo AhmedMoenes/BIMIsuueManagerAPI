@@ -6,6 +6,5 @@ namespace Domain.Interfaces
     {
         Task<IEnumerable<T>> GetUserOverviewAsync<T>(Func<User, Task<T>> selector);
         Task<int> GetCompanyIdAsync(string userId);
-
     }
 }

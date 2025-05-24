@@ -2,9 +2,9 @@
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        public readonly DbContext Context;
+        public readonly AppDbContext Context;
         public readonly DbSet<T> DbSet;
-        public Repository(DbContext context)
+        public Repository(AppDbContext context)
         {
             Context = context;
             DbSet = context.Set<T>();

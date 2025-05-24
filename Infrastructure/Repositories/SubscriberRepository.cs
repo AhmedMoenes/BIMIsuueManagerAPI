@@ -2,6 +2,6 @@
 {
     public class SubscriberRepository : Repository<Subscriber>, ISubscriberRepository
     {
-        public SubscriberRepository(DbContext context) : base(context) { }
+        public SubscriberRepository(AppDbContext context) : base(context) { }
     }
 }

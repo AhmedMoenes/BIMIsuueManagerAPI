@@ -2,6 +2,6 @@
 {
     public class CompanyRepository : Repository<Company>, ICompanyRepository
     {
-        public CompanyRepository(DbContext context) : base(context) { }
+        public CompanyRepository(AppDbContext context) : base(context) { }
     }
 }

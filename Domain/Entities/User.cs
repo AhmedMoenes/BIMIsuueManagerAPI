@@ -11,5 +11,6 @@ namespace Domain.Entities
         public DateTime CreatedOn { get; set; }
         public ICollection<ProjectTeamMember> ProjectMemberships { get; set; }
         public ICollection<Issue> CreatedIssues { get; set; }
+        public ICollection<Comment> CommentsCreated { get; set; }
     }
 }

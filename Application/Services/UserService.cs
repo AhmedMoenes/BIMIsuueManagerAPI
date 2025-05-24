@@ -12,12 +12,15 @@ namespace Application.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtService _jwtService;
 
-        public UserService(IUserRepository userRepo, UserManager<User> userManager, IJwtService jwtService,
-            SignInManager<User> signInManager)
+        public UserService(IUserRepository userRepo,
+                           UserManager<User> userManager,
+                           IJwtService jwtService,
+                           SignInManager<User> signInManager)
         {
             _userRepo = userRepo;
             _userManager = userManager;
             _jwtService = jwtService;
+            _signInManager = signInManager;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllAsync()

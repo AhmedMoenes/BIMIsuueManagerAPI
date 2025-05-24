@@ -2,6 +2,6 @@
 {
     public class CommentRepository : Repository<Comment>, ICommentRepository
     {
-        public CommentRepository(DbContext context) : base(context) { }
+        public CommentRepository(AppDbContext context) : base(context) { }
     }
 }

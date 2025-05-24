@@ -37,6 +37,17 @@
 
             return services;
         }
+
+        public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
+        {
+            services.AddIdentity<User, IdentityRole>()
+                    .AddEntityFrameworkStores<AppDbContext>()
+                    .AddDefaultTokenProviders();
+            services.AddHttpContextAccessor();
+
+            return services;
+        }
+
         //For Swagger With Authentication Testing
         public static IServiceCollection ConfigureSwaggerWithJwtSupport(this IServiceCollection services)
         {

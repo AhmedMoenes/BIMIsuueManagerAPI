@@ -2,6 +2,6 @@
 {
     public class LabelRepository : Repository<Label>, ILabelRepository
     {
-        public LabelRepository(DbContext context) : base(context) { }
+        public LabelRepository(AppDbContext context) : base(context) { }
     }
 }

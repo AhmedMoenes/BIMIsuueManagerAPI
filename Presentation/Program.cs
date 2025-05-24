@@ -9,6 +9,7 @@ namespace Presentation
             #region Services
             builder.Services.AddControllers();
             builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.ConfigureIdentity();
             builder.Services.AddApplication();
             builder.Services.ConfigureJwt(builder.Configuration);
             builder.Services.ConfigureSwaggerWithJwtSupport();

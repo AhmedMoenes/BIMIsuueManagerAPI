@@ -2,6 +2,6 @@
 {
     public class ProjectTeamMemberRepository : Repository<ProjectTeamMember>, IProjectTeamMemberRepository
     {
-        public ProjectTeamMemberRepository(DbContext context) : base(context) { }
+        public ProjectTeamMemberRepository(AppDbContext context) : base(context) { }
     }
 }

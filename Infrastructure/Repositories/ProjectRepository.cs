@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories
         private readonly IAreaRepository _areaRepository;
         private readonly IProjectTeamMemberRepository _ProjectTeamMemberRepository;
         private readonly ILabelRepository _labelRepository;
-        public ProjectRepository(DbContext context, IAreaRepository areaRepository,
+        public ProjectRepository(AppDbContext context, IAreaRepository areaRepository,
             IProjectTeamMemberRepository iProjectTeamMemberRepository,
             ILabelRepository labelRepository) : base(context) { }
 

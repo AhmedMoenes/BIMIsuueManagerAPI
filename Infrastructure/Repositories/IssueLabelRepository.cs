@@ -2,6 +2,6 @@
 {
     public class IssueLabelRepository : Repository<IssueLabel>, IIssueLabelRepository
     {
-        public IssueLabelRepository(DbContext context) : base(context) { }
+        public IssueLabelRepository(AppDbContext context) : base(context) { }
     }
 }
