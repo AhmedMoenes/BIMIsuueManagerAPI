@@ -18,7 +18,6 @@ namespace Application.Services
             {
                 CompanyId = c.CompanyId,
                 CompanyName = c.CompanyName,
-                SubscriberId = c.SubscriberId
             });
         }
 
@@ -29,7 +28,6 @@ namespace Application.Services
             {
                 CompanyId = c.CompanyId,
                 CompanyName = c.CompanyName,
-                SubscriberId = c.SubscriberId
             };
         }
 
@@ -38,7 +36,6 @@ namespace Application.Services
             var company = new Company
             {
                 CompanyName = dto.CompanyName,
-                SubscriberId = dto.SubscriberId
             };
 
             var created = await _repo.AddAsync(company);
@@ -47,7 +44,6 @@ namespace Application.Services
             {
                 CompanyId = created.CompanyId,
                 CompanyName = created.CompanyName,
-                SubscriberId = created.SubscriberId
             };
         }
 
@@ -57,7 +53,6 @@ namespace Application.Services
             if (company == null) return false;
 
             company.CompanyName = dto.CompanyName;
-            company.SubscriberId = dto.SubscriberId;
 
             return await _repo.UpdateAsync(company);
         }

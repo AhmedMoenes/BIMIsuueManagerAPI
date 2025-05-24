@@ -9,11 +9,6 @@
             builder.Property(x => x.CompanyName)
                 .IsRequired()
                 .HasMaxLength(150);
-
-            builder.HasOne(x => x.Subscriber)
-                .WithMany(s => s.Companies)
-                .HasForeignKey(x => x.SubscriberId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -16,7 +16,6 @@ namespace Infrastructure.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("CS"),
                     sqlOptions => sqlOptions.MigrationsAssembly("Infrastructure")));
 
-            services.TryAddScoped<ISubscriberRepository, SubscriberRepository>();
             services.TryAddScoped<ICompanyRepository, CompanyRepository>();
             services.TryAddScoped<IUserRepository, UserRepository>();
             services.TryAddScoped<IProjectRepository, ProjectRepository>();

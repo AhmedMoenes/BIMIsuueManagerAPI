@@ -7,14 +7,14 @@
             builder.HasKey(x => x.RevitElementId);
 
             builder.Property(x => x.ElementId).IsRequired();
-            builder.Property(x => x.ElementUniqueId).HasMaxLength(200);
-            builder.Property(x => x.ViewpointCameraPosition).HasMaxLength(500);
-            builder.Property(x => x.SnapshotImagePath).HasMaxLength(500);
+            builder.Property(x => x.ElementUniqueId).IsRequired();
+            builder.Property(x => x.ViewpointCameraPosition).IsRequired();
+            builder.Property(x => x.SnapshotImagePath).IsRequired();
 
             builder.HasOne(x => x.Issue)
-                .WithMany(i => i.RevitElements)
-                .HasForeignKey(x => x.IssueId)
-                .OnDelete(DeleteBehavior.Cascade);
+                   .WithMany(i => i.RevitElements)
+                   .HasForeignKey(x => x.IssueId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

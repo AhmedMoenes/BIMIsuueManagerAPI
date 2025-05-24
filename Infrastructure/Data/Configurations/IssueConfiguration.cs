@@ -11,7 +11,11 @@
                 .HasMaxLength(200);
 
             builder.Property(x => x.Description)
+                .IsRequired()
                 .HasMaxLength(1000);
+
+            builder.Property(x => x.CreatedAt)
+                .IsRequired();
 
             builder.HasOne(x => x.Project)
                 .WithMany(p => p.Issues)
@@ -20,8 +24,8 @@
 
             builder.HasOne(x => x.Area)
                 .WithMany(a => a.Issues)
-                .HasForeignKey(x => x.ProjectId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(x => x.AreaId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.CreatedByUser)
                 .WithMany()
