@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Companies;
+﻿using System.Security.Claims;
+using Application.DTOs.Companies;
 
 namespace Presentation.Controllers
 {
@@ -50,7 +51,16 @@ namespace Presentation.Controllers
             );
         }
 
-       
+        [HttpPost("create-with-admin")]
+        public async Task<IActionResult> CreateWithAdmin([FromBody] CreateCompanyWithAdminDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _companyService.CreateCompanyWithAdminAsync(dto);
+            return Ok(result);
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateCompanyDto dto)
         {
@@ -68,6 +78,15 @@ namespace Presentation.Controllers
         {
             await _companyService.DeleteAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("overview")]
+        public async Task<IActionResult> GetCompanyOverviewForUser()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var companies = await _companyService.GetCompaniesForUserAsync(userId);
+            return Ok(companies);
         }
     }
 }

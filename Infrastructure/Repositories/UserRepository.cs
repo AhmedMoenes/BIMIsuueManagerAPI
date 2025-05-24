@@ -41,5 +41,14 @@ namespace Infrastructure.Repositories
 
             return companyId;
         }
+
+        public async Task AddUserToProjectsAsync(string userId, List<ProjectTeamMember> memberships)
+        {
+            foreach (var member in memberships)
+                member.UserId = userId;
+
+            await _context.ProjectTeamMembers.AddRangeAsync(memberships);
+            await _context.SaveChangesAsync();
+        }
     }
 }

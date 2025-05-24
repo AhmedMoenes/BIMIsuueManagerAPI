@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Login;
+﻿using Application.DTOs.Companies;
+using Application.DTOs.Login;
 using Application.DTOs.Users;
 
 namespace Application.Interfaces
@@ -13,6 +14,7 @@ namespace Application.Interfaces
         Task<IEnumerable<UserOverviewDto>> GetUserOverviewAsync();
         Task<int> GetCompanyIdAsync(string userId);
         Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);
+        Task<UserDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto);
 
     }
 }

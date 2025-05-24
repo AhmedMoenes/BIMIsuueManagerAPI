@@ -1,14 +1,18 @@
 ﻿using Application.DTOs.Companies;
+using Application.DTOs.Users;
+using Domain.Constants;
 
 namespace Application.Services
 {
     public class CompanyService : ICompanyService
     {
         private readonly ICompanyRepository _repo;
+        private readonly IUserService _userService;
 
-        public CompanyService(ICompanyRepository repo)
+        public CompanyService(ICompanyRepository repo, IUserService userService)
         {
             _repo = repo;
+            _userService = userService;
         }
 
         public async Task<IEnumerable<CompanyDto>> GetAllAsync()
@@ -60,6 +64,50 @@ namespace Application.Services
         public async Task<bool> DeleteAsync(int id)
         {
             return await _repo.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<CompanyOverviewDto>> GetCompaniesForUserAsync(string userId)
+        {
+            return await _repo.GetUserCompaniesAsync(userId, async company =>
+            {
+                return new CompanyOverviewDto
+                {
+                    CompanyId = company.CompanyId,
+                    CompanyName = company.CompanyName,
+                    UsersCount = company.Users?.Count ?? 0,
+                    ProjectsCount = company.Projects?.Count ?? 0,
+                    IssuesCount = company.Projects?.Sum(p => p.Issues.Count) ?? 0
+                };
+            });
+        }
+
+        public async Task<CompanyDto> CreateCompanyWithAdminAsync(CreateCompanyWithAdminDto dto)
+        {
+            Company company = new Company
+            {
+                CompanyName = dto.CompanyName
+
+            };
+
+            Company createdCompany = await _repo.AddAsync(company);
+
+            RegisterUserDto user = new RegisterUserDto
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                UserName = dto.UserName,
+                Role = UserRoles.Admin,
+                CompanyId = createdCompany.CompanyId,
+            };
+
+            UserDto companyAdmin = await _userService.RegisterAsync(user);
+
+            return new CompanyDto
+            {
+                CompanyId = createdCompany.CompanyId,
+                CompanyName = createdCompany.CompanyName
+            };
         }
     }
 }

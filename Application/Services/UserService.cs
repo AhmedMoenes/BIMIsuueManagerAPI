@@ -1,6 +1,8 @@
-﻿using Application.DTOs.Login;
+﻿using Application.DTOs.Companies;
+using Application.DTOs.Login;
 using Application.DTOs.Users;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
@@ -83,6 +85,34 @@ namespace Application.Services
                 Email = user.Email,
                 CompanyId = user.CompanyId
             };
+        }
+
+        public async Task<UserDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto)
+        {
+            int companyId = await _userRepo.GetCompanyIdAsync(adminUserId);
+
+            RegisterUserDto registerUser = new RegisterUserDto()
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                UserName = dto.UserName,
+                Password = dto.Password,
+                Role = dto.Role,
+                CompanyId = companyId
+            };
+
+            UserDto user = await RegisterAsync(registerUser);
+
+            var memberships = dto.ProjectAssignments.Select(p => new ProjectTeamMember
+            {
+                ProjectId = p.ProjectId,
+                Role = p.RoleInProject
+            }).ToList();
+
+            await _userRepo.AddUserToProjectsAsync(user.Id, memberships);
+
+            return user;
         }
 
         public async Task<bool> UpdateAsync(string id, UpdateUserDto dto)

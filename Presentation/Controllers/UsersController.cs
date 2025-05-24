@@ -1,4 +1,8 @@
-﻿using Application.DTOs.Users;
+﻿using System.Security.Claims;
+using Application.DTOs.Companies;
+using Application.DTOs.Users;
+using Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Controllers
 {
@@ -42,7 +46,7 @@ namespace Presentation.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var createdUser = await _userService.RegisterAsync(dto);
+            UserDto createdUser = await _userService.RegisterAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
                 controllerName:"Users",
@@ -52,6 +56,18 @@ namespace Presentation.Controllers
 
         }
 
+        [HttpPost("create-with-project")]
+        [Authorize(UserRoles.Admin)]
+        public async Task<ActionResult> CreateUserWithProjects([FromBody] CreateUserWithProjectsDto dto)
+        {
+            var adminUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(adminUserId))
+                return Unauthorized();
+
+            var result = await _userService.CreateUserWithProjectsAsync(adminUserId, dto);
+            return Ok(result);
+        }
         
         [HttpPut("{id:alpha}")]
         public async Task<ActionResult> Update(string id, [FromBody] UpdateUserDto dto)
