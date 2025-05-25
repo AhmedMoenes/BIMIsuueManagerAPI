@@ -97,7 +97,7 @@ namespace Application.Services
                 LastName = dto.LastName,
                 Email = dto.Email,
                 UserName = dto.UserName,
-                Role = UserRoles.Admin,
+                Role = UserRoles.CompanyAdmin,
             };
 
             UserDto companyAdmin = await _userService.RegisterAsync(user);

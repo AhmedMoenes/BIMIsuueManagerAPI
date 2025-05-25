@@ -91,7 +91,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("overview/company")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.CompanyAdmin)]
         public async Task<IActionResult> GetForCompany()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
