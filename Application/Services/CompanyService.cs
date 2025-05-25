@@ -40,6 +40,7 @@
             };
 
             var created = await _repo.AddAsync(company);
+            await _unitOfWork.SaveChangesAsync();
 
             return new CompanyDto
             {
