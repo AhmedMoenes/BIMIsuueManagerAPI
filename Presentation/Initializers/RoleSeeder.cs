@@ -1,6 +1,4 @@
-﻿using Domain.Constants;
-
-namespace Presentation.Initializers
+﻿namespace Presentation.Initializers
 {
     public static class RoleSeeder
     {

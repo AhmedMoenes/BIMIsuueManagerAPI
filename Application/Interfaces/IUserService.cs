@@ -1,8 +1,4 @@
-﻿using Application.DTOs.Companies;
-using Application.DTOs.Login;
-using Application.DTOs.Users;
-
-namespace Application.Interfaces
+﻿namespace Application.Interfaces
 {
     public interface IUserService
     {

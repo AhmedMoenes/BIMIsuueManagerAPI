@@ -1,8 +1,4 @@
-﻿using Application.DTOs.Companies;
-using Application.DTOs.Users;
-using Domain.Constants;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class CompanyService : ICompanyService
     {

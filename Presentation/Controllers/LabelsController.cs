@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Labels;
-using Application.Interfaces;
 
 namespace Presentation.Controllers
 {

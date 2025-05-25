@@ -3,3 +3,8 @@ global using Application.Interfaces;
 global using Domain.Entities;
 global using Domain.Interfaces;
 global using FluentValidation;
+global using Application.DTOs.Companies;
+global using Application.DTOs.Login;
+global using Application.DTOs.Users;
+global using Microsoft.AspNetCore.Identity;
+global using Domain.Constants;

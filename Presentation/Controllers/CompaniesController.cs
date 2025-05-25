@@ -1,9 +1,4 @@
-﻿using System.Security.Claims;
-using Application.DTOs;
-using Application.DTOs.Companies;
-using Application.Interfaces;
-
-namespace Presentation.Controllers
+﻿namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

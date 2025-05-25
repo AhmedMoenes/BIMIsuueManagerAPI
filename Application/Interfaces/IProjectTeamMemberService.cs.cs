@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Projects;
-using Application.DTOs.Users;
 
 namespace Application.Interfaces
 {

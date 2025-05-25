@@ -1,5 +1,4 @@
-﻿global using Microsoft.AspNetCore.Http;
-global using Microsoft.AspNetCore.Mvc;
+﻿global using Microsoft.AspNetCore.Mvc;
 global using System.Text;
 global using Domain.Entities;
 global using Infrastructure.Data;
@@ -15,3 +14,8 @@ global using Infrastructure.Extensions;
 global using Presentation.Extensions;
 global using Application.DTOs;
 global using Application.Interfaces;
+global using System.Security.Claims;
+global using Application.DTOs.Companies;
+global using Application.DTOs.Users;
+global using Domain.Constants;
+global using Microsoft.AspNetCore.Authorization;

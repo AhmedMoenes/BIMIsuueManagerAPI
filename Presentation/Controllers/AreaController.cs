@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Areas;
-using Application.Interfaces;
 
 namespace Presentation.Controllers
 {

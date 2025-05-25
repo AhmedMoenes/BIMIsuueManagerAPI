@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Companies;
-
-namespace Application.Validators.Companies
+﻿namespace Application.Validators.Companies
 {
     public class UpdateCompanyDtoValidator : AbstractValidator<UpdateCompanyDto>
     {

@@ -1,10 +1,4 @@
-﻿using Application.DTOs.Companies;
-using Application.DTOs.Login;
-using Application.DTOs.Users;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class UserService : IUserService
     {
@@ -83,7 +77,8 @@ namespace Application.Services
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Email = user.Email,
-                CompanyId = user.CompanyId
+                CompanyId = user.CompanyId,
+                Role = dto.Role
             };
         }
 
