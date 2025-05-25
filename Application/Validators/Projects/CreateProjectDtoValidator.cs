@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Projects;
 
-namespace Application.Validators
+namespace Application.Validators.Projects
 {
     public class CreateProjectDtoValidator : AbstractValidator<CreateProjectDto>
     {

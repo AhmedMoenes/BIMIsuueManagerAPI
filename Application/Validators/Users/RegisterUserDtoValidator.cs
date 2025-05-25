@@ -1,4 +1,4 @@
-﻿namespace Application.Validators
+﻿namespace Application.Validators.Users
 {
     public class RegisterUserDtoValidator : AbstractValidator<RegisterUserDto>
     {

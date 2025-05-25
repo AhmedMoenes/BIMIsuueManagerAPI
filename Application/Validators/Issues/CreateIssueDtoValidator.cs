@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Issues;
 
-namespace Application.Validators
+namespace Application.Validators.Issues
 {
     public class CreateIssueDtoValidator : AbstractValidator<CreateIssueDto>
     {

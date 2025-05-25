@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validators\Login\" />
+    <Folder Include="Validators\RevitElements\" />
+  </ItemGroup>
+
 </Project>

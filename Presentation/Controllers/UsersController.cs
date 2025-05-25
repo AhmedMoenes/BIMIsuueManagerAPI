@@ -18,7 +18,6 @@ namespace Presentation.Controllers
         {
             _userService = userService;
         }
-
         
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
@@ -26,8 +25,6 @@ namespace Presentation.Controllers
             IEnumerable<UserDto> users = await _userService.GetAllAsync();
             return Ok(users);
         }
-
-        
 
         [HttpGet ("{id:alpha}")]
         public async Task<ActionResult<UserDto>> GetById(string id )
@@ -41,13 +38,14 @@ namespace Presentation.Controllers
         }
 
         //Review This Method For RegisterUserDto 
-        [HttpPost ("")]
+        [HttpPost ("register")]
         public async Task<ActionResult> Create([FromBody] RegisterUserDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             UserDto createdUser = await _userService.RegisterAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
@@ -58,7 +56,7 @@ namespace Presentation.Controllers
 
         }
 
-        [HttpPost("create-with-project")]
+        [HttpPost("register-with-project")]
         [Authorize(UserRoles.Admin)]
         public async Task<ActionResult> CreateUserWithProjects([FromBody] CreateUserWithProjectsDto dto)
         {

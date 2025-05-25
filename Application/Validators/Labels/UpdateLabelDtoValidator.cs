@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Labels;
 
-namespace Application.Validators
+namespace Application.Validators.Labels
 {
     public class UpdateLabelDtoValidator : AbstractValidator<UpdateLabelDto>
     {

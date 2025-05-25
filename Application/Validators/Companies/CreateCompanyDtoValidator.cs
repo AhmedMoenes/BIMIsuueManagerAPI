@@ -1,4 +1,4 @@
-﻿namespace Application.Validators
+﻿namespace Application.Validators.Companies
 {
     public class CreateCompanyDtoValidator : AbstractValidator<CreateCompanyDto>
     {
