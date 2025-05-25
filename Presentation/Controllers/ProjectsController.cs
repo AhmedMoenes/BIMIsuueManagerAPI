@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using Application.DTOs;
 using Application.DTOs.Projects;
+using Application.Interfaces;
 using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 
