@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Labels;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class LabelService : ILabelService
     {

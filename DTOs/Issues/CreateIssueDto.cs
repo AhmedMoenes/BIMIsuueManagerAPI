@@ -1,9 +1,6 @@
-﻿using DTOs.RevitElements;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DTOs.IssueLabel;
+using DTOs.Labels;
+using DTOs.RevitElements;
 
 namespace DTOs.Issues
 {
@@ -24,7 +21,7 @@ namespace DTOs.Issues
         public string? AssignedToUserId { get; set; }
         public DateTime CreatedAt { get; set; }
         public Priority Priority { get; set; }
-        public List<int> LabelIds { get; set; }
+        public List<AssignLabelToIssueDto> Labels { get; set; }
         public List<RevitElementDto> RevitElements { get; set; }
     }
 }

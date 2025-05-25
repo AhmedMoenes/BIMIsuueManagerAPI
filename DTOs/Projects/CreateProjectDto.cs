@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DTOs.Areas;
+using DTOs.Labels;
+using DTOs.ProjectTeamMember;
 
 namespace DTOs.Projects
 {
@@ -13,8 +11,8 @@ namespace DTOs.Projects
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int CompanyId { get; set; }
-        public ICollection<string> TeamMemberUserIds { get; set; }
-        public ICollection<int> LabelIds { get; set; }
-        public ICollection<string> AreaNames { get; set; }
+        public ICollection<ProjectTeamMemberDto> TeamMembers { get; set; }
+        public ICollection<LabelDto> Labels { get; set; }
+        public ICollection<AreaDto> Areas { get; set; }
     }
 }

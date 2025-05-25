@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Issues;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class IssueService : IIssueService
     {
@@ -40,19 +38,12 @@ namespace Application.Services
                 Title = dto.Title,
                 Description = dto.Description,
                 AreaId = dto.AreaId,
-                Priority = dto.Priority,
+                Priority = (Domain.Entities.Priority)dto.Priority,
                 AssignedToUserId = dto.AssignedToUserId,
                 ProjectId = dto.ProjectId,
                 CreatedByUserId = dto.CreatedByUserId,
                 CreatedAt = DateTime.UtcNow
             };
-
-            var comments = dto.Comments?.Select(c => new Comment
-            {
-                Message = c.Message,
-                CreatedAt = DateTime.UtcNow,
-                CreatedByUserId = dto.CreatedByUserId
-            }).ToList();
 
             var revitElements = dto.RevitElements?.Select(r => new RevitElement
             {
@@ -64,7 +55,8 @@ namespace Application.Services
 
             var labels = dto.Labels?.Select(i => new IssueLabel
             {
-                LabelId = i.LabelId
+                LabelId = i.LabelId,
+                IssueId = i.IssueId
             }).ToList();
 
             var created = await _issueRepo.AddAsync(entity);

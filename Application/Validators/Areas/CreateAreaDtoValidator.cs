@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Areas;
-
-namespace Application.Validators.Areas
+﻿namespace Application.Validators.Areas
 {
     public class CreateAreaDtoValidator : AbstractValidator<AreaDto>
     {

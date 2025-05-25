@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Projects;
-
-namespace Application.Interfaces
+﻿namespace Application.Interfaces
 {
     public interface IProjectService
     {

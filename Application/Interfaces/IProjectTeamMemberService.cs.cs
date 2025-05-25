@@ -1,4 +1,4 @@
-﻿using Application.DTOs.Projects;
+﻿using DTOs.ProjectTeamMember;
 
 namespace Application.Interfaces
 {

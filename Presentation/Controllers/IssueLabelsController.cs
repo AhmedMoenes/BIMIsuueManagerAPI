@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Issues;
-
-namespace Presentation.Controllers
+﻿namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

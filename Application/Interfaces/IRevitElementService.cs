@@ -1,6 +1,4 @@
-﻿using Application.DTOs.RevitElements;
-
-namespace Application.Interfaces
+﻿namespace Application.Interfaces
 {
     public interface IRevitElementService
     {

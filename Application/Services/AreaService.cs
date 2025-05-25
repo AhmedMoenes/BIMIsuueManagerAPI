@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Areas;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class AreaService : IAreaService
     {

@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Projects;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class ProjectService : IProjectService
     {
@@ -66,18 +64,18 @@ namespace Application.Services
                 Project createdProject = await _projectRepo.AddAsync(project);
                 await _unitOfWork.SaveChangesAsync();
 
-                IEnumerable<Label> labels = dto.LabelNames?.Select(name => new Label
+                IEnumerable<Label> labels = dto.Labels?.Select(LabelDto => new Label
                 {
-                    LabelName = name,
+                    LabelName = LabelDto.LabelName,
                     ProjectId = createdProject.ProjectId
                 });
 
                 if (labels != null && labels.Any())
                     await _labelRepo.AddRangeAsync(labels);
 
-                IEnumerable<Area> areas = dto.AreaNames?.Select(name => new Area
+                IEnumerable<Area> areas = dto.Areas?.Select(AreaDto => new Area
                 {
-                    AreaName = name,
+                    AreaName = AreaDto.AreaName,
                     ProjectId = createdProject.ProjectId
                 }).ToList();
 

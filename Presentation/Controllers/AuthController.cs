@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Login;
-
-namespace Presentation.Controllers
+﻿namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

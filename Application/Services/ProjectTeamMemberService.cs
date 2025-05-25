@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Projects;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class ProjectTeamMemberService : IProjectTeamMemberService
     {

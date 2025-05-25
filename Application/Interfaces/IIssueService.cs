@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Issues;
-
-namespace Application.Interfaces
+﻿namespace Application.Interfaces
 {
     public interface IIssueService
     {
