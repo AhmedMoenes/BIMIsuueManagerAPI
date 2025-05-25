@@ -14,7 +14,6 @@
                     await roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
-
         }
     }
 }

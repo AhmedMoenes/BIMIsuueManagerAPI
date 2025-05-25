@@ -27,7 +27,6 @@ namespace Application.Services
                 LastName = dto.LastName,
                 UserName = dto.UserName,
                 Email = dto.Email,
-                CompanyId = dto.CompanyId
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);

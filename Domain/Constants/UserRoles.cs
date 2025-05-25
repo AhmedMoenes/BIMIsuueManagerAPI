@@ -3,7 +3,7 @@
     public static class UserRoles
     {
         public const string SuperAdmin = "SuperAdmin";
-        public const string Admin = "Admin";
+        public const string CompanyAdmin = "CompanyAdmin";
         public const string ProjectLeader = "ProjectLeader";
         public const string Editor = "Editor";
         public const string Reviewer = "Reviewer";
@@ -12,7 +12,7 @@
         public static readonly List<string> RolesList = new List<string>()
         {
             SuperAdmin,
-            Admin,
+            CompanyAdmin,
             ProjectLeader,
             Editor,
             Reviewer,

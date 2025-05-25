@@ -5,7 +5,7 @@ namespace Presentation
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +28,7 @@ namespace Presentation
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                RoleSeeder.SeedRoles(services);
+                await RoleSeeder.SeedRoles(services);
             }
 
             // Configure the HTTP request pipeline.
