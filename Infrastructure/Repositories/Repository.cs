@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Repositories
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
@@ -17,8 +19,14 @@
         public async Task<T> AddAsync(T entity)
         {
             var result = await DbSet.AddAsync(entity);
-            await Context.SaveChangesAsync();
             return result.Entity;
+        }
+
+        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        {
+            var list = entities.ToList(); 
+            await DbSet.AddRangeAsync(list);
+            return list;
         }
 
         public async Task<bool> UpdateAsync(T entity)

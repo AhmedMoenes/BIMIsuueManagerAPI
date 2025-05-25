@@ -4,13 +4,16 @@
     {
         private readonly ICompanyRepository _repo;
         private readonly IUserService _userService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CompanyService(ICompanyRepository repo, IUserService userService)
+        public CompanyService(ICompanyRepository repo,
+                              IUserService userService,
+                              IUnitOfWork unitOfWork)
         {
             _repo = repo;
             _userService = userService;
+            _unitOfWork = unitOfWork;
         }
-
         public async Task<IEnumerable<CompanyDto>> GetAllAsync()
         {
             IEnumerable<Company> companies = await _repo.GetAllAsync();
@@ -20,7 +23,6 @@
                 CompanyName = c.CompanyName,
             });
         }
-
         public async Task<CompanyDto> GetByIdAsync(int id)
         {
             Company c = await _repo.GetByIdAsync(id);
@@ -30,7 +32,6 @@
                 CompanyName = c.CompanyName,
             };
         }
-
         public async Task<CompanyDto> CreateAsync(CreateCompanyDto dto)
         {
             var company = new Company
@@ -46,7 +47,6 @@
                 CompanyName = created.CompanyName,
             };
         }
-
         public async Task<bool> UpdateAsync(int id, UpdateCompanyDto dto)
         {
             var company = await _repo.GetByIdAsync(id);
@@ -56,12 +56,10 @@
 
             return await _repo.UpdateAsync(company);
         }
-
         public async Task<bool> DeleteAsync(int id)
         {
             return await _repo.DeleteAsync(id);
         }
-
         public async Task<IEnumerable<CompanyOverviewDto>> GetCompaniesForUserAsync(string userId)
         {
             return await _repo.GetUserCompaniesAsync(userId, async company =>
@@ -76,23 +74,20 @@
                 };
             });
         }
-
         public async Task<CompanyDto> CreateCompanyWithAdminAsync(CreateCompanyWithAdminDto dto)
         {
-
-            CompanyDto companyDto = null;
-
-            await _repo.ExecuteInTransactionAsync(async () =>
+            await _unitOfWork.BeginTransactionAsync();
+            try
             {
-                var company = new Company
+                Company company = new Company
                 {
                     CompanyName = dto.CompanyName
                 };
 
-                var createdCompany = await _repo.AddAsync(company);
-                await _repo.SaveChangesAsync(); 
+                Company createdCompany = await _repo.AddAsync(company);
+                await _repo.SaveChangesAsync();
 
-                var user = new RegisterUserDto
+                RegisterUserDto user = new RegisterUserDto
                 {
                     FirstName = dto.FirstName,
                     LastName = dto.LastName,
@@ -103,16 +98,24 @@
                     Role = UserRoles.CompanyAdmin,
                 };
 
-                var companyAdmin = await _userService.RegisterAsync(user);
+                UserDto companyAdmin = await _userService.RegisterAsync(user);
 
-                companyDto = new CompanyDto
+                CompanyDto companyDto = new CompanyDto
                 {
                     CompanyId = createdCompany.CompanyId,
                     CompanyName = createdCompany.CompanyName
                 };
-            });
 
-            return companyDto;
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitAsync();
+
+                return companyDto;
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
     }
 }

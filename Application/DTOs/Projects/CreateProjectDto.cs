@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Areas;
 using Application.DTOs.Labels;
-
+    
 namespace Application.DTOs.Projects
 {
     public class CreateProjectDto
@@ -10,8 +10,7 @@ namespace Application.DTOs.Projects
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int CompanyId { get; set; }
-        public ICollection<string> TeamMemberUserIds { get; set; }
-        public ICollection<LabelDto> Labels { get; set; }
-        public ICollection<AreaDto> Areas { get; set; }
+        public ICollection<string> LabelNames { get; set; } = new List<string>();
+        public ICollection<string> AreaNames { get; set; } = new List<string>();
     }
 }

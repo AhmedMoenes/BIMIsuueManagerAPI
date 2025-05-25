@@ -5,7 +5,5 @@ namespace Domain.Interfaces
     public interface ICompanyRepository : IRepository<Company>
     {
         Task<IEnumerable<T>> GetUserCompaniesAsync<T>(string userId, Func<Company, Task<T>> selector);
-        Task ExecuteInTransactionAsync(Func<Task> action);
-
     }
 }

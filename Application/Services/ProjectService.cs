@@ -5,12 +5,23 @@ namespace Application.Services
     public class ProjectService : IProjectService
     {
         private readonly IProjectRepository _projectRepo;
+        private readonly ILabelRepository _labelRepo;
+        private readonly IAreaRepository _areaRepo;
+        private readonly IProjectTeamMemberRepository _teamRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProjectService(IProjectRepository projectRepo)
+        public ProjectService(IProjectRepository projectRepo,
+                              ILabelRepository labelRepo,
+                              IAreaRepository areaRepo,
+                              IProjectTeamMemberRepository teamRepo,
+                              IUnitOfWork unitOfWork)
         {
             _projectRepo = projectRepo;
+            _labelRepo = labelRepo;
+            _areaRepo = areaRepo;
+            _teamRepo = teamRepo;
+            _unitOfWork = unitOfWork;
         }
-
         public async Task<IEnumerable<ProjectDto>> GetAllAsync()
         {
             IEnumerable<Project> projects = await _projectRepo.GetAllAsync();
@@ -39,43 +50,59 @@ namespace Application.Services
 
         public async Task<ProjectDto> CreateAsync(CreateProjectDto dto)
         {
-            Project project = new Project
-            {
-                ProjectName = dto.ProjectName,
-                Description = dto.Description,
-                StartDate = dto.StartDate,
-                EndDate = dto.EndDate,
-                CompanyId = dto.CompanyId
-            };
+            await _unitOfWork.BeginTransactionAsync();
 
-            IEnumerable<ProjectTeamMember> teamMembers = dto.TeamMemberUserIds.Select(userId => new ProjectTeamMember
+            try
             {
-                ProjectId = project.ProjectId,
-                UserId = userId
-            }).ToList();
+                Project project = new Project
+                {
+                    ProjectName = dto.ProjectName,
+                    Description = dto.Description,
+                    StartDate = dto.StartDate,
+                    EndDate = dto.EndDate,
+                    CompanyId = dto.CompanyId
+                };
 
-            IEnumerable<Label> labels = dto.Labels.Select(label => new Label
-            {
-                LabelName = label.LabelName,
-                ProjectId = project.ProjectId
-            }).ToList();
-            IEnumerable<Area> areas = dto.Areas.Select(area => new Area
-            {
-                AreaName = area.AreaName,
-                ProjectId = project.ProjectId
-            }).ToList();
+                Project createdProject = await _projectRepo.AddAsync(project);
+                await _unitOfWork.SaveChangesAsync();
 
-            Project created = await _projectRepo.AddAsync(project);
+                IEnumerable<Label> labels = dto.LabelNames?.Select(name => new Label
+                {
+                    LabelName = name,
+                    ProjectId = createdProject.ProjectId
+                });
 
-            return new ProjectDto
+                if (labels != null && labels.Any())
+                    await _labelRepo.AddRangeAsync(labels);
+
+                IEnumerable<Area> areas = dto.AreaNames?.Select(name => new Area
+                {
+                    AreaName = name,
+                    ProjectId = createdProject.ProjectId
+                }).ToList();
+
+                if (areas != null && areas.Any())
+                    await _areaRepo.AddRangeAsync(areas);
+
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitAsync();
+
+                return new ProjectDto()
+                {
+                    ProjectId = createdProject.ProjectId,
+                    ProjectName = createdProject.ProjectName,
+                    Description = createdProject.Description,
+                    StartDate = createdProject.StartDate,
+                    EndDate = createdProject.EndDate,
+                    CompanyId = createdProject.CompanyId
+                };
+            }
+            catch
             {
-                ProjectId = created.ProjectId,
-                ProjectName = created.ProjectName,
-                Description = created.Description,
-                StartDate = created.StartDate,
-                EndDate = created.EndDate,
-                CompanyId = created.CompanyId
-            };
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<bool> UpdateAsync(int id, UpdateProjectDto dto)
@@ -132,7 +159,7 @@ namespace Application.Services
                         .Select(m => m.User.Company.CompanyName)
                         .Distinct()
                         .ToList()
-                }; 
+                };
             });
 
             return all.Where(project =>

@@ -80,7 +80,7 @@
                 CompanyId = user.CompanyId,
                 Role = dto.Role
             };
-        }
+            }
 
         public async Task<UserDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto)
         {
