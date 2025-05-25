@@ -26,6 +26,7 @@ namespace Infrastructure.Extensions
             services.TryAddScoped<ILabelRepository, LabelRepository>();
             services.TryAddScoped<IIssueLabelRepository, IssueLabelRepository>();
             services.TryAddScoped<IJwtService, JwtService>();
+            services.TryAddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
 

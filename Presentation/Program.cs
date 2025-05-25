@@ -20,6 +20,7 @@ namespace Presentation
             builder.Services.AddValidatorsFromAssemblyContaining<CreateIssueDtoValidator>();
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddEndpointsApiExplorer();
+
             #endregion
 
             #region Application
