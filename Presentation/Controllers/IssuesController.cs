@@ -1,4 +1,6 @@
-﻿using Application.DTOs.Issues;
+﻿using Application.DTOs;
+using Application.DTOs.Issues;
+using Application.Interfaces;
 
 namespace Presentation.Controllers
 {
@@ -35,7 +37,9 @@ namespace Presentation.Controllers
         public async Task<IActionResult> Create([FromBody] CreateIssueDto dto)
         {
             var result = await _issueService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetById),
+                new { id = result.Id },
+                result);
         }
 
       
