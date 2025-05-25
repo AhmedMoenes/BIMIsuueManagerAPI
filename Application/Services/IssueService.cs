@@ -76,7 +76,6 @@ namespace Application.Services
                 ProjectId = created.ProjectId,
             };
         }
-
         public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)
         {
             var issue = await _issueRepo.GetByIdAsync(id);

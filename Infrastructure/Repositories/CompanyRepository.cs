@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -32,5 +32,23 @@ namespace Infrastructure.Repositories
 
             return result;
         }
+
+        public async Task ExecuteInTransactionAsync(Func<Task> action)
+        {
+            using var transaction = await Context.Database.BeginTransactionAsync();
+
+            try
+            {
+                await action();
+
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
     }
 }

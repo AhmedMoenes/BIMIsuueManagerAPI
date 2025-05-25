@@ -1,13 +1,14 @@
-﻿namespace Presentation.Initializers
+﻿using Domain.Constants;
+
+namespace Presentation.Initializers
 {
     public static class RoleSeeder
     {
         public static async Task SeedRoles(IServiceProvider serviceProvider)
         {
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            string[] roles = { "SuperAdmin", "CompanyAdmin", "ProjectLeader", "Editor", "Reviewer", "Viewer" };
 
-            foreach (string role in roles)
+            foreach (string role in UserRoles.RolesList)
             {
                 if (!await roleManager.RoleExistsAsync(role))
                 {

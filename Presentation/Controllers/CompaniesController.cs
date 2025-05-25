@@ -36,8 +36,7 @@ namespace Presentation.Controllers
             return Ok(company);
         }
 
-        
-        [HttpPost("")]
+        [HttpPost("create")]
         public async Task<ActionResult> Create([FromBody] CreateCompanyDto dto)
         {
             if (!ModelState.IsValid)

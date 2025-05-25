@@ -83,30 +83,40 @@ namespace Application.Services
 
         public async Task<CompanyDto> CreateCompanyWithAdminAsync(CreateCompanyWithAdminDto dto)
         {
-            Company company = new Company
+
+            CompanyDto companyDto = null;
+
+            await _repo.ExecuteInTransactionAsync(async () =>
             {
-                CompanyName = dto.CompanyName
+                var company = new Company
+                {
+                    CompanyName = dto.CompanyName
+                };
 
-            };
+                var createdCompany = await _repo.AddAsync(company);
+                await _repo.SaveChangesAsync(); 
 
-            Company createdCompany = await _repo.AddAsync(company);
+                var user = new RegisterUserDto
+                {
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    Email = dto.Email,
+                    Password = dto.Password,
+                    UserName = dto.UserName,
+                    CompanyId = createdCompany.CompanyId,
+                    Role = UserRoles.CompanyAdmin,
+                };
 
-            RegisterUserDto user = new RegisterUserDto
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.Email,
-                UserName = dto.UserName,
-                Role = UserRoles.CompanyAdmin,
-            };
+                var companyAdmin = await _userService.RegisterAsync(user);
 
-            UserDto companyAdmin = await _userService.RegisterAsync(user);
+                companyDto = new CompanyDto
+                {
+                    CompanyId = createdCompany.CompanyId,
+                    CompanyName = createdCompany.CompanyName
+                };
+            });
 
-            return new CompanyDto
-            {
-                CompanyId = createdCompany.CompanyId,
-                CompanyName = createdCompany.CompanyName
-            };
+            return companyDto;
         }
     }
 }
