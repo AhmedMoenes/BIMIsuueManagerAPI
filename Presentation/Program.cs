@@ -1,3 +1,5 @@
+using Presentation.Initializers;
+
 namespace Presentation
 {
     public class Program
@@ -22,17 +24,19 @@ namespace Presentation
             #region Application
             var app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                RoleSeeder.SeedRoles(services);
+            }
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
@@ -45,7 +49,6 @@ namespace Presentation
 
             app.Run();
             #endregion
-
         }
     }
 }
