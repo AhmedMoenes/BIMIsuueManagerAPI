@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOs.RevitElements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace DTOs.Issues
 {
+    public enum Priority
+    {
+        Minor,
+        Normal,
+        Urgent,
+        Critical
+    }
     public class CreateIssueDto
     {
         public string Title { get; set; }
