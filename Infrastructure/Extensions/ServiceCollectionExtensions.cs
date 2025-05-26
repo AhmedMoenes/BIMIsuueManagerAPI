@@ -18,6 +18,7 @@ namespace Infrastructure.Extensions
             services.TryAddScoped<ICompanyRepository, CompanyRepository>();
             services.TryAddScoped<IUserRepository, UserRepository>();
             services.TryAddScoped<IProjectRepository, ProjectRepository>();
+            services.TryAddScoped<ICompanyProjectRepository, CompanyProjectRepository>();
             services.TryAddScoped<IProjectTeamMemberRepository, ProjectTeamMemberRepository>();
             services.TryAddScoped<IIssueRepository, IssueRepository>();
             services.TryAddScoped<IAreaRepository, AreaRepository>();

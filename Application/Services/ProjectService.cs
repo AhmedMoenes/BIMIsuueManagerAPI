@@ -24,7 +24,6 @@
             {
                 ProjectId = p.ProjectId,
                 ProjectName = p.ProjectName,
-                CompanyId = p.CompanyId,
                 StartDate = p.StartDate,
                 EndDate = p.EndDate
             });
@@ -37,7 +36,6 @@
             {
                 ProjectId = p.ProjectId,
                 ProjectName = p.ProjectName,
-                CompanyId = p.CompanyId,
                 StartDate = p.StartDate,
                 EndDate = p.EndDate
             };
@@ -55,7 +53,6 @@
                     Description = dto.Description,
                     StartDate = dto.StartDate,
                     EndDate = dto.EndDate,
-                    CompanyId = dto.CompanyId
                 };
 
                 Project createdProject = await _projectRepo.AddAsync(project);
@@ -89,7 +86,6 @@
                     Description = createdProject.Description,
                     StartDate = createdProject.StartDate,
                     EndDate = createdProject.EndDate,
-                    CompanyId = createdProject.CompanyId
                 };
             }
             catch
@@ -105,7 +101,6 @@
             if (p == null) return false;
 
             p.ProjectName = dto.ProjectName;
-            p.CompanyId = dto.CompanyId;
             p.StartDate = dto.StartDate;
             p.EndDate = dto.EndDate;
 

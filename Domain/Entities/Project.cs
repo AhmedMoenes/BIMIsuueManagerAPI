@@ -7,8 +7,7 @@
         public string? Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public int CompanyId { get; set; }
-        public Company Company { get; set; }
+        public ICollection<CompanyProject> CompanyProjects { get; set; }
         public ICollection<ProjectTeamMember> ProjectTeamMembers { get; set; }
         public ICollection<Issue> Issues { get; set; }
         public ICollection<Label> Labels { get; set; }

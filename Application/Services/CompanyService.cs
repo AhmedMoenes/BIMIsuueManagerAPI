@@ -70,8 +70,10 @@
                     CompanyId = company.CompanyId,
                     CompanyName = company.CompanyName,
                     UsersCount = company.Users?.Count ?? 0,
-                    ProjectsCount = company.Projects?.Count ?? 0,
-                    IssuesCount = company.Projects?.Sum(p => p.Issues.Count) ?? 0
+                    ProjectsCount = company.CompanyProjects.Select(cp => cp.ProjectId).Count(),
+                    IssuesCount = company.CompanyProjects
+                                  .SelectMany(cp => cp.Project.Issues)
+                                  .Count()
                 };
             });
         }

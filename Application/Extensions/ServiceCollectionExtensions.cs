@@ -9,6 +9,7 @@ namespace Application.Extensions
         {
             services.AddScoped<IIssueService, IssueService>();
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ICompanyProjectService, CompanyProjectService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILabelService, LabelService>();
             services.AddScoped<IAreaService, AreaService>();

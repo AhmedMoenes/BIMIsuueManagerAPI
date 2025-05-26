@@ -7,6 +7,7 @@
         }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<CompanyProject> CompanyProjects { get; set; }
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
         public DbSet<Issue> Issues { get; set; }
         public DbSet<RevitElement> RevitElements { get; set; }

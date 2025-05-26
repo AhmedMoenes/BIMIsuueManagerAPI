@@ -29,3 +29,5 @@ global using DTOs.Projects;
 global using DTOs.RevitElements;
 global using DTOs.Users;
 global using DTOs.ProjectTeamMember;
+global using DTOs.CompanyProject;
+

@@ -12,9 +12,6 @@
                 .MaximumLength(1000).WithMessage("Description must not exceed 1000 characters.")
                 .When(x => !string.IsNullOrWhiteSpace(x.Description));
 
-            RuleFor(x => x.CompanyId)
-                .GreaterThan(0).WithMessage("Company ID must be valid.");
-
             RuleFor(x => x.StartDate)
                 .NotNull().WithMessage("Start date is required.");
 

@@ -17,7 +17,8 @@
             var companies = await DbSet
                 .Where(c => c.CompanyId == userCompanyId)
                 .Include(c => c.Users)
-                .Include(c => c.Projects)
+                .Include(c => c.CompanyProjects)
+                .ThenInclude(p => p.Project)
                 .ThenInclude(p => p.Issues)
                 .ToListAsync();
 

@@ -9,7 +9,6 @@ namespace DTOs.Projects
         public string? Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public int CompanyId { get; set; }
         public ICollection<CreateLabelDto> Labels { get; set; }
         public ICollection<CreateAreaDto> Areas { get; set; }
     }
