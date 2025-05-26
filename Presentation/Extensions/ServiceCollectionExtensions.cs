@@ -6,7 +6,9 @@
         {
             services.AddCors(options =>
                 options.AddPolicy("CORS_Policy", policy =>
-                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()
+                                  policy.AllowAnyMethod()
+                                  .AllowAnyHeader()
+                                  .AllowAnyOrigin()
                 ));
         }
         public static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
