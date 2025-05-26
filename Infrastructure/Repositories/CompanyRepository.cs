@@ -32,5 +32,11 @@
             return result;
         }
 
+        public async Task<IEnumerable<Company>> GetAllWithProjectsAsync()
+        {
+            return await Context.Companies
+                        .Include(c => c.CompanyProjects)
+                        .ThenInclude(cp => cp.Project).ToListAsync();
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Domain.Interfaces
             List<Area> areas,
             List<Label> labels,
             List<ProjectTeamMember> teamMembers);
+        Task<IEnumerable<Project>> GetAllWithCompaniesAsync();
     }
 }

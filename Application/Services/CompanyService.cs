@@ -16,11 +16,17 @@
         }
         public async Task<IEnumerable<CompanyDto>> GetAllAsync()
         {
-            IEnumerable<Company> companies = await _repo.GetAllAsync();
+            IEnumerable<Company> companies = await _repo.GetAllWithProjectsAsync();
             return companies.Select(c => new CompanyDto
             {
                 CompanyId = c.CompanyId,
                 CompanyName = c.CompanyName,
+                Projects = c.CompanyProjects
+                           .Select(cp => new ProjectSummaryDto
+                           {
+                               ProjectId = cp.Project.ProjectId,
+                               ProjectName = cp.Project.ProjectName
+                           }).ToList()
             });
         }
         public async Task<CompanyDto> GetByIdAsync(int id)

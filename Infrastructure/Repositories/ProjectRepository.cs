@@ -65,5 +65,12 @@
             await Context.SaveChangesAsync();
             return project;
         }
+
+        public async Task<IEnumerable<Project>> GetAllWithCompaniesAsync()
+        {
+            return await Context.Projects
+                           .Include(p => p.CompanyProjects)
+                           .ThenInclude(cp => cp.Company).ToListAsync();
+        }
     }
 }
