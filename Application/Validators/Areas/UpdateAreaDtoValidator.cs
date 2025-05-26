@@ -1,6 +1,6 @@
 ﻿namespace Application.Validators
 {
-    public class UpdateAreaDtoValidator : AbstractValidator<Area>
+    public class UpdateAreaDtoValidator : AbstractValidator<UpdateAreaDto>
     {
         public UpdateAreaDtoValidator()
         {

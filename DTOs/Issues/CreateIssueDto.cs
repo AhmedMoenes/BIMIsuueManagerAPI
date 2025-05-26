@@ -1,5 +1,4 @@
 ﻿using DTOs.IssueLabel;
-using DTOs.Labels;
 using DTOs.RevitElements;
 
 namespace DTOs.Issues

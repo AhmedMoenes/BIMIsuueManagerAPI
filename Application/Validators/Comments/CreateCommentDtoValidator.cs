@@ -1,6 +1,6 @@
 ﻿namespace Application.Validators.Comments
 {
-    public class CreateCommentDtoValidator : AbstractValidator<Comment>
+    public class CreateCommentDtoValidator : AbstractValidator<CreateCommentDto>
     {
         public CreateCommentDtoValidator()
         {
