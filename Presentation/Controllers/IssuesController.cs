@@ -29,7 +29,7 @@
             return Ok(issue);
         }
 
-        [HttpPost("")]
+        [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateIssueDto dto)
         {
             var result = await _issueService.CreateAsync(dto);

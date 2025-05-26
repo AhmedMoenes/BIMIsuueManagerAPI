@@ -1,17 +1,28 @@
-﻿namespace Application.Services
+﻿using Domain.Interfaces;
+
+namespace Application.Services
 {
     public class IssueService : IIssueService
     {
-        private readonly IIssueRepository _issueRepo;
+        private readonly IIssueRepository _issueRepoitory;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IRevitElementRepository _revitElementRepository;
+        private readonly IIssueLabelRepository _issueLabelRepository;
 
-        public IssueService(IIssueRepository issueRepo)
+        public IssueService(IIssueRepository issueRepository,
+                            IUnitOfWork unitOfWork,
+                            IRevitElementRepository revitElementRepository,
+                            IIssueLabelRepository issueLabelRepository)
         {
-            _issueRepo = issueRepo;
+            _issueRepoitory = issueRepository;
+            _unitOfWork = unitOfWork;
+            _revitElementRepository = revitElementRepository;
+            _issueLabelRepository = issueLabelRepository;
         }
 
         public async Task<IEnumerable<IssueDto>> GetAllAsync()
         {
-            IEnumerable<Issue> issues = await _issueRepo.GetAllAsync();
+            IEnumerable<Issue> issues = await _issueRepoitory.GetAllAsync();
             return issues.Select(issue => new IssueDto
             {
                 Title = issue.Title,
@@ -19,10 +30,9 @@
                 ProjectId = issue.ProjectId
             });
         }
-
         public async Task<IssueDto> GetByIdAsync(int id)
         {
-            Issue issue = await _issueRepo.GetByIdAsync(id);
+            Issue issue = await _issueRepoitory.GetByIdAsync(id);
             return new IssueDto()
             {
                 Title = issue.Title,
@@ -33,6 +43,8 @@
 
         public async Task<IssueDto> CreateAsync(CreateIssueDto dto)
         {
+            await _unitOfWork.BeginTransactionAsync();
+
             Issue entity = new Issue
             {
                 Title = dto.Title,
@@ -45,21 +57,30 @@
                 CreatedAt = DateTime.UtcNow
             };
 
+            Issue created = await _issueRepoitory.AddAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
+
+            var labels = dto.Labels?.Select(i => new IssueLabel
+            {
+                LabelId = i.LabelId,
+                IssueId = created.IssueId
+            }).ToList();
+
+
+            if (labels != null && labels.Any())
+            {
+                await _issueLabelRepository.AddRangeAsync(labels);
+            }
+
             var revitElements = dto.RevitElements?.Select(r => new RevitElement
             {
+                IssueId = created.IssueId,
                 ElementId = r.ElementId,
                 ElementUniqueId = r.ElementUniqueId,
                 ViewpointCameraPosition = r.ViewpointCameraPosition,
                 SnapshotImagePath = r.SnapshotImagePath
             }).ToList();
-
-            var labels = dto.Labels?.Select(i => new IssueLabel
-            {
-                LabelId = i.LabelId,
-                IssueId = i.IssueId
-            }).ToList();
-
-            var created = await _issueRepo.AddAsync(entity);
+            await _revitElementRepository.AddRangeAsync(revitElements);
 
             return new IssueDto
             {
@@ -70,19 +91,18 @@
         }
         public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)
         {
-            var issue = await _issueRepo.GetByIdAsync(id);
+            var issue = await _issueRepoitory.GetByIdAsync(id);
             if (issue == null) return false;
 
             issue.Title = dto.Title;
             issue.Description = dto.Description;
             issue.AssignedToUserId = dto.AssignedToUserId;
 
-            return await _issueRepo.UpdateAsync(issue);
+            return await _issueRepoitory.UpdateAsync(issue);
         }
-
         public async Task<bool> DeleteAsync(int id)
         {
-            return await _issueRepo.DeleteAsync(id);
+            return await _issueRepoitory.DeleteAsync(id);
         }
     }
 }

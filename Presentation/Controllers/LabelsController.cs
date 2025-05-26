@@ -11,15 +11,14 @@
             _labelService = labelService;
         }
 
-        
+
         [HttpGet("")]
         public async Task<IActionResult> GetAll()
         {
-            IEnumerable <LabelDto> labels = await _labelService.GetAllAsync();
+            IEnumerable<LabelDto> labels = await _labelService.GetAllAsync();
             return Ok(labels);
         }
 
-       
         [HttpGet("{Id:int}")]
         public async Task<ActionResult<LabelDto>> GetById(int id)
         {
@@ -30,17 +29,12 @@
             return Ok(label);
         }
 
-       // Get Label By Name
-       //[HttpGet("{name:alpha}")]
-       // public async Task<ActionResult<LabelDto>> GetById(string name)
-       // {
-       //     LabelDto label = await _labelService.GetByIdAsync(name);
-       //     if (label == null)
-       //         return NotFound();
-
-       //     return Ok(label);
-       // }
-
+        [HttpGet("project/{projectId}/labels")]
+        public async Task<IActionResult> GetLabelsByProject(int projectId)
+        {
+            var labels = await _labelService.GetByProjectIdAsync(projectId);
+            return Ok(labels);
+        }
 
         [HttpPost("")]
         public async Task<ActionResult> Create([FromBody] CreateLabelDto dto)
@@ -52,10 +46,9 @@
                 new { id = createdLabel.LabelId },
                 createdLabel);
 
-           
+
         }
 
-        
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateLabelDto dto)
         {
@@ -65,7 +58,7 @@
             return NoContent();
         }
 
-        
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

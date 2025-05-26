@@ -6,6 +6,7 @@
         Task<LabelDto> GetByIdAsync(int id);
         Task<LabelDto> CreateAsync(CreateLabelDto dto);    
         Task<bool> UpdateAsync(int id, UpdateLabelDto dto);
-        Task<bool> DeleteAsync(int id);                    
+        Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<LabelDto>> GetByProjectIdAsync(int projectId);
     }
 }

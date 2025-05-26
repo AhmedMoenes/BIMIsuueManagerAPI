@@ -59,5 +59,16 @@
         {
             return await _repo.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<LabelDto>> GetByProjectIdAsync(int projectId)
+        {
+            IEnumerable<Label> labels = await _repo.GetByProjectIdAsync(projectId);
+
+            return labels.Select(l => new LabelDto
+            {
+                LabelId = l.LabelId,
+                LabelName = l.LabelName
+            });
+        }
     }
 }
