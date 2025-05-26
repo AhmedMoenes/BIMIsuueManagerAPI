@@ -11,11 +11,6 @@
 
             builder.Property(x => x.StartDate);
             builder.Property(x => x.EndDate);
-
-            builder.HasOne(x => x.Company)
-                   .WithMany(c => c.Projects)
-                   .HasForeignKey(f => f.CompanyId)
-                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
