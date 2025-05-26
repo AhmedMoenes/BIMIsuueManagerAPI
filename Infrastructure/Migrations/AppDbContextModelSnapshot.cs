@@ -167,7 +167,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Label", b =>
                 {
                     b.Property<int>("LabelId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LabelId"));
 
                     b.Property<string>("LabelName")
                         .IsRequired()
@@ -178,6 +181,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("LabelId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Labels");
                 });
@@ -574,7 +579,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Project", "Project")
                         .WithMany("Labels")
-                        .HasForeignKey("LabelId")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

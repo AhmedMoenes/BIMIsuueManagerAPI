@@ -3,10 +3,12 @@
     public class AreaService : IAreaService
     {
         private readonly IAreaRepository _areaRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AreaService(IAreaRepository areaRepo)
+        public AreaService(IAreaRepository areaRepo,IUnitOfWork unitOfWork)
         {
             _areaRepo = areaRepo;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IEnumerable<AreaDto>> GetAllAsync()
@@ -29,14 +31,15 @@
             };
         }
 
-        public async Task<AreaDto> CreateAsync(AreaDto dto)
+        public async Task<AreaDto> CreateAsync(CreateAreaDto dto)
         {
-            var area = new Area
+            Area area = new Area
             {
                 AreaName = dto.AreaName
             };
 
             var created = await _areaRepo.AddAsync(area);
+            await _unitOfWork.SaveChangesAsync();
 
             return new AreaDto
             {

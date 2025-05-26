@@ -4,7 +4,6 @@
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-
         private readonly IProjectService _projectService;
         private readonly IUserService _userService;
 
@@ -13,15 +12,13 @@
             _projectService = projectService;
             _userService = userService;
         }
-
        
-        [HttpGet("")]
+        [HttpGet("all-projects")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAll()
         {
             IEnumerable<ProjectDto> projects = await _projectService.GetAllAsync();
             return Ok(projects);
         }
-
        
         
         [HttpGet("{id}")]
@@ -36,7 +33,7 @@
         }
 
         
-        [HttpPost("")]
+        [HttpPost("create")]
         public async Task<ActionResult> Create([FromBody] CreateProjectDto dto)
         {
             if (!ModelState.IsValid)

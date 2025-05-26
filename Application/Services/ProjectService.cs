@@ -5,19 +5,16 @@
         private readonly IProjectRepository _projectRepo;
         private readonly ILabelRepository _labelRepo;
         private readonly IAreaRepository _areaRepo;
-        private readonly IProjectTeamMemberRepository _teamRepo;
         private readonly IUnitOfWork _unitOfWork;
 
         public ProjectService(IProjectRepository projectRepo,
                               ILabelRepository labelRepo,
                               IAreaRepository areaRepo,
-                              IProjectTeamMemberRepository teamRepo,
                               IUnitOfWork unitOfWork)
         {
             _projectRepo = projectRepo;
             _labelRepo = labelRepo;
             _areaRepo = areaRepo;
-            _teamRepo = teamRepo;
             _unitOfWork = unitOfWork;
         }
         public async Task<IEnumerable<ProjectDto>> GetAllAsync()
@@ -64,24 +61,23 @@
                 Project createdProject = await _projectRepo.AddAsync(project);
                 await _unitOfWork.SaveChangesAsync();
 
-                IEnumerable<Label> labels = dto.Labels?.Select(LabelDto => new Label
+                IEnumerable<Label> labels = dto.Labels?.Select(CreateLabelDto => new Label
                 {
-                    LabelName = LabelDto.LabelName,
+                    LabelName = CreateLabelDto.LabelName,
                     ProjectId = createdProject.ProjectId
-                });
+                }).ToList();
 
                 if (labels != null && labels.Any())
                     await _labelRepo.AddRangeAsync(labels);
 
-                IEnumerable<Area> areas = dto.Areas?.Select(AreaDto => new Area
+                IEnumerable<Area> areas = dto.Areas?.Select(CreateAreaDto => new Area
                 {
-                    AreaName = AreaDto.AreaName,
+                    AreaName = CreateAreaDto.AreaName,
                     ProjectId = createdProject.ProjectId
                 }).ToList();
 
                 if (areas != null && areas.Any())
-                    await _areaRepo.AddRangeAsync(areas);
-
+                   await _areaRepo.AddRangeAsync(areas);
 
                 await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
@@ -140,7 +136,6 @@
                 };
             });
         }
-
         public async Task<IEnumerable<ProjectOverviewDto>> GetForCompanyAsync(int companyId)
         {
             var all = await _projectRepo.GetProjectOverviewsAsync(async project =>

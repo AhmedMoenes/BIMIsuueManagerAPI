@@ -12,7 +12,7 @@
 
             builder.HasOne(p => p.Project)
                 .WithMany(l => l.Labels)
-                .HasForeignKey(f => f.LabelId)
+                .HasForeignKey(f => f.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

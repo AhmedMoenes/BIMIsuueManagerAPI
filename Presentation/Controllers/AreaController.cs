@@ -25,8 +25,8 @@
             return Ok(area);
         }
 
-        [HttpPost("")]
-        public async Task<ActionResult> Create([FromBody] AreaDto dto)
+        [HttpPost("create")]
+        public async Task<ActionResult> Create([FromBody] CreateAreaDto dto)
         {
             var createdArea= await _areaService.CreateAsync(dto);
             return CreatedAtAction(

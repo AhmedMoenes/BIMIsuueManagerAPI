@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class fixlabelconfiguration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -226,7 +226,8 @@ namespace Infrastructure.Migrations
                 name: "Labels",
                 columns: table => new
                 {
-                    LabelId = table.Column<int>(type: "int", nullable: false),
+                    LabelId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     LabelName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -234,8 +235,8 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Labels", x => x.LabelId);
                     table.ForeignKey(
-                        name: "FK_Labels_Projects_LabelId",
-                        column: x => x.LabelId,
+                        name: "FK_Labels_Projects_ProjectId",
+                        column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Cascade);
@@ -479,6 +480,11 @@ namespace Infrastructure.Migrations
                 name: "IX_Issues_UserId",
                 table: "Issues",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Labels_ProjectId",
+                table: "Labels",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_CompanyId",
