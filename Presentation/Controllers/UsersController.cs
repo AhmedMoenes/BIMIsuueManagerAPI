@@ -49,7 +49,7 @@
         }
 
         [HttpPost("register-with-project")]
-        [Authorize(UserRoles.CompanyAdmin)]
+        [Authorize(UserRoles.SuperAdmin)]
         public async Task<ActionResult> CreateUserWithProjects([FromBody] CreateUserWithProjectsDto dto)
         {
             var adminUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

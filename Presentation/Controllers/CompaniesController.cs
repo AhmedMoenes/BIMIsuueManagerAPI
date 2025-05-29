@@ -13,6 +13,7 @@
 
         
         [HttpGet("")]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult<IEnumerable<CompanyDto>>> GetAll()
         {
             IEnumerable<CompanyDto> companies = await _companyService.GetAllAsync();
@@ -21,6 +22,7 @@
 
         
         [HttpGet("{id}")]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult<CompanyDto>> GetById(int id)
         {
             CompanyDto company = await _companyService.GetByIdAsync(id);
@@ -32,6 +34,7 @@
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult> Create([FromBody] CreateCompanyDto dto)
         {
             if (!ModelState.IsValid)
@@ -48,6 +51,7 @@
         }
 
         [HttpPost("create-with-admin")]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> CreateWithAdmin([FromBody] CreateCompanyWithAdminDto dto)
         {
             if (!ModelState.IsValid)
@@ -58,6 +62,7 @@
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateCompanyDto dto)
         {
             if (!ModelState.IsValid)
@@ -68,14 +73,14 @@
             return NoContent();
         }
 
-       
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             await _companyService.DeleteAsync(id);
             return NoContent();
         }
-
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpGet("overview")]
         public async Task<IActionResult> GetCompanyOverviewForUser()
         {
