@@ -23,6 +23,7 @@
             IEnumerable<Issue> issues = await _issueRepoitory.GetAllDetailed();
             return issues.Select(issue => new IssueDto
             {
+                IssueId = issue.IssueId,
                 Title = issue.Title,
                 Description = issue.Description,
                 Priority = issue.Priority.ToString(),
