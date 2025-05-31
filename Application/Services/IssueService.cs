@@ -60,7 +60,7 @@
         }
         public async Task<IssueDto> GetByIdAsync(int id)
         {
-            Issue issue = await _issueRepoitory.GeyByIdDetailed(id);
+            Issue issue = await _issueRepoitory.GetByIdDetailed(id);
             if (issue == null) return null;
 
             return new IssueDto()
@@ -146,9 +146,13 @@
 
             return new IssueDto
             {
+                IssueId = created.IssueId,
                 Title = created.Title,
                 Description = created.Description,
                 Priority = created.Priority.ToString(),
+                CreatedByUser = created.CreatedByUser.FirstName + " " + created.CreatedByUser.LastName,
+                AssignedToUser = created.AssignedToUser.FirstName + " " + created.AssignedToUser.LastName,
+                CreatedAt = created.CreatedAt,
             };
         }
         public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)

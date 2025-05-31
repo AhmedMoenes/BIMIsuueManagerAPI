@@ -10,6 +10,6 @@ namespace Domain.Interfaces
             List<IssueLabel> issueLabels);
 
         Task<IEnumerable<Issue>> GetAllDetailed();
-        Task<Issue> GeyByIdDetailed(int id);
+        Task<Issue> GetByIdDetailed(int id);
     }
 }

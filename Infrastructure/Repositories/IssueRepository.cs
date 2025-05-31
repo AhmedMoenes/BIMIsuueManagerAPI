@@ -63,23 +63,25 @@
                 .Include(i => i.Labels)
                 .ThenInclude(il => il.Label)
                 .Include(i => i.Comments)
+                .ThenInclude(c => c.CreatedByUser)
                 .Include(i => i.RevitElements)
                 .Include(i => i.CreatedByUser)
                 .Include(i => i.AssignedToUser)
                 .ToListAsync();
         }
 
-        public async Task<Issue> GeyByIdDetailed(int id)
+        public async Task<Issue> GetByIdDetailed(int id)
         {
             return await Context.Issues
                 .Include(i => i.Area)
                 .Include(i => i.Labels)
                 .ThenInclude(il => il.Label)
                 .Include(i => i.Comments)
+                .ThenInclude(c => c.CreatedByUser)
                 .Include(i => i.RevitElements)
                 .Include(i => i.CreatedByUser)
                 .Include(i => i.AssignedToUser)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(i => i.IssueId == id);
         }
 
     }
