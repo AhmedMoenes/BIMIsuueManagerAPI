@@ -20,7 +20,7 @@
             var assignedLabel = await _issueLabelService.AssignLabelToIssueAsync(dto);
             return CreatedAtAction(
                 nameof(AssignLabel),
-                new { issueId = dto.IssueId, labelId = dto.LabelId },
+                new { labelId = dto.LabelId },
                 assignedLabel
             );
             return StatusCode(201);

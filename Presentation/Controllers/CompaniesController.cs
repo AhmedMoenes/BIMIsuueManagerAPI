@@ -51,7 +51,7 @@
         }
 
         [HttpPost("create-with-admin")]
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        //[Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> CreateWithAdmin([FromBody] CreateCompanyWithAdminDto dto)
         {
             if (!ModelState.IsValid)

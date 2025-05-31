@@ -13,7 +13,6 @@
         {
             var link = new IssueLabel
             {
-                IssueId = dto.IssueId,
                 LabelId = dto.LabelId
             };
 
@@ -21,7 +20,6 @@
 
             return new AssignLabelToIssueDto
             {
-                IssueId = created.IssueId,
                 LabelId = created.LabelId
             };
         }

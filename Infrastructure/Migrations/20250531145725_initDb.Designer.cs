@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250526164348_fix-label-configuration")]
-    partial class fixlabelconfiguration
+    [Migration("20250531145725_initDb")]
+    partial class initDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CompanyProject", b =>
+                {
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CompanyId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("CompanyProjects");
+                });
+
             modelBuilder.Entity("Domain.Entities.Issue", b =>
                 {
                     b.Property<int>("IssueId")
@@ -134,9 +149,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("IssueId");
 
                     b.HasIndex("AreaId");
@@ -146,8 +158,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Issues");
                 });
@@ -198,9 +208,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProjectId"));
 
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -216,8 +223,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("ProjectId");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("Projects");
                 });
@@ -521,6 +526,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("Issue");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CompanyProject", b =>
+                {
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany("CompanyProjects")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Project", "Project")
+                        .WithMany("CompanyProjects")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("Domain.Entities.Issue", b =>
                 {
                     b.HasOne("Domain.Entities.Area", "Area")
@@ -530,12 +554,12 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.User", "AssignedToUser")
-                        .WithMany()
+                        .WithMany("AssignedIssues")
                         .HasForeignKey("AssignedToUserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
+                        .WithMany("CreatedIssues")
                         .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -545,10 +569,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.User", null)
-                        .WithMany("CreatedIssues")
-                        .HasForeignKey("UserId");
 
                     b.Navigation("Area");
 
@@ -587,17 +607,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Project", b =>
-                {
-                    b.HasOne("Domain.Entities.Company", "Company")
-                        .WithMany("Projects")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Domain.Entities.ProjectTeamMember", b =>
@@ -699,7 +708,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Company", b =>
                 {
-                    b.Navigation("Projects");
+                    b.Navigation("CompanyProjects");
 
                     b.Navigation("Users");
                 });
@@ -722,6 +731,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Areas");
 
+                    b.Navigation("CompanyProjects");
+
                     b.Navigation("Issues");
 
                     b.Navigation("Labels");
@@ -731,6 +742,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.Navigation("AssignedIssues");
+
                     b.Navigation("CommentsCreated");
 
                     b.Navigation("CreatedIssues");
