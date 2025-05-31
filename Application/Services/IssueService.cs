@@ -141,6 +141,9 @@
             }).ToList();
             await _revitElementRepository.AddRangeAsync(revitElements);
 
+            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.CommitAsync();
+
             return new IssueDto
             {
                 Title = created.Title,
