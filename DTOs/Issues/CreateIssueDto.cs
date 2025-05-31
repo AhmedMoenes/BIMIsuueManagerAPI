@@ -21,6 +21,6 @@ namespace DTOs.Issues
         public DateTime CreatedAt { get; set; }
         public Priority Priority { get; set; }
         public List<AssignLabelToIssueDto> Labels { get; set; }
-        public List<RevitElementDto> RevitElements { get; set; }
+        public List<IssueRevitElementDto> RevitElements { get; set; }
     }
 }

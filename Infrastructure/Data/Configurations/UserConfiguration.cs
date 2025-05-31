@@ -16,6 +16,7 @@
                 .WithMany(c => c.Users)
                 .HasForeignKey(x => x.CompanyId)
                 .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

@@ -28,12 +28,12 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.CreatedByUser)
-                .WithMany()
+                .WithMany(u => u.CreatedIssues) 
                 .HasForeignKey(x => x.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.AssignedToUser)
-                .WithMany()
+                .WithMany(u => u.AssignedIssues) 
                 .HasForeignKey(x => x.AssignedToUserId)
                 .OnDelete(DeleteBehavior.SetNull);
 
