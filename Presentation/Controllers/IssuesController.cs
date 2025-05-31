@@ -34,7 +34,7 @@
         {
             var result = await _issueService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById),
-                new { id = result.Id },
+                new { id = result.IssueId },
                 result);
         }
 

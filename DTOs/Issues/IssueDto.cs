@@ -1,10 +1,23 @@
-﻿namespace DTOs.Issues
+﻿using DTOs.Areas;
+using DTOs.Comments;
+using DTOs.Labels;
+using DTOs.RevitElements;
+
+namespace DTOs.Issues
 {
     public class IssueDto
     {
-        public int Id { get; set; }
+        public int IssueId { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
-        public int ProjectId { get; set; }
+        public string? Description { get; set; }
+        public string Priority { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CreatedByUser { get; set; }
+        public string? AssignedToUser { get; set; }
+        public string ProjectName { get; set; }
+        public AreaDto Area { get; set; }
+        public List<LabelDto> Labels { get; set; } = new();
+        public List<RevitElementDto> RevitElements { get; set; } = new();
+        public List<CommentDto> Comments { get; set; } = new();
     }
 }
