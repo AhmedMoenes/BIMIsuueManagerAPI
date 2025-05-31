@@ -60,6 +60,7 @@
         {
             return await Context.Issues
                 .Include(i => i.Area)
+                .Include(i => i.Project)
                 .Include(i => i.Labels)
                 .ThenInclude(il => il.Label)
                 .Include(i => i.Comments)
@@ -74,6 +75,7 @@
         {
             return await Context.Issues
                 .Include(i => i.Area)
+                .Include(i => i.Project)
                 .Include(i => i.Labels)
                 .ThenInclude(il => il.Label)
                 .Include(i => i.Comments)
