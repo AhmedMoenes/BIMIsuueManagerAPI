@@ -11,6 +11,8 @@
         Task<int> GetCompanyIdAsync(string userId);
         Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);
         Task<UserDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto);
+        Task<UserDto?> GetByUsernameAsync(string username);
+
 
     }
 }

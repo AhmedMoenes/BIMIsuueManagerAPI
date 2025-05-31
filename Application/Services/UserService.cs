@@ -174,5 +174,21 @@
                 Email = user.Email
             };
         }
+
+        public async Task<UserDto?> GetByUsernameAsync(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return null;
+
+            return new UserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                UserName = user.UserName,
+                CompanyId = user.CompanyId
+            };
+        }
     }
 }

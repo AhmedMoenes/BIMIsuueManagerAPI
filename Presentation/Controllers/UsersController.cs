@@ -79,6 +79,15 @@
             await _userService.DeleteAsync(id);
             return NoContent();
         }
+
+        [HttpGet("get-id-by-username/{username}")]
+        public async Task<ActionResult<string>> GetUserIdByUsername(string username)
+        {
+            var user = await _userService.GetByUsernameAsync(username);
+            if (user == null) return NotFound("User not found");
+            return Ok(user.Id);
+        }
+
     }
 }
 
