@@ -1,6 +1,4 @@
-﻿using Domain.Interfaces;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class IssueService : IIssueService
     {
@@ -22,25 +20,86 @@ namespace Application.Services
 
         public async Task<IEnumerable<IssueDto>> GetAllAsync()
         {
-            IEnumerable<Issue> issues = await _issueRepoitory.GetAllAsync();
+            IEnumerable<Issue> issues = await _issueRepoitory.GetAllDetailed();
             return issues.Select(issue => new IssueDto
             {
                 Title = issue.Title,
                 Description = issue.Description,
-                ProjectId = issue.ProjectId
+                Priority = issue.Priority.ToString(),
+                ProjectName = issue.Project.ProjectName,
+                CreatedAt = issue.CreatedAt,
+                CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                AssignedToUser = issue.AssignedToUser != null
+                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                    : null,
+                Area = new AreaDto
+                {
+                    AreaId = issue.Area.AreaId,
+                    AreaName = issue.Area.AreaName
+                },
+                Labels = issue.Labels.Select(l => new LabelDto
+                {
+                    LabelId = l.Label.LabelId,
+                    LabelName = l.Label.LabelName
+                }).ToList(),
+                Comments = issue.Comments.Select(c => new CommentDto
+                {
+                    CommentId = c.CommentId,
+                    Message = c.Message,
+                    CreatedAt = c.CreatedAt,
+                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                }).ToList(),
+                RevitElements = issue.RevitElements.Select(r => new RevitElementDto
+                {
+                    ElementId = r.ElementId,
+                    ElementUniqueId = r.ElementUniqueId,
+                    ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    SnapshotImagePath = r.SnapshotImagePath
+                }).ToList()
             });
         }
         public async Task<IssueDto> GetByIdAsync(int id)
         {
-            Issue issue = await _issueRepoitory.GetByIdAsync(id);
+            Issue issue = await _issueRepoitory.GeyByIdDetailed(id);
+            if (issue == null) return null;
+
             return new IssueDto()
             {
+                IssueId = issue.IssueId,
                 Title = issue.Title,
                 Description = issue.Description,
-                ProjectId = issue.ProjectId
+                Priority = issue.Priority.ToString(),
+                CreatedAt = issue.CreatedAt,
+                CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                AssignedToUser = issue.AssignedToUser != null
+                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                    : null,
+                Area = new AreaDto
+                {
+                    AreaId = issue.Area.AreaId,
+                    AreaName = issue.Area.AreaName
+                },
+                Labels = issue.Labels.Select(l => new LabelDto
+                {
+                    LabelId = l.Label.LabelId,
+                    LabelName = l.Label.LabelName
+                }).ToList(),
+                Comments = issue.Comments.Select(c => new CommentDto
+                {
+                    CommentId = c.CommentId,
+                    Message = c.Message,
+                    CreatedAt = c.CreatedAt,
+                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                }).ToList(),
+                RevitElements = issue.RevitElements.Select(r => new RevitElementDto
+                {
+                    ElementId = r.ElementId,
+                    ElementUniqueId = r.ElementUniqueId,
+                    ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    SnapshotImagePath = r.SnapshotImagePath
+                }).ToList()
             };
         }
-
         public async Task<IssueDto> CreateAsync(CreateIssueDto dto)
         {
             await _unitOfWork.BeginTransactionAsync();
@@ -82,11 +141,14 @@ namespace Application.Services
             }).ToList();
             await _revitElementRepository.AddRangeAsync(revitElements);
 
+            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.CommitAsync();
+
             return new IssueDto
             {
                 Title = created.Title,
                 Description = created.Description,
-                ProjectId = created.ProjectId,
+                Priority = created.Priority.ToString(),
             };
         }
         public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)

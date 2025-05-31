@@ -3,8 +3,9 @@
     public class CommentDto
     {
         public int CommentId { get; set; }
-        public string Content { get; set; }
+        public string Message { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedByUserId { get; set; }
+        public string CreatedBy { get; set; }
     }
 }

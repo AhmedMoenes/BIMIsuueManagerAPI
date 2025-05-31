@@ -15,7 +15,7 @@
             return comments.Select(comment => new CommentDto
             {
                 CommentId = comment.CommentId,
-                Content = comment.Message
+                Message = comment.Message
             });
         }
 
@@ -25,7 +25,7 @@
             return new CommentDto()
             {
                 CommentId = comment.CommentId,
-                Content = comment.Message
+                Message = comment.Message
             };
         }
 
@@ -33,7 +33,7 @@
         {
             var comment = new Comment
             {
-                Message = dto.Content
+                Message = dto.Message
             };
 
             var created = await _commentRepo.AddAsync(comment);
@@ -41,7 +41,7 @@
             return new CommentDto
             {
                 CommentId = created.CommentId,
-                Content = created.Message
+                Message = created.Message
             };
         }
 
@@ -50,7 +50,7 @@
             var comment = await _commentRepo.GetByIdAsync(id);
             if (comment == null) return false;
 
-            comment.Message = dto.Content;
+            comment.Message = dto.Message;
 
             return await _commentRepo.UpdateAsync(comment);
         }

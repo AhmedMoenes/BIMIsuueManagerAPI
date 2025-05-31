@@ -56,5 +56,31 @@
             return issue;
         }
 
+        public async Task<IEnumerable<Issue>> GetAllDetailed()
+        {
+            return await Context.Issues
+                .Include(i => i.Area)
+                .Include(i => i.Labels)
+                .ThenInclude(il => il.Label)
+                .Include(i => i.Comments)
+                .Include(i => i.RevitElements)
+                .Include(i => i.CreatedByUser)
+                .Include(i => i.AssignedToUser)
+                .ToListAsync();
+        }
+
+        public async Task<Issue> GeyByIdDetailed(int id)
+        {
+            return await Context.Issues
+                .Include(i => i.Area)
+                .Include(i => i.Labels)
+                .ThenInclude(il => il.Label)
+                .Include(i => i.Comments)
+                .Include(i => i.RevitElements)
+                .Include(i => i.CreatedByUser)
+                .Include(i => i.AssignedToUser)
+                .FirstOrDefaultAsync();
+        }
+
     }
 }
