@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Domain.Entities;
+
+namespace Application.Services
 {
     public class UserService : IUserService
     {
@@ -42,7 +44,13 @@
                 LastName = u.LastName,
                 Email = u.Email,
                 UserName = u.UserName,
-                CompanyId = u.CompanyId
+                CompanyId = u.CompanyId,
+                 ProjectMemberships = u.ProjectMemberships?.Select(pm => new ProjectTeamMemberDto
+                 {
+                     ProjectId = pm.ProjectId,
+                     UserId = pm.UserId,
+                     Role = pm.Role
+                 }).ToList()
             };
         }
 
@@ -175,9 +183,9 @@
             };
         }
 
-        public async Task<UserDto?> GetByUsernameAsync(string username)
+        public async Task<UserDto?> GetByEmailAsync(string email)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return null;
 
             return new UserDto
@@ -185,10 +193,25 @@
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email,
+                
                 UserName = user.UserName,
                 CompanyId = user.CompanyId
             };
         }
+
+        public async Task<IEnumerable<UserDto>> GetByProjectIdAsync(int projectId)
+        {
+            var users = await _userRepo.GetByProjectIdAsync(projectId);
+            return users.Select(u => new UserDto
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Email = u.Email,
+                UserName = u.UserName,
+                CompanyId = u.CompanyId
+            });
+        }
+
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Domain.Interfaces;
+
+namespace Application.Services
 {
     public class AreaService : IAreaService
     {
@@ -61,6 +63,17 @@
         public async Task<bool> DeleteAsync(int id)
         {
             return await _areaRepo.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<AreaDto>> GetByProjectIdAsync(int projectId)
+        {
+            var areas = await _areaRepo.GetByProjectIdAsync(projectId);
+            return areas.Select(a => new AreaDto
+            {
+                AreaId = a.AreaId,
+                AreaName = a.AreaName,
+                ProjectId = a.ProjectId
+            });
         }
     }
 }

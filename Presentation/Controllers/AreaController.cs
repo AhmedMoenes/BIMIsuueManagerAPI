@@ -50,5 +50,12 @@
             await _areaService.DeleteAsync(id);
             return NoContent();
         }
+
+        [HttpGet("project/{projectId}")]
+        public async Task<ActionResult<IEnumerable<AreaDto>>> GetAreasByProject(int projectId)
+        {
+            var areas = await _areaService.GetByProjectIdAsync(projectId);
+            return Ok(areas);
+        }
     }
 }

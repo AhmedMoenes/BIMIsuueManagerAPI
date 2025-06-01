@@ -50,5 +50,13 @@ namespace Infrastructure.Repositories
             await _context.ProjectTeamMembers.AddRangeAsync(memberships);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<User>> GetByProjectIdAsync(int projectId)
+        {
+            return await Context.Users
+                .Where(u => u.ProjectMemberships.Any(pm => pm.ProjectId == projectId))
+                .ToListAsync();
+        }
+
     }
 }

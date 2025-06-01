@@ -151,8 +151,8 @@
                 Title = created.Title,
                 Description = created.Description,
                 Priority = created.Priority.ToString(),
-                CreatedByUser = created.CreatedByUser.FirstName + " " + created.CreatedByUser.LastName,
-                AssignedToUser = created.AssignedToUser.FirstName + " " + created.AssignedToUser.LastName,
+                CreatedByUser = created.CreatedByUserId,
+                AssignedToUser = created.AssignedToUserId,
                 CreatedAt = created.CreatedAt,
             };
         }

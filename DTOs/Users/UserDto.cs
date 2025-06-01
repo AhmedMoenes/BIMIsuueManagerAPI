@@ -1,4 +1,6 @@
-﻿namespace DTOs.Users
+﻿using DTOs.ProjectTeamMember;
+
+namespace DTOs.Users
 {
     public class UserDto
     {
@@ -9,5 +11,6 @@
         public string Email { get; set; }
         public string Role { get; set; }
         public int CompanyId { get; set; }
+        public List<ProjectTeamMemberDto>? ProjectMemberships { get; set; }
     }
 }

@@ -80,13 +80,21 @@
             return NoContent();
         }
 
-        [HttpGet("get-id-by-username/{username}")]
-        public async Task<ActionResult<string>> GetUserIdByUsername(string username)
+        [HttpGet("get-id-by-email/{email}")]
+        public async Task<ActionResult<string>> GetUserIdByEmail(string email)
         {
-            var user = await _userService.GetByUsernameAsync(username);
+            var user = await _userService.GetByEmailAsync(email);
             if (user == null) return NotFound("User not found");
             return Ok(user.Id);
         }
+
+        [HttpGet("project/{projectId}")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersByProject(int projectId)
+        {
+            var users = await _userService.GetByProjectIdAsync(projectId);
+            return Ok(users);
+        }
+
 
     }
 }

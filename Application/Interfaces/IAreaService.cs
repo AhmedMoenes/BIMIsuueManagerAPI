@@ -8,5 +8,6 @@ namespace Application.Interfaces
         Task<AreaDto> CreateAsync(CreateAreaDto dto);
         Task<bool> UpdateAsync(int id, AreaDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<AreaDto>> GetByProjectIdAsync(int projectId);
     }
 }

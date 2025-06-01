@@ -33,7 +33,8 @@
         {
             var label = new Label
             {
-                LabelName = dto.LabelName
+                LabelName = dto.LabelName,
+                ProjectId = dto.ProjectId 
             };
 
             var created = await _repo.AddAsync(label);
@@ -41,7 +42,9 @@
             return new LabelDto
             {
                 LabelId = created.LabelId,
-                LabelName = created.LabelName
+                LabelName = created.LabelName,
+                ProjectId =created.ProjectId
+                
             };
         }
 
