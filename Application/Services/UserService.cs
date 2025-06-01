@@ -34,24 +34,24 @@ namespace Application.Services
             });
         }
 
-        public async Task<UserDto> GetByIdAsync(string id)
+        public async Task<UserOverviewDto> GetByIdAsync(string id)
         {
-            User u = await _userRepo.GetByIdAsync(id);
-            return new UserDto
+            User user = await _userRepo.GetUserOverviewByIdAsync(id);
+            string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+            return new UserOverviewDto
             {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Email = u.Email,
-                UserName = u.UserName,
-                CompanyId = u.CompanyId,
-                 //ProjectMemberships = u.ProjectMemberships?.Select(pm => new ProjectTeamMemberDto
-                 //{
-                 //    ProjectId = pm.ProjectId,
-                 //    UserId = pm.UserId,
-                 //    Role = pm.Role
-                 //}).ToList()
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                CompanyName = user.Company?.CompanyName,
+                Role = role,
+                CreatedOn = user.CreatedOn,
+                ProjectsIncludedCount = user.ProjectMemberships?.Count ?? 0,
+                IssuesCreatedCount = user.CreatedIssues?.Count ?? 0
             };
+            
         }
 
         // To Be Deleted
@@ -88,7 +88,7 @@ namespace Application.Services
                 CompanyId = user.CompanyId,
                 Role = dto.Role
             };
-            }
+        }
 
         public async Task<UserDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto)
         {
@@ -134,11 +134,11 @@ namespace Application.Services
             return await _userRepo.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<UserOverviewDto>> GetUserOverviewAsync()
+        public async Task<IEnumerable<UserOverviewDto>> GetUsersOverviewAsync()
         {
-            return await _userRepo.GetUserOverviewAsync(async user =>
+            return await _userRepo.GetUsersOverviewAsync(async user =>
             {
-                var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+                string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
                 return new UserOverviewDto
                 {
@@ -193,7 +193,7 @@ namespace Application.Services
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                
+
                 UserName = user.UserName,
                 CompanyId = user.CompanyId
             };

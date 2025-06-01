@@ -11,5 +11,6 @@
         public DateTime CreatedOn { get; set; }
         public int ProjectsIncludedCount { get; set; }
         public int IssuesCreatedCount { get; set; }
+        public int IssuesAssignedCount { get; set; }
     }
 }

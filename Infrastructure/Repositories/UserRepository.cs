@@ -5,33 +5,39 @@ namespace Infrastructure.Repositories
     public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly AppDbContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public UserRepository(AppDbContext context, UserManager<User> userManager) : base(context)
+
+        public UserRepository(AppDbContext context) : base(context)
         {
             _context = context;
-            _userManager = userManager;
         }
-        public async Task<IEnumerable<T>> GetUserOverviewAsync<T>(Func<User, Task<T>> selector)
+        public async Task<IEnumerable<User>> GetUsersOverviewAsync()
         {
-            var users = await DbSet
+            IEnumerable<User> users = await Context.Users
+                                 .Include(u => u.Company)
+                                 .Include(u => u.ProjectMemberships)
+                                 .ThenInclude(pm => pm.Project)
+                                 .Include(u => u.CreatedIssues)
+                                 .Include(u=> u.AssignedIssues)
+                                 .ToListAsync();
+            return users;
+        }
+
+        public async Task<User> GetUserOverviewByIdAsync(string userId)
+        {
+            User user = await Context.Users
+                .Where(u => u.Id == userId)
                 .Include(u => u.Company)
                 .Include(u => u.ProjectMemberships)
+                .ThenInclude(pm => pm.Project)
                 .Include(u => u.CreatedIssues)
-                .ToListAsync();
-
-            var result = new List<T>();
-
-            foreach (var user in users)
-            {
-                result.Add(await selector(user));
-            }
-
-            return result;
+                .Include(u => u.AssignedIssues)
+                .FirstOrDefaultAsync();
+            return user;
         }
         public async Task<int> GetCompanyIdAsync(string userId)
         {
-            var companyId = await DbSet
+            int companyId = await DbSet
                 .Where(u => u.Id == userId)
                 .Select(u => u.CompanyId)
                 .FirstOrDefaultAsync();
@@ -44,7 +50,7 @@ namespace Infrastructure.Repositories
 
         public async Task AddUserToProjectsAsync(string userId, List<ProjectTeamMember> memberships)
         {
-            foreach (var member in memberships)
+            foreach (ProjectTeamMember member in memberships)
                 member.UserId = userId;
 
             await _context.ProjectTeamMembers.AddRangeAsync(memberships);

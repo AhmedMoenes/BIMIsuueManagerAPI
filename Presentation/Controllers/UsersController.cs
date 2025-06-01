@@ -12,16 +12,16 @@
         }
         
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<UserOverviewDto>>> GetAll()
         {
-            IEnumerable<UserDto> users = await _userService.GetAllAsync();
+            IEnumerable<UserOverviewDto> users = await _userService.GetUsersOverviewAsync();
             return Ok(users);
         }
 
         [HttpGet ("{id:alpha}")]
-        public async Task<ActionResult<UserDto>> GetById(string id )
+        public async Task<ActionResult<UserOverviewDto>> GetById(string id )
         {
-            UserDto user = await _userService.GetByIdAsync(id);
+            UserOverviewDto user = await _userService.GetByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
