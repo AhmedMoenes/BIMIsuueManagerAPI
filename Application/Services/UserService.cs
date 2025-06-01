@@ -45,12 +45,12 @@ namespace Application.Services
                 Email = u.Email,
                 UserName = u.UserName,
                 CompanyId = u.CompanyId,
-                 ProjectMemberships = u.ProjectMemberships?.Select(pm => new ProjectTeamMemberDto
-                 {
-                     ProjectId = pm.ProjectId,
-                     UserId = pm.UserId,
-                     Role = pm.Role
-                 }).ToList()
+                 //ProjectMemberships = u.ProjectMemberships?.Select(pm => new ProjectTeamMemberDto
+                 //{
+                 //    ProjectId = pm.ProjectId,
+                 //    UserId = pm.UserId,
+                 //    Role = pm.Role
+                 //}).ToList()
             };
         }
 

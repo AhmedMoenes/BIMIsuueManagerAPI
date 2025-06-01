@@ -49,5 +49,18 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<int>> GetProjectIdByUserId(string userId)
+        {
+            var memberships = await _service.GetByUserIdAsync(userId);
+
+            var firstProjectId = memberships?.FirstOrDefault()?.ProjectId ?? 0;
+
+            if (firstProjectId == 0)
+                return NotFound("Project not found for this user.");
+
+            return Ok(firstProjectId);
+        }
+
     }
 }

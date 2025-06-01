@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Application.Services
 {
     public class ProjectTeamMemberService : IProjectTeamMemberService
     {
@@ -47,5 +49,23 @@
 
             return await _repo.DeleteAsync(new { projectId, userId });
         }
+
+        public async Task<IEnumerable<ProjectTeamMemberDto>> GetByUserIdAsync(string userId)
+        {
+            var memberships = await _repo.GetAllAsync();
+
+            var filter = memberships.Where(pt => pt.UserId == userId)
+                .Select(pt => new ProjectTeamMemberDto
+                {
+                    ProjectId = pt.ProjectId,
+                    UserId = pt.UserId,
+                    Role = pt.Role
+                })
+                .ToList();
+                
+
+            return filter;
+        }
+
     }
 }
