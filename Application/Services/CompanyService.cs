@@ -14,10 +14,10 @@
             _userService = userService;
             _unitOfWork = unitOfWork;
         }
-        public async Task<IEnumerable<CompanyDto>> GetAllAsync()
+        public async Task<IEnumerable<CompanyOverviewDto>> GetAllAsync()
         {
             IEnumerable<Company> companies = await _repo.GetAllWithProjectsAsync();
-            return companies.Select(c => new CompanyDto
+            return companies.Select(c => new CompanyOverviewDto
             {
                 CompanyId = c.CompanyId,
                 CompanyName = c.CompanyName,
@@ -26,7 +26,10 @@
                            {
                                ProjectId = cp.Project.ProjectId,
                                ProjectName = cp.Project.ProjectName
-                           }).ToList()
+                           }).ToList(),
+                UsersCount = c.Users.Count(),
+                ProjectsCount = c.CompanyProjects.Count(),
+                IssuesCount = c.Users.SelectMany(u => u.CreatedIssues).Count()
             });
         }
         public async Task<CompanyDto> GetByIdAsync(int id)

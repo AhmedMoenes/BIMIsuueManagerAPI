@@ -2,7 +2,7 @@
 {
     public interface ICompanyService
     {
-        Task<IEnumerable<CompanyDto>> GetAllAsync();
+        Task<IEnumerable<CompanyOverviewDto>> GetAllAsync();
         Task<CompanyDto> GetByIdAsync(int id);
         Task<CompanyDto> CreateAsync(CreateCompanyDto dto);   
         Task<bool> UpdateAsync(int id, UpdateCompanyDto dto); 

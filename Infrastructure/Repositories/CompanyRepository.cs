@@ -36,7 +36,10 @@
         {
             return await Context.Companies
                         .Include(c => c.CompanyProjects)
-                        .ThenInclude(cp => cp.Project).ToListAsync();
+                        .ThenInclude(cp => cp.Project)
+                        .Include(cp => cp.Users)
+                        .ThenInclude(cp=> cp.CreatedIssues)
+                        .ToListAsync();
         }
     }
 }
