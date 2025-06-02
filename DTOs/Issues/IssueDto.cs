@@ -19,5 +19,8 @@ namespace DTOs.Issues
         public List<LabelDto> Labels { get; set; } = new();
         public List<RevitElementDto> RevitElements { get; set; } = new();
         public List<CommentDto> Comments { get; set; } = new();
+
+        //Dummy property just for testing
+        public string SnapshotImagePath { get; set; }
     }
 }
