@@ -9,5 +9,6 @@ namespace Domain.Interfaces
         Task<int> GetCompanyIdAsync(string userId);
         Task AddUserToProjectsAsync(string userId, List<ProjectTeamMember> memberships);
         Task<IEnumerable<User>> GetByProjectIdAsync(int projectId);
+        Task<IEnumerable<User>> GetUsersByCompanyAsync(int companyId);
     }
 }

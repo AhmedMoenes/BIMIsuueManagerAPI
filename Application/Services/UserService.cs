@@ -51,7 +51,26 @@ namespace Application.Services
                 ProjectsIncludedCount = user.ProjectMemberships?.Count ?? 0,
                 IssuesCreatedCount = user.CreatedIssues?.Count ?? 0
             };
-            
+
+        }
+
+        public async Task<IEnumerable<CompanyUserDto>> GetCompanyUsers(int companyId)
+        {
+            IEnumerable<User> companyUsers = await _userRepo.GetUsersByCompanyAsync(companyId);
+            List<CompanyUserDto> userDtos = new List<CompanyUserDto>();
+            foreach (var user in companyUsers)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+
+                userDtos.Add(new CompanyUserDto
+                {
+                    FullName = $"{user.FirstName} {user.LastName}",
+                    Email = user.Email,
+                    Projects = string.Join(", ", user.ProjectMemberships.Select(pm => pm.Project.ProjectName)),
+                    Role = roles.FirstOrDefault()
+                });
+            }
+            return userDtos;
         }
 
         // To Be Deleted

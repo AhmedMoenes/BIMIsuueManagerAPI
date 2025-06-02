@@ -2,11 +2,12 @@
 {
     public interface IUserService
     {
-        Task<UserDto> RegisterAsync(RegisterUserDto dto);     
+        Task<UserDto> RegisterAsync(RegisterUserDto dto);
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task<UserOverviewDto> GetByIdAsync(string id);
+        Task<IEnumerable<CompanyUserDto>> GetCompanyUsers(int companyId);
         Task<IEnumerable<UserOverviewDto>> GetUsersOverviewAsync();
-        Task<bool> UpdateAsync(string id, UpdateUserDto dto); 
+        Task<bool> UpdateAsync(string id, UpdateUserDto dto);
         Task<bool> DeleteAsync(string id);
         Task<int> GetCompanyIdAsync(string userId);
         Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);

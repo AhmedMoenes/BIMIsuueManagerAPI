@@ -14,13 +14,24 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<User>> GetUsersOverviewAsync()
         {
             IEnumerable<User> users = await Context.Users
-                                 .Include(u => u.Company)
-                                 .Include(u => u.ProjectMemberships)
-                                 .ThenInclude(pm => pm.Project)
-                                 .Include(u => u.CreatedIssues)
-                                 .Include(u=> u.AssignedIssues)
-                                 .ToListAsync();
+                                      .Include(u => u.Company)
+                                      .Include(u => u.ProjectMemberships)
+                                      .ThenInclude(pm => pm.Project)
+                                      .Include(u => u.CreatedIssues)
+                                      .Include(u=> u.AssignedIssues)
+                                      .ToListAsync();
             return users;
+        }
+
+        public async Task<IEnumerable<User>> GetUsersByCompanyAsync(int companyId)
+        {
+            IEnumerable<User> companyUsers = await _context.Users.Where(u => u.CompanyId == companyId)
+                                             .Include(u=> u.ProjectMemberships)
+                                             .ThenInclude(up=> up.Project)
+                                             .Include(u=> u)
+                                             .ToListAsync();
+            return companyUsers;
+
         }
 
         public async Task<User> GetUserOverviewByIdAsync(string userId)
