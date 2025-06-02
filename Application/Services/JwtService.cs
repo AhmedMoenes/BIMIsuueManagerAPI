@@ -18,8 +18,9 @@ namespace Application.Services
         public string GenerateToken(User user, string role)
         {
             var claims = new[]
-            {
+             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id), 
                 new Claim(ClaimTypes.Email, user.Email ?? ""),
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}".Trim()),
                 new Claim(ClaimTypes.Role, role),

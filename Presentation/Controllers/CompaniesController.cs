@@ -16,7 +16,7 @@
         [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult<IEnumerable<CompanyDto>>> GetAll()
         {
-            IEnumerable<CompanyDto> companies = await _companyService.GetAllAsync();
+            IEnumerable<CompanyDto> companies = (IEnumerable<CompanyDto>)await _companyService.GetAllAsync();
             return Ok(companies);
         }
 
