@@ -171,5 +171,50 @@
         {
             return await _issueRepoitory.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<IssueDto>> GetByProjectIdAsync(int projectId)
+        {
+            var issues = await _issueRepoitory.GetAllDetailed();
+            var filteredIssues = issues.Where(i => i.ProjectId == projectId);
+
+            return filteredIssues.Select(issue => new IssueDto
+            {
+                IssueId = issue.IssueId,
+                Title = issue.Title,
+                Description = issue.Description,
+                Priority = issue.Priority.ToString(),
+                ProjectName = issue.Project.ProjectName,
+                CreatedAt = issue.CreatedAt,
+                CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                AssignedToUser = issue.AssignedToUser != null
+                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                    : null,
+                Area = new AreaDto
+                {
+                    AreaId = issue.Area.AreaId,
+                    AreaName = issue.Area.AreaName
+                },
+                Labels = issue.Labels.Select(l => new LabelDto
+                {
+                    LabelId = l.Label.LabelId,
+                    LabelName = l.Label.LabelName
+                }).ToList(),
+                Comments = issue.Comments.Select(c => new CommentDto
+                {
+                    CommentId = c.CommentId,
+                    Message = c.Message,
+                    CreatedAt = c.CreatedAt,
+                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                }).ToList(),
+                RevitElements = issue.RevitElements.Select(r => new RevitElementDto
+                {
+                    ElementId = r.ElementId,
+                    ElementUniqueId = r.ElementUniqueId,
+                    ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    SnapshotImagePath = r.SnapshotImagePath
+                }).ToList()
+            });
+        }
+
     }
 }
