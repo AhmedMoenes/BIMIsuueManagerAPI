@@ -11,12 +11,20 @@
             _userService = userService;
         }
         
-        [HttpGet]
+        [HttpGet("")]
         public async Task<ActionResult<IEnumerable<UserOverviewDto>>> GetAll()
         {
             IEnumerable<UserOverviewDto> users = await _userService.GetUsersOverviewAsync();
             return Ok(users);
         }
+
+        [HttpGet("company-users")]
+        public async Task<ActionResult<IEnumerable<UserOverviewDto>>> GetCompanyUsers(int companyId)
+        {
+            IEnumerable<CompanyUserDto> users = await _userService.GetCompanyUsers(companyId);
+            return Ok(users);
+        }
+
 
         [HttpGet ("{id:alpha}")]
         public async Task<ActionResult<UserOverviewDto>> GetById(string id )
@@ -49,7 +57,7 @@
         }
 
         [HttpPost("register-with-project")]
-        [Authorize(UserRoles.SuperAdmin)]
+        [Authorize(UserRoles.CompanyAdmin)]
         public async Task<ActionResult> CreateUserWithProjects([FromBody] CreateUserWithProjectsDto dto)
         {
             var adminUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
