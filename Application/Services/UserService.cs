@@ -155,11 +155,14 @@ namespace Application.Services
 
         public async Task<IEnumerable<UserOverviewDto>> GetUsersOverviewAsync()
         {
-            return await _userRepo.GetUsersOverviewAsync(async user =>
+            var users = await _userRepo.GetAllWithDetailsAsync(); // include Company, Projects, Issues
+
+            var result = new List<UserOverviewDto>();
+            foreach (var user in users)
             {
                 string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
-                return new UserOverviewDto
+                result.Add(new UserOverviewDto
                 {
                     Id = user.Id,
                     FirstName = user.FirstName,
@@ -170,8 +173,10 @@ namespace Application.Services
                     CreatedOn = user.CreatedOn,
                     ProjectsIncludedCount = user.ProjectMemberships?.Count ?? 0,
                     IssuesCreatedCount = user.CreatedIssues?.Count ?? 0
-                };
-            });
+                });
+            }
+
+            return result;
         }
 
         public async Task<int> GetCompanyIdAsync(string userId)
@@ -198,7 +203,8 @@ namespace Application.Services
                 Token = token,
                 Role = roles.First(),
                 FullName = $"{user.FirstName} {user.LastName}",
-                Email = user.Email
+                Email = user.Email,
+                UserId = user.Id
             };
         }
 

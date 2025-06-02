@@ -59,6 +59,13 @@
             return NoContent();
         }
 
-     
+        [HttpGet("project/{projectId}")]
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetByProjectId(int projectId)
+        {
+            var issues = await _issueService.GetByProjectIdAsync(projectId);
+            return Ok(issues);
+        }
+
+
     }
 }

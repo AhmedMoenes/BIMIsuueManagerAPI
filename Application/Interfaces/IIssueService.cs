@@ -6,6 +6,8 @@
         Task<IssueDto> GetByIdAsync(int id);
         Task<IssueDto> CreateAsync(CreateIssueDto dto);     
         Task<bool> UpdateAsync(int id, UpdateIssueDto dto); 
-        Task<bool> DeleteAsync(int id);                     
+        Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<IssueDto>> GetByProjectIdAsync(int projectId);
+
     }
 }

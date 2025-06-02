@@ -91,7 +91,7 @@
         }
 
         [HttpGet("overview/user")]
-        [Authorize]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> GetForUser()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -99,6 +99,12 @@
             return Ok(result);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetUserProjects(string userId)
+        {
+            var result = await _projectService.GetForUserAsync(userId);
+            return Ok(result);
+        }
 
 
 
