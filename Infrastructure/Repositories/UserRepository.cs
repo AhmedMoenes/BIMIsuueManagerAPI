@@ -80,7 +80,7 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<User>> GetAllWithDetailsAsync()
+        public Task<IEnumerable<User>> GetAllWithDetailsAsync()
         {
             throw new NotImplementedException();
         }
