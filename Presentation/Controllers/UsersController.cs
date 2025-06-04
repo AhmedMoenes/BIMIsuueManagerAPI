@@ -17,8 +17,8 @@
             IEnumerable<UserOverviewDto> users = await _userService.GetUsersOverviewAsync();
             return Ok(users);
         }
-
-        [HttpGet("company-users")]
+        
+        [HttpGet("company-users/{companyId}")]
         public async Task<ActionResult<IEnumerable<UserOverviewDto>>> GetCompanyUsers(int companyId)
         {
             IEnumerable<CompanyUserDto> users = await _userService.GetCompanyUsers(companyId);
@@ -96,7 +96,7 @@
             return Ok(user.Id);
         }
 
-        [HttpGet("project/{projectId}")]
+        [HttpGet("project-users/{projectId}")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersByProject(int projectId)
         {
             var users = await _userService.GetByProjectIdAsync(projectId);
