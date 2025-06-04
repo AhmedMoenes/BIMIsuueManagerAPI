@@ -11,7 +11,6 @@
                                IIssueLabelRepository issueLabelRepository,
                                ISnapshotRepository snapshotRepository) : base(context)
         {
-            _commentRepository = commentRepository;
             _revitElementRepository = revitElementRepository;
             _issueLabelRepository = issueLabelRepository;
             _snapshotRepository = snapshotRepository;
