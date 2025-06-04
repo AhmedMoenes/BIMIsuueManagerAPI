@@ -26,6 +26,7 @@ namespace Infrastructure.Extensions
             services.TryAddScoped<IRevitElementRepository, RevitElementRepository>();
             services.TryAddScoped<ILabelRepository, LabelRepository>();
             services.TryAddScoped<IIssueLabelRepository, IssueLabelRepository>();
+            services.TryAddScoped<ISnapshotRepository, SnapshotRepository>();
             services.TryAddScoped<IJwtService, JwtService>();
             services.TryAddScoped<IUnitOfWork, UnitOfWork>();
             return services;
