@@ -22,14 +22,14 @@
        
         
         [HttpGet("{id}")]
-        public async Task<ActionResult<IssueDto>> GetById(int id)
+        public async Task<ActionResult<ProjectDto>> GetById(int id)
         {
-            ProjectDto issue = await _projectService.GetByIdAsync(id);
-            if (issue == null)
+            ProjectDto project = await _projectService.GetByIdAsync(id);
+            if (project == null)
             {
                 return NotFound();
             }
-            return Ok(issue);
+            return Ok(project);
         }
 
         

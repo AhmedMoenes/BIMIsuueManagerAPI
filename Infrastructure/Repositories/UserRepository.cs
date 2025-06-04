@@ -28,7 +28,7 @@ namespace Infrastructure.Repositories
             IEnumerable<User> companyUsers = await _context.Users.Where(u => u.CompanyId == companyId)
                                              .Include(u=> u.ProjectMemberships)
                                              .ThenInclude(up=> up.Project)
-                                             .Include(u=> u)
+                                             .Include(u=> u.CommentsCreated)
                                              .ToListAsync();
             return companyUsers;
 
