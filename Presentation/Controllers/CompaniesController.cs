@@ -5,10 +5,12 @@
     public class CompaniesController : ControllerBase
     {
         private readonly ICompanyService _companyService;
+        private readonly IUserService _userService;
 
-        public CompaniesController(ICompanyService companyService)
+        public CompaniesController(ICompanyService companyService, IUserService userService)
         {
             _companyService = companyService;
+            _userService = userService;
         }
 
         
@@ -20,7 +22,13 @@
             return Ok(companies);
         }
 
-        
+        [HttpGet("company-users/{companyId}")]
+        public async Task<ActionResult<IEnumerable<UserOverviewDto>>> GetCompanyUsers(int companyId)
+        {
+            IEnumerable<CompanyUserDto> users = await _userService.GetCompanyUsers(companyId);
+            return Ok(users);
+        }
+
         [HttpGet("{id}")]
         [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult<CompanyDto>> GetById(int id)

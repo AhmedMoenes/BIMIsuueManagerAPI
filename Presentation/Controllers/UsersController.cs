@@ -18,14 +18,6 @@
             return Ok(users);
         }
         
-        [HttpGet("company-users/{companyId}")]
-        public async Task<ActionResult<IEnumerable<UserOverviewDto>>> GetCompanyUsers(int companyId)
-        {
-            IEnumerable<CompanyUserDto> users = await _userService.GetCompanyUsers(companyId);
-            return Ok(users);
-        }
-
-
         [HttpGet ("{id:alpha}")]
         public async Task<ActionResult<UserOverviewDto>> GetById(string id )
         {
@@ -79,7 +71,6 @@
             await _userService.UpdateAsync(id, dto);
             return NoContent();
         }
-
         
         [HttpDelete("delete/{id:alpha}")]
         public async Task<ActionResult> Delete(string id)

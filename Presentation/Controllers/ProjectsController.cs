@@ -99,14 +99,6 @@
             return Ok(result);
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetUserProjects(string userId)
-        {
-            var result = await _projectService.GetForUserAsync(userId);
-            return Ok(result);
-        }
-
-
 
     }
 }
