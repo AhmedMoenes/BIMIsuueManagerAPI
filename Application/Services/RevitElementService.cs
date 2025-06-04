@@ -20,7 +20,6 @@
                 ElementId = e.ElementId,
                 ElementUniqueId = e.ElementUniqueId,
                 ViewpointCameraPosition = e.ViewpointCameraPosition,
-                SnapshotImagePath = e.SnapshotImagePath,
                 IssueId = e.IssueId
             });
         }
@@ -32,7 +31,6 @@
                 ElementId = dto.ElementId,
                 ElementUniqueId = dto.ElementUniqueId,
                 ViewpointCameraPosition = dto.ViewpointCameraPosition,
-                SnapshotImagePath = dto.SnapshotImagePath,
                 IssueId = dto.IssueId
             };
 
@@ -44,7 +42,6 @@
                 ElementId = created.ElementId,
                 ElementUniqueId = created.ElementUniqueId,
                 ViewpointCameraPosition = created.ViewpointCameraPosition,
-                SnapshotImagePath = created.SnapshotImagePath,
                 IssueId = created.IssueId
             };
         }

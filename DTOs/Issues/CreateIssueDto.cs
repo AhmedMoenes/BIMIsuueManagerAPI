@@ -1,5 +1,6 @@
 ﻿using DTOs.IssueLabel;
 using DTOs.RevitElements;
+using DTOs.Snapshots;
 
 namespace DTOs.Issues
 {
@@ -22,5 +23,6 @@ namespace DTOs.Issues
         public Priority Priority { get; set; }
         public List<AssignLabelToIssueDto> Labels { get; set; }
         public List<IssueRevitElementDto> RevitElements { get; set; }
+        public SnapshotDto Snapshot { get; set; }
     }
 }

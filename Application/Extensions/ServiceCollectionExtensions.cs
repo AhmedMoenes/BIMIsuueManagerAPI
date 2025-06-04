@@ -19,6 +19,7 @@ namespace Application.Extensions
             services.AddScoped<IProjectTeamMemberService, ProjectTeamMemberService>();
             services.AddScoped<IIssueLabelService, IssueLabelService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ISnapshotService, SnapshotService>();
             return services;
         }
     }

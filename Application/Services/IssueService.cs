@@ -55,7 +55,6 @@
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    SnapshotImagePath = r.SnapshotImagePath
                 }).ToList()
             });
         }
@@ -97,7 +96,6 @@
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    SnapshotImagePath = r.SnapshotImagePath
                 }).ToList()
             };
         }
@@ -138,7 +136,6 @@
                 ElementId = r.ElementId,
                 ElementUniqueId = r.ElementUniqueId,
                 ViewpointCameraPosition = r.ViewpointCameraPosition,
-                SnapshotImagePath = r.SnapshotImagePath
             }).ToList();
             await _revitElementRepository.AddRangeAsync(revitElements);
 
@@ -211,7 +208,6 @@
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    SnapshotImagePath = r.SnapshotImagePath
                 }).ToList()
             });
         }

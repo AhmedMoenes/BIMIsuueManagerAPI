@@ -9,7 +9,6 @@
             builder.Property(x => x.ElementId).IsRequired();
             builder.Property(x => x.ElementUniqueId).IsRequired();
             builder.Property(x => x.ViewpointCameraPosition).IsRequired();
-            builder.Property(x => x.SnapshotImagePath).IsRequired();
 
             builder.HasOne(x => x.Issue)
                    .WithMany(i => i.RevitElements)

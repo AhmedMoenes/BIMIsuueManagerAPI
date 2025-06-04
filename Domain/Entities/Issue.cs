@@ -25,5 +25,6 @@
         public ICollection<RevitElement> RevitElements { get; set; }
         public ICollection<IssueLabel> Labels { get; set; }
         public ICollection<Comment>? Comments { get; set; }
+        public ICollection<Snapshot> Snapshots { get; set; }
     }
 }
