@@ -12,5 +12,7 @@ namespace Application.Interfaces
         Task<bool> DeleteAsync(int id);
         Task<string> UploadImageAsync(IFormFile file);
         Task<SnapshotDto> DownloadImageAsync();
+        Task<List<SnapshotDto>> GetByIssueIdAsync(int issueId);
+
     }
 }

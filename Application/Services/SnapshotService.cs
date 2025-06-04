@@ -96,5 +96,16 @@ namespace Application.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<List<SnapshotDto>> GetByIssueIdAsync(int issueId)
+        {
+            var snapshots = await _snapshotRepo.GetByIssueIdAsync(issueId);
+            return snapshots.Select(s => new SnapshotDto
+            {
+                Path = s.Path,
+                CreatedAt = s.CreatedAt
+            }).ToList();
+        }
+
     }
 }

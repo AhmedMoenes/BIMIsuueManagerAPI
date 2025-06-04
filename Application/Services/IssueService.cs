@@ -164,6 +164,11 @@ namespace Application.Services
                 CreatedByUser = created.CreatedByUserId,
                 AssignedToUser = created.AssignedToUserId,
                 CreatedAt = created.CreatedAt,
+                Snapshot = new SnapshotDto
+                {
+                    Path = snapshot.Path,
+                    CreatedAt = snapshot.CreatedAt
+                }
             };
         }
         public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)

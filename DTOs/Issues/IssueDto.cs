@@ -2,6 +2,7 @@
 using DTOs.Comments;
 using DTOs.Labels;
 using DTOs.RevitElements;
+using DTOs.Snapshots;
 
 namespace DTOs.Issues
 {
@@ -21,6 +22,8 @@ namespace DTOs.Issues
         public List<CommentDto> Comments { get; set; } = new();
 
         //Dummy property just for testing
-        public string SnapshotImagePath { get; set; }
+       // public string SnapshotImagePath { get; set; }
+        public SnapshotDto? Snapshot { get; set; }
+
     }
 }

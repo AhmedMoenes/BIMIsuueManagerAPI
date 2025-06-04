@@ -1,4 +1,5 @@
 ﻿using DTOs.IssueLabel;
+using DTOs.Snapshots;
 
 namespace DTOs.Issues
 {
@@ -10,6 +11,6 @@ namespace DTOs.Issues
         public string AssignedToUserId { get; set; }
         public Priority Priority { get; set; }
         public List<AssignLabelToIssueDto> Labels { get; set; }
-
+        public SnapshotDto Snapshot { get; set; }
     }
 }
