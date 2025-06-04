@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using DTOs.Snapshots;
+
+namespace Application.Services
 {
     public class IssueService : IIssueService
     {
@@ -6,16 +8,19 @@
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRevitElementRepository _revitElementRepository;
         private readonly IIssueLabelRepository _issueLabelRepository;
+        private readonly ISnapshotRepository _snapshotRepository;
 
         public IssueService(IIssueRepository issueRepository,
                             IUnitOfWork unitOfWork,
                             IRevitElementRepository revitElementRepository,
-                            IIssueLabelRepository issueLabelRepository)
+                            IIssueLabelRepository issueLabelRepository,
+                            ISnapshotRepository snapshotRepository)
         {
             _issueRepoitory = issueRepository;
             _unitOfWork = unitOfWork;
             _revitElementRepository = revitElementRepository;
             _issueLabelRepository = issueLabelRepository;
+            _snapshotRepository = snapshotRepository;
         }
 
         public async Task<IEnumerable<IssueDto>> GetAllAsync()
@@ -118,7 +123,7 @@
             Issue created = await _issueRepoitory.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync();
 
-            var labels = dto.Labels?.Select(i => new IssueLabel
+            IEnumerable<IssueLabel> labels = dto.Labels?.Select(i => new IssueLabel
             {
                 LabelId = i.LabelId,
                 IssueId = created.IssueId
@@ -130,7 +135,7 @@
                 await _issueLabelRepository.AddRangeAsync(labels);
             }
 
-            var revitElements = dto.RevitElements?.Select(r => new RevitElement
+            IEnumerable<RevitElement> revitElements = dto.RevitElements?.Select(r => new RevitElement
             {
                 IssueId = created.IssueId,
                 ElementId = r.ElementId,
@@ -138,6 +143,14 @@
                 ViewpointCameraPosition = r.ViewpointCameraPosition,
             }).ToList();
             await _revitElementRepository.AddRangeAsync(revitElements);
+
+            Snapshot snapshot = new Snapshot()
+            {
+                Path = dto.Snapshot.Path,
+                IssueId = created.IssueId,
+                CreatedAt = dto.CreatedAt
+            };
+            await _snapshotRepository.AddAsync(snapshot);
 
             await _unitOfWork.SaveChangesAsync();
             await _unitOfWork.CommitAsync();
@@ -168,7 +181,6 @@
         {
             return await _issueRepoitory.DeleteAsync(id);
         }
-
         public async Task<IEnumerable<IssueDto>> GetByProjectIdAsync(int projectId)
         {
             var issues = await _issueRepoitory.GetAllDetailed();

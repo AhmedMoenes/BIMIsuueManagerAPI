@@ -1,4 +1,5 @@
 ﻿using DTOs.Snapshots;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Interfaces
 {
@@ -9,5 +10,7 @@ namespace Application.Interfaces
         Task<SnapshotDto> CreateAsync(SnapshotDto dto);
         Task<bool> UpdateAsync(int id, SnapshotDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<string> UploadImageAsync(IFormFile file);
+        Task<SnapshotDto> DownloadImageAsync();
     }
 }
