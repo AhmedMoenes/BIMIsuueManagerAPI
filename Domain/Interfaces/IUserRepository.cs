@@ -4,7 +4,7 @@ namespace Domain.Interfaces
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<IEnumerable<T>> GetUsersOverviewAsync<T>(Func<User, Task<T>> selector);
+        Task<IEnumerable<User>> GetUsersOverviewAsync();
         Task<User> GetUserOverviewByIdAsync(string userId);
         Task<int> GetCompanyIdAsync(string userId);
         Task AddUserToProjectsAsync(string userId, List<ProjectTeamMember> memberships);

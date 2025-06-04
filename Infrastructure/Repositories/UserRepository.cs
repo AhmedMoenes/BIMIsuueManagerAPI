@@ -75,11 +75,6 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public Task<IEnumerable<T>> GetUsersOverviewAsync<T>(Func<User, Task<T>> selector)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<IEnumerable<User>> GetAllWithDetailsAsync()
         {
             throw new NotImplementedException();
