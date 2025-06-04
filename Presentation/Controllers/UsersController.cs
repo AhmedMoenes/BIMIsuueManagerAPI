@@ -69,7 +69,7 @@
             return Ok(result);
         }
         
-        [HttpPut("{id:alpha}")]
+        [HttpPut("edit/{id:alpha}")]
         public async Task<ActionResult> Update(string id, [FromBody] UpdateUserDto dto)
         {
             if (!ModelState.IsValid)
@@ -81,7 +81,7 @@
         }
 
         
-        [HttpDelete("{id:alpha}")]
+        [HttpDelete("delete/{id:alpha}")]
         public async Task<ActionResult> Delete(string id)
         {
             await _userService.DeleteAsync(id);

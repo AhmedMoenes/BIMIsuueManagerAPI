@@ -61,7 +61,7 @@
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("edit/{id}")]
         [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateCompanyDto dto)
         {
@@ -74,7 +74,7 @@
         }
 
         [Authorize(Roles = UserRoles.SuperAdmin)]
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             await _companyService.DeleteAsync(id);

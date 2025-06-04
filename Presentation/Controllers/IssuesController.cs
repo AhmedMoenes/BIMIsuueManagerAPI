@@ -39,7 +39,7 @@
         }
 
       
-        [HttpPut("{id}")]
+        [HttpPut("edit/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateIssueDto dto)
         {
             if (!ModelState.IsValid)
@@ -52,14 +52,14 @@
         }
 
         
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _issueService.DeleteAsync(id);
             return NoContent();
         }
 
-        [HttpGet("project/{projectId}")]
+        [HttpGet("project-issues/{projectId}")]
         public async Task<ActionResult<IEnumerable<IssueDto>>> GetByProjectId(int projectId)
         {
             var issues = await _issueService.GetByProjectIdAsync(projectId);

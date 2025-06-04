@@ -13,7 +13,7 @@
             _userService = userService;
         }
        
-        [HttpGet("all-projects")]
+        [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAll()
         {
             IEnumerable<ProjectDto> projects = await _projectService.GetAllAsync();
@@ -51,7 +51,7 @@
         }
 
         
-        [HttpPut("{id}")]
+        [HttpPut("edit/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
         {
             if (!ModelState.IsValid)
@@ -64,7 +64,7 @@
         }
 
        
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
            
