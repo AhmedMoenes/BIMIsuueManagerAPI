@@ -1,6 +1,4 @@
-﻿using DTOs.ProjectTeamMember;
-
-namespace DTOs.Users
+﻿namespace DTOs.Users
 {
     public class UserDto
     {

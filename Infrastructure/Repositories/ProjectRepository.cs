@@ -28,11 +28,10 @@ namespace Infrastructure.Repositories
 
             return result;
         }
-
         public async Task<Project> CreateDetailedAsync<T>(Project project,
-            List<Area> areas,
-            List<Label> labels,
-            List<ProjectTeamMember> teamMembers)
+                                                          List<Area> areas,
+                                                          List<Label> labels,
+                                                          List<ProjectTeamMember> teamMembers)
         {
             await DbSet.AddAsync(project);
             await Context.SaveChangesAsync();
@@ -67,21 +66,19 @@ namespace Infrastructure.Repositories
             await Context.SaveChangesAsync();
             return project;
         }
-
         public async Task<IEnumerable<Project>> GetAllWithCompaniesAsync()
         {
             return await Context.Projects
-                           .Include(p => p.CompanyProjects)
-                           .ThenInclude(cp => cp.Company).ToListAsync();
+                         .Include(p => p.CompanyProjects)
+                         .ThenInclude(cp => cp.Company).ToListAsync();
         }
-
         public async Task<List<Project>> GetByUserIdAsync(string userId)
         {
             return await Context.ProjectTeamMembers
-            .Where(ptm => ptm.UserId == userId)
-            .Select(ptm => ptm.Project)
-            .Distinct()
-            .ToListAsync();
+                         .Where(ptm => ptm.UserId == userId)
+                         .Select(ptm => ptm.Project)
+                         .Distinct()
+                         .ToListAsync();
         }
     }
 }
