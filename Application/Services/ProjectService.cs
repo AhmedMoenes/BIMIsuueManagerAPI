@@ -185,7 +185,7 @@
             return all.Where(p => p.UserRoleInProject != null);
         }
 
-        public async Task<List<ProjectDto>> GetByUserIdAsync(string userId)
+        public async Task<IEnumerable<ProjectDto>> GetByUserIdAsync(string userId)
         {
             var projects = await _projectRepo.GetByUserIdAsync(userId);
 
