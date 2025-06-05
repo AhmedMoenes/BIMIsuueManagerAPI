@@ -98,6 +98,12 @@
             var result = await _projectService.GetForUserAsync(userId);
             return Ok(result);
         }
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetByUserId(string userId)
+        {
+            var result = await _projectService.GetByUserIdAsync(userId);
+            return Ok(result);
+        }
 
 
     }

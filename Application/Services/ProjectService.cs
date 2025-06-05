@@ -185,5 +185,18 @@
             return all.Where(p => p.UserRoleInProject != null);
         }
 
+        public async Task<List<ProjectDto>> GetByUserIdAsync(string userId)
+        {
+            var projects = await _projectRepo.GetByUserIdAsync(userId);
+
+            return projects.Select(p => new ProjectDto
+            {
+                ProjectId = p.ProjectId,
+                ProjectName = p.ProjectName,
+                Description = p.Description,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate
+            }).ToList();
+        }
     }
 }

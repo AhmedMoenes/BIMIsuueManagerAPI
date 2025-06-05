@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Repositories
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Repositories
 {
     public class ProjectRepository : Repository<Project>, IProjectRepository
     {
@@ -71,6 +73,15 @@
             return await Context.Projects
                            .Include(p => p.CompanyProjects)
                            .ThenInclude(cp => cp.Company).ToListAsync();
+        }
+
+        public async Task<List<Project>> GetByUserIdAsync(string userId)
+        {
+            return await Context.ProjectTeamMembers
+            .Where(ptm => ptm.UserId == userId)
+            .Select(ptm => ptm.Project)
+            .Distinct()
+            .ToListAsync();
         }
     }
 }

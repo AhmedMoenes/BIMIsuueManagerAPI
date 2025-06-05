@@ -10,6 +10,6 @@
         Task<IEnumerable<ProjectOverviewDto>> GetForSubscriberAsync();
         Task<IEnumerable<ProjectOverviewDto>>GetForCompanyAsync(int companyId);
         Task<IEnumerable<ProjectOverviewDto>> GetForUserAsync(string userId);
-
+        Task<List<ProjectDto>> GetByUserIdAsync(string userId);
     }
 }
