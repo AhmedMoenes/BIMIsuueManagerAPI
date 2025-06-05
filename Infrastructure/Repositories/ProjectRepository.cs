@@ -72,7 +72,7 @@ namespace Infrastructure.Repositories
                          .Include(p => p.CompanyProjects)
                          .ThenInclude(cp => cp.Company).ToListAsync();
         }
-        public async Task<List<Project>> GetByUserIdAsync(string userId)
+        public async Task<IEnumerable<Project>> GetByUserIdAsync(string userId)
         {
             return await Context.ProjectTeamMembers
                          .Where(ptm => ptm.UserId == userId)
