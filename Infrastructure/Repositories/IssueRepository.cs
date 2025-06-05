@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Repositories
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Repositories
 {
     public class IssueRepository : Repository<Issue>, IIssueRepository
     {
@@ -72,5 +74,21 @@
                 .Include(i => i.AssignedToUser)
                 .FirstOrDefaultAsync(i => i.IssueId == id);
         }
+
+        public async Task<IEnumerable<Issue>> GetByProjectIdDetailedAsync(int projectId)
+        {
+            return await Context.Issues
+                .Where(i => i.ProjectId == projectId)
+                .Include(i => i.Snapshots)
+                .Include(i => i.Comments).ThenInclude(c => c.CreatedByUser)
+                .Include(i => i.Area)
+                .Include(i => i.Labels).ThenInclude(l => l.Label)
+                .Include(i => i.RevitElements)
+                .Include(i => i.CreatedByUser)
+                .Include(i => i.AssignedToUser)
+                .Include(i => i.Project)
+                .ToListAsync();
+        }
+
     }
 }

@@ -188,8 +188,8 @@ namespace Application.Services
         }
         public async Task<IEnumerable<IssueDto>> GetByProjectIdAsync(int projectId)
         {
-            var issues = await _issueRepoitory.GetAllDetailed();
-            var filteredIssues = issues.Where(i => i.ProjectId == projectId);
+           var filteredIssues = await _issueRepoitory.GetByProjectIdDetailedAsync(projectId);
+
 
             return filteredIssues.Select(issue => new IssueDto
             {
@@ -225,7 +225,15 @@ namespace Application.Services
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
-                }).ToList()
+                }).ToList(),
+                           Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
+               ? new SnapshotDto
+               {
+                   Path = issue.Snapshots.First().Path,
+                   CreatedAt = issue.Snapshots.First().CreatedAt
+               }
+               : null,
+
             });
         }
 

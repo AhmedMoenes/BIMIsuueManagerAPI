@@ -25,5 +25,6 @@ namespace DTOs.Issues
        // public string SnapshotImagePath { get; set; }
         public SnapshotDto? Snapshot { get; set; }
 
+        public string? ImagePath => Snapshot?.ImagePath;
     }
 }

@@ -3,6 +3,8 @@
     public class SnapshotDto
     {
         public string Path { get; set; } = string.Empty;
+        public string ImagePath => $"https://localhost:44374/{Path}";
         public DateTime CreatedAt { get; set; }
+        public string? LocalImagePath { get; set; }
     }
 }

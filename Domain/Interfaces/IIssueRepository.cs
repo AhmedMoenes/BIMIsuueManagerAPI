@@ -11,5 +11,6 @@ namespace Domain.Interfaces
 
         Task<IEnumerable<Issue>> GetAllDetailed();
         Task<Issue> GetByIdDetailed(int id);
+        Task<IEnumerable<Issue>> GetByProjectIdDetailedAsync(int projectId);
     }
 }
