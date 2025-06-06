@@ -76,12 +76,10 @@
             return Ok(result);
         }
 
-        [HttpGet("overview/company")]
+        [HttpGet("overview/company/{companyId}")]
         [Authorize(Roles = UserRoles.CompanyAdmin)]
-        public async Task<IActionResult> GetForCompany()
+        public async Task<IActionResult> GetForCompany(int companyId)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var companyId = await _userService.GetCompanyIdAsync(userId);
             var result = await _projectService.GetForCompanyAsync(companyId);
             return Ok(result);
         }

@@ -129,6 +129,7 @@ namespace Application.Services
                 Email = loadedUser.Email,
                 UserId = loadedUser.Id,
                 CreatedOn = loadedUser.CreatedOn,
+                CompanyId = loadedUser.CompanyId,
                 CompanyName = loadedUser.Company?.CompanyName,
                 ProjectsIncludedCount = loadedUser.ProjectMemberships.Count,
                 IssuesAssignedCount = loadedUser.AssignedIssues.Count,

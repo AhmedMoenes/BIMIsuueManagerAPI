@@ -11,6 +11,7 @@ namespace DTOs.Login
         public string Email { get; set; }
         public string UserId { get; set; }
         public DateTime CreatedOn { get; set; }
+        public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public List<ProjectTeamMemberDto> Projects { get; set; } = new();
         public List<IssueDto> CreatedIssues { get; set; } = new();
