@@ -18,7 +18,7 @@ namespace Infrastructure.Repositories
                                       .Include(u => u.ProjectMemberships)
                                       .ThenInclude(pm => pm.Project)
                                       .Include(u => u.CreatedIssues)
-                                      .Include(u=> u.AssignedIssues)
+                                      .Include(u => u.AssignedIssues)
                                       .ToListAsync();
             return users;
         }
@@ -26,9 +26,9 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<User>> GetUsersByCompanyAsync(int companyId)
         {
             IEnumerable<User> companyUsers = await _context.Users.Where(u => u.CompanyId == companyId)
-                                             .Include(u=> u.ProjectMemberships)
-                                             .ThenInclude(up=> up.Project)
-                                             .Include(u=> u.CommentsCreated)
+                                             .Include(u => u.ProjectMemberships)
+                                             .ThenInclude(up => up.Project)
+                                             .Include(u => u.CommentsCreated)
                                              .ToListAsync();
             return companyUsers;
 
@@ -37,21 +37,27 @@ namespace Infrastructure.Repositories
         public async Task<User> GetUserOverviewByIdAsync(string userId)
         {
             User user = await Context.Users
-                .Where(u => u.Id == userId)
-                .Include(u => u.Company)
-                .Include(u => u.ProjectMemberships)
-                .ThenInclude(pm => pm.Project)
-                .Include(u => u.CreatedIssues)
-                .Include(u => u.AssignedIssues)
-                .FirstOrDefaultAsync();
+                        .Where(u => u.Id == userId)
+                        .Include(u => u.Company)
+                        .Include(u => u.ProjectMemberships)
+                        .ThenInclude(pm => pm.Project)
+                        .Include(u => u.CreatedIssues)
+                        .ThenInclude(i => i.Project)
+                        .Include(u => u.CreatedIssues)
+                        .ThenInclude(i => i.AssignedToUser)
+                        .Include(u => u.AssignedIssues)
+                        .ThenInclude(i => i.Project)
+                        .Include(u => u.AssignedIssues)
+                        .ThenInclude(i => i.CreatedByUser)
+                        .FirstOrDefaultAsync();
             return user;
         }
         public async Task<int> GetCompanyIdAsync(string userId)
         {
             int companyId = await DbSet
-                .Where(u => u.Id == userId)
-                .Select(u => u.CompanyId)
-                .FirstOrDefaultAsync();
+                            .Where(u => u.Id == userId)
+                            .Select(u => u.CompanyId)
+                            .FirstOrDefaultAsync();
 
             if (companyId == 0)
                 throw new Exception($"Company ID not found for user {userId}");
