@@ -45,7 +45,19 @@
                 EndDate = p.EndDate
             };
         }
+        public async Task<IEnumerable<ProjectDto>> GetByUserIdAsync(string userId)
+        {
+            var projects = await _projectRepo.GetByUserIdAsync(userId);
 
+            return projects.Select(p => new ProjectDto
+            {
+                ProjectId = p.ProjectId,
+                ProjectName = p.ProjectName,
+                Description = p.Description,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate
+            }).ToList();
+        }
         public async Task<ProjectDto> CreateAsync(CreateProjectDto dto)
         {
             await _unitOfWork.BeginTransactionAsync();
@@ -99,7 +111,6 @@
                 throw;
             }
         }
-
         public async Task<bool> UpdateAsync(int id, UpdateProjectDto dto)
         {
             var p = await _projectRepo.GetByIdAsync(id);
@@ -111,7 +122,6 @@
 
             return await _projectRepo.UpdateAsync(p);
         }
-
         public async Task<bool> DeleteAsync(int id)
         {
             return await _projectRepo.DeleteAsync(id);
@@ -149,17 +159,13 @@
                     EndDate = project.EndDate,
                     IssuesCount = project.Issues?.Count ?? 0,
                     CompanyNames = project.ProjectTeamMembers
-                        .Select(m => m.User.Company.CompanyName)
-                        .Distinct()
-                        .ToList()
+                                   .Select(m => m.User.Company.CompanyName)
+                                   .Distinct()
+                                   .ToList()
                 };
             });
 
-            return all.Where(project =>
-                project.CompanyNames != null &&
-                project.CompanyNames.Count > 0 &&
-                project.CompanyNames.Any()
-            ).ToList();
+            return all;
         }
         public async Task<IEnumerable<ProjectOverviewDto>> GetForUserAsync(string userId)
         {
@@ -184,18 +190,5 @@
             return all.Where(p => p.UserRoleInProject != null);
         }
 
-        public async Task<IEnumerable<ProjectDto>> GetByUserIdAsync(string userId)
-        {
-            var projects = await _projectRepo.GetByUserIdAsync(userId);
-
-            return projects.Select(p => new ProjectDto
-            {
-                ProjectId = p.ProjectId,
-                ProjectName = p.ProjectName,
-                Description = p.Description,
-                StartDate = p.StartDate,
-                EndDate = p.EndDate
-            }).ToList();
-        }
     }
 }
