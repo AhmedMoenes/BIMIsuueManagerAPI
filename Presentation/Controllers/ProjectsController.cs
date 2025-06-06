@@ -6,19 +6,18 @@
     {
         private readonly IProjectService _projectService;
 
-        public ProjectsController(IProjectService projectService, IUserService userService)
+        public ProjectsController(IProjectService projectService)
         {
             _projectService = projectService;
-            _userService = userService;
         }
-       
+
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAll()
         {
             IEnumerable<ProjectDto> projects = await _projectService.GetAllAsync();
             return Ok(projects);
         }
-        
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ProjectDto>> GetById(int id)
         {
@@ -46,7 +45,7 @@
 
             );
         }
-        
+
         [HttpPut("edit/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
         {
@@ -62,13 +61,13 @@
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-           
+
             await _projectService.DeleteAsync(id);
             return NoContent();
         }
 
         [HttpGet("overview/subscriber")]
-        //## Hold Tokens in Desktop App ## [Authorize(Roles = UserRoles.SuperAdmin)]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> GetForSubscriber()
         {
             var result = await _projectService.GetForSubscriberAsync();
@@ -76,7 +75,7 @@
         }
 
         [HttpGet("overview/company/{companyId}")]
-        //## Hold Tokens in Desktop App ## [Authorize(Roles = UserRoles.CompanyAdmin)]
+        [Authorize(Roles = UserRoles.CompanyAdmin)]
         public async Task<IActionResult> GetForCompany(int companyId)
         {
             var result = await _projectService.GetForCompanyAsync(companyId);
@@ -84,7 +83,7 @@
         }
 
         [HttpGet("overview/user")]
-        //## Hold Tokens in Desktop App ## [Authorize(Roles = UserRoles.SuperAdmin)]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> GetForUser()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
