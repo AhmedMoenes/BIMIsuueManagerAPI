@@ -204,16 +204,21 @@ namespace Application.Services
 
                 CreatedIssues = loadedUser.CreatedIssues?.Select(issue => new IssueDto
                 {
+                    IssueId = issue.IssueId,
                     Title = issue.Title,
                     Description = issue.Description,
                     Priority = issue.Priority.ToString(),
                     ProjectName = issue.Project.ProjectName,
                     CreatedAt = issue.CreatedAt,
-                    AssignedToUser = $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                    CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                    AssignedToUser = issue.AssignedToUser != null
+                        ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                        : null
                 }).ToList() ?? new List<IssueDto>(),
 
                 AssignedIssues = loadedUser.AssignedIssues?.Select(issue => new IssueDto
                 {
+                    IssueId = issue.IssueId,
                     Title = issue.Title,
                     Description = issue.Description,
                     Priority = issue.Priority.ToString(),
