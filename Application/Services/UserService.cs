@@ -201,6 +201,18 @@ namespace Application.Services
                 UserId = loadedUser.Id,
                 CreatedOn = loadedUser.CreatedOn,
                 CompanyName = loadedUser.Company?.CompanyName,
+                ProjectsIncludedCount = loadedUser.ProjectMemberships.Count,
+                IssuesAssignedCount = loadedUser.AssignedIssues.Count,
+                IssuesCreatedCount = loadedUser.CreatedIssues.Count,
+                Projects = loadedUser.ProjectMemberships?
+                    .Where(pm => pm.Project != null)
+                    .Select(pm => new ProjectTeamMemberDto
+                {
+                    ProjectId = pm.ProjectId,
+                    UserId = loadedUser.Id,
+                    ProjectName = pm.Project.ProjectName,
+                    Role = pm.Role
+                }).ToList() ?? new List<ProjectTeamMemberDto>(),
 
                 CreatedIssues = loadedUser.CreatedIssues?.Select(issue => new IssueDto
                 {
@@ -212,8 +224,8 @@ namespace Application.Services
                     CreatedAt = issue.CreatedAt,
                     CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
                     AssignedToUser = issue.AssignedToUser != null
-                        ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
-                        : null
+                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                    : null
                 }).ToList() ?? new List<IssueDto>(),
 
                 AssignedIssues = loadedUser.AssignedIssues?.Select(issue => new IssueDto
@@ -226,6 +238,7 @@ namespace Application.Services
                     CreatedAt = issue.CreatedAt,
                     CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
                 }).ToList() ?? new List<IssueDto>()
+
             };
         }
         public async Task<UserDto?> GetByEmailAsync(string email)

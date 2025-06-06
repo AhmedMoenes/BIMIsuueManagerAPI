@@ -14,5 +14,8 @@ namespace DTOs.Users
         public List<ProjectTeamMemberDto> ProjectMemberships { get; set; } = new();
         public List<IssueDto> CreatedIssues { get; set; } = new();
         public List<IssueDto> AssignedIssues { get; set; } = new();
+        public int ProjectsIncludedCount { get; set; }
+        public int IssuesCreatedCount { get; set; }
+        public int IssuesAssignedCount { get; set; }
     }
 }
