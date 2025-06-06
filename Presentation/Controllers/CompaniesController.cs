@@ -18,7 +18,7 @@
         [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<ActionResult<IEnumerable<CompanyDto>>> GetAll()
         {
-            IEnumerable<CompanyDto> companies = (IEnumerable<CompanyDto>)await _companyService.GetAllAsync();
+            IEnumerable<CompanyOverviewDto> companies = await _companyService.GetAllAsync();
             return Ok(companies);
         }
 
@@ -59,7 +59,7 @@
         }
 
         [HttpPost("create-with-admin")]
-        //[Authorize(Roles = UserRoles.SuperAdmin)]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> CreateWithAdmin([FromBody] CreateCompanyWithAdminDto dto)
         {
             if (!ModelState.IsValid)
