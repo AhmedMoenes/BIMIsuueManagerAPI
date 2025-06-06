@@ -106,6 +106,72 @@ namespace Application.Services
                 Role = dto.Role
             };
         }
+        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
+        {
+            User user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null)
+                throw new UnauthorizedAccessException("Invalid credentials");
+
+            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+            if (!result.Succeeded)
+                throw new UnauthorizedAccessException("Invalid credentials");
+
+            User loadedUser = await _userRepo.GetUserOverviewByIdAsync(user.Id);
+
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+            string token = _jwtService.GenerateToken(user, roles.First());
+
+            return new LoginResponseDto
+            {
+                Token = token,
+                Role = roles.First(),
+                FullName = $"{loadedUser.FirstName} {loadedUser.LastName}",
+                Email = loadedUser.Email,
+                UserId = loadedUser.Id,
+                CreatedOn = loadedUser.CreatedOn,
+                CompanyName = loadedUser.Company?.CompanyName,
+                ProjectsIncludedCount = loadedUser.ProjectMemberships.Count,
+                IssuesAssignedCount = loadedUser.AssignedIssues.Count,
+                IssuesCreatedCount = loadedUser.CreatedIssues.Count,
+
+                Projects = loadedUser.ProjectMemberships?.Where(pm => pm.Project != null)
+                    .Select(pm => new ProjectTeamMemberDto
+                {
+                    ProjectId = pm.ProjectId,
+                    UserId = loadedUser.Id,
+                    ProjectName = pm.Project.ProjectName,
+                    Role = pm.Role
+                })
+                    .ToList() ?? new List<ProjectTeamMemberDto>(),
+
+                CreatedIssues = loadedUser.CreatedIssues?.Select(issue => new IssueDto
+                {
+                    IssueId = issue.IssueId,
+                    Title = issue.Title,
+                    Description = issue.Description,
+                    Priority = issue.Priority.ToString(),
+                    ProjectName = issue.Project.ProjectName,
+                    CreatedAt = issue.CreatedAt,
+                    AssignedToUser = issue.AssignedToUser != null
+                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                    : null
+                })
+                    .ToList() ?? new List<IssueDto>(),
+
+                AssignedIssues = loadedUser.AssignedIssues?.Select(issue => new IssueDto
+                {
+                    IssueId = issue.IssueId,
+                    Title = issue.Title,
+                    Description = issue.Description,
+                    Priority = issue.Priority.ToString(),
+                    ProjectName = issue.Project.ProjectName,
+                    CreatedAt = issue.CreatedAt,
+                    CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                })
+                    .ToList() ?? new List<IssueDto>()
+
+            };
+        }
         public async Task<UserDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto)
         {
             int companyId = await _userRepo.GetCompanyIdAsync(adminUserId);
@@ -176,70 +242,6 @@ namespace Application.Services
         {
             User user = await _userRepo.GetByIdAsync(userId);
             return user.CompanyId;
-        }
-        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
-        {
-            User user = await _userManager.FindByEmailAsync(dto.Email);
-            if (user == null)
-                throw new UnauthorizedAccessException("Invalid credentials");
-
-            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
-            if (!result.Succeeded)
-                throw new UnauthorizedAccessException("Invalid credentials");
-
-            User loadedUser = await _userRepo.GetUserOverviewByIdAsync(user.Id);
-
-            IList<string> roles = await _userManager.GetRolesAsync(user);
-            string token = _jwtService.GenerateToken(user, roles.First());
-
-            return new LoginResponseDto
-            {
-                Token = token,
-                Role = roles.First(),
-                FullName = $"{loadedUser.FirstName} {loadedUser.LastName}",
-                Email = loadedUser.Email,
-                UserId = loadedUser.Id,
-                CreatedOn = loadedUser.CreatedOn,
-                CompanyName = loadedUser.Company?.CompanyName,
-                ProjectsIncludedCount = loadedUser.ProjectMemberships.Count,
-                IssuesAssignedCount = loadedUser.AssignedIssues.Count,
-                IssuesCreatedCount = loadedUser.CreatedIssues.Count,
-                Projects = loadedUser.ProjectMemberships?
-                    .Where(pm => pm.Project != null)
-                    .Select(pm => new ProjectTeamMemberDto
-                {
-                    ProjectId = pm.ProjectId,
-                    UserId = loadedUser.Id,
-                    ProjectName = pm.Project.ProjectName,
-                    Role = pm.Role
-                }).ToList() ?? new List<ProjectTeamMemberDto>(),
-
-                CreatedIssues = loadedUser.CreatedIssues?.Select(issue => new IssueDto
-                {
-                    IssueId = issue.IssueId,
-                    Title = issue.Title,
-                    Description = issue.Description,
-                    Priority = issue.Priority.ToString(),
-                    ProjectName = issue.Project.ProjectName,
-                    CreatedAt = issue.CreatedAt,
-                    CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
-                    AssignedToUser = issue.AssignedToUser != null
-                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
-                    : null
-                }).ToList() ?? new List<IssueDto>(),
-
-                AssignedIssues = loadedUser.AssignedIssues?.Select(issue => new IssueDto
-                {
-                    IssueId = issue.IssueId,
-                    Title = issue.Title,
-                    Description = issue.Description,
-                    Priority = issue.Priority.ToString(),
-                    ProjectName = issue.Project.ProjectName,
-                    CreatedAt = issue.CreatedAt,
-                    CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
-                }).ToList() ?? new List<IssueDto>()
-
-            };
         }
         public async Task<UserDto?> GetByEmailAsync(string email)
         {
