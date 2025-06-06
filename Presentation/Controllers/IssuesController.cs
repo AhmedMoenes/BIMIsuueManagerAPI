@@ -32,7 +32,7 @@
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateIssueDto dto)
         {
-            var result = await _issueService.CreateAsync(dto);
+            IssueDto result = await _issueService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById),
                 new { id = result.IssueId },
                 result);
@@ -59,10 +59,17 @@
             return NoContent();
         }
 
-        [HttpGet("project-issues/{projectId}")]
+        [HttpGet("project/{projectId}")]
         public async Task<ActionResult<IEnumerable<IssueDto>>> GetByProjectId(int projectId)
         {
-            var issues = await _issueService.GetByProjectIdAsync(projectId);
+            IEnumerable<IssueDto> issues = await _issueService.GetByProjectIdAsync(projectId);
+            return Ok(issues);
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetByUserId(string userId)
+        {
+            IEnumerable<IssueDto> issues = await _issueService.GetByUserIdAsync(userId);
             return Ok(issues);
         }
 

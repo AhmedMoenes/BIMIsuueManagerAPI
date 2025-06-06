@@ -23,7 +23,7 @@ namespace Infrastructure.Repositories
             List<RevitElement> revitElements,
             List<IssueLabel> issueLabels)
         {
-            await DbSet.AddAsync(issue);
+            await Context.Issues.AddAsync(issue);
 
             if (revitElements?.Any() == true)
             {
@@ -31,6 +31,15 @@ namespace Infrastructure.Repositories
                 {
                     r.IssueId = issue.IssueId;
                     await _revitElementRepository.AddAsync(r);
+                }
+            }
+
+            if (snapshots?.Any() == true)
+            {
+                foreach (Snapshot s in snapshots)
+                {
+                    s.IssueId = issue.IssueId;
+                    await _snapshotRepository.AddAsync(s);
                 }
             }
 
@@ -90,5 +99,19 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Issue>> GetByUserIdDetailedAsync(string userId)
+        {
+            return await Context.Issues
+                .Where(i => i.AssignedToUserId == userId || i.CreatedByUserId == userId)
+                .Include(i => i.Snapshots)
+                .Include(i => i.Comments).ThenInclude(c => c.CreatedByUser)
+                .Include(i => i.Area)
+                .Include(i => i.Labels).ThenInclude(l => l.Label)
+                .Include(i => i.RevitElements)
+                .Include(i => i.CreatedByUser)
+                .Include(i => i.AssignedToUser)
+                .Include(i => i.Project)
+                .ToListAsync();
+        }
     }
 }
