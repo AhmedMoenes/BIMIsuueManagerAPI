@@ -13,13 +13,30 @@ namespace Application.Services
 
         public async Task<IEnumerable<ProjectTeamMemberDto>> GetByProjectIdAsync(int projectId)
         {
-            var members = await _repo.GetAllAsync();
-            var filtered = members.Where(m => m.ProjectId == projectId);
-
-            return filtered.Select(m => new ProjectTeamMemberDto
+            IEnumerable<ProjectTeamMember> members = await _repo.GetByProjectIdAsync(projectId);
+            return members.Select(m => new ProjectTeamMemberDto
             {
                 ProjectId = m.ProjectId,
-                UserId = m.UserId
+                UserId = m.UserId,
+                FullName = m.User != null ? $"{m.User.FirstName} {m.User.LastName}" : string.Empty,
+                Email = m.User?.Email,
+                ProjectName = m.Project.ProjectName,
+                Role = m.Role
+            });
+        }
+
+        public async Task<IEnumerable<ProjectTeamMemberDto>> GetByUserIdAsync(string userId)
+        {
+            IEnumerable<ProjectTeamMember> memberships = await _repo.GetAllAsync();
+
+            return memberships.Select(pt => new ProjectTeamMemberDto
+            {
+                ProjectId = pt.ProjectId,
+                UserId = pt.UserId,
+                FullName = pt.User != null ? $"{pt.User.FirstName} {pt.User.LastName}" : string.Empty,
+                Email = pt.User?.Email,
+                ProjectName = pt.Project.ProjectName,
+                Role = pt.Role
             });
         }
 
@@ -49,23 +66,5 @@ namespace Application.Services
 
             return await _repo.DeleteAsync(new { projectId, userId });
         }
-
-        public async Task<IEnumerable<ProjectTeamMemberDto>> GetByUserIdAsync(string userId)
-        {
-            var memberships = await _repo.GetAllAsync();
-
-            var filter = memberships.Where(pt => pt.UserId == userId)
-                .Select(pt => new ProjectTeamMemberDto
-                {
-                    ProjectId = pt.ProjectId,
-                    UserId = pt.UserId,
-                    Role = pt.Role
-                })
-                .ToList();
-                
-
-            return filter;
-        }
-
     }
 }
