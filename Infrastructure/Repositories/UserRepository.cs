@@ -37,21 +37,21 @@ namespace Infrastructure.Repositories
         public async Task<User> GetUserOverviewByIdAsync(string userId)
         {
             User user = await Context.Users
-                .Where(u => u.Id == userId)
-                .Include(u => u.Company)
-                .Include(u => u.ProjectMemberships)
-                .ThenInclude(pm => pm.Project)
-                .Include(u => u.CreatedIssues)
-                .Include(u => u.AssignedIssues)
-                .FirstOrDefaultAsync();
+                        .Where(u => u.Id == userId)
+                        .Include(u => u.Company)
+                        .Include(u => u.ProjectMemberships)
+                        .ThenInclude(pm => pm.Project)
+                        .Include(u => u.CreatedIssues)
+                        .Include(u => u.AssignedIssues)
+                        .FirstOrDefaultAsync();
             return user;
         }
         public async Task<int> GetCompanyIdAsync(string userId)
         {
             int companyId = await DbSet
-                .Where(u => u.Id == userId)
-                .Select(u => u.CompanyId)
-                .FirstOrDefaultAsync();
+                            .Where(u => u.Id == userId)
+                            .Select(u => u.CompanyId)
+                            .FirstOrDefaultAsync();
 
             if (companyId == 0)
                 throw new Exception($"Company ID not found for user {userId}");

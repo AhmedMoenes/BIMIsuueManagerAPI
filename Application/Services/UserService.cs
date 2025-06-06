@@ -201,91 +201,25 @@ namespace Application.Services
                 UserId = loadedUser.Id,
                 CreatedOn = loadedUser.CreatedOn,
                 CompanyName = loadedUser.Company?.CompanyName,
+
                 CreatedIssues = loadedUser.CreatedIssues?.Select(issue => new IssueDto
                 {
-                    IssueId = issue.IssueId,
                     Title = issue.Title,
                     Description = issue.Description,
                     Priority = issue.Priority.ToString(),
                     ProjectName = issue.Project.ProjectName,
                     CreatedAt = issue.CreatedAt,
-                    CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
-                    AssignedToUser = issue.AssignedToUser != null
-                       ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
-                       : null,
-                    Area = new AreaDto
-                    {
-                        AreaId = issue.Area.AreaId,
-                        AreaName = issue.Area.AreaName
-                    },
-                    Labels = issue.Labels.Select(l => new LabelDto
-                    {
-                        LabelId = l.Label.LabelId,
-                        LabelName = l.Label.LabelName
-                    }).ToList(),
-                    Comments = issue.Comments.Select(c => new CommentDto
-                    {
-                        CommentId = c.CommentId,
-                        Message = c.Message,
-                        CreatedAt = c.CreatedAt,
-                        CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
-                    }).ToList(),
-                    RevitElements = issue.RevitElements.Select(r => new RevitElementDto
-                    {
-                        ElementId = r.ElementId,
-                        ElementUniqueId = r.ElementUniqueId,
-                        ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    }).ToList(),
-                    Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
-                       ? new SnapshotDto
-                       {
-                           Path = issue.Snapshots.First().Path,
-                           CreatedAt = issue.Snapshots.First().CreatedAt
-                       }
-                       : null,
+                    AssignedToUser = $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
                 }).ToList() ?? new List<IssueDto>(),
+
                 AssignedIssues = loadedUser.AssignedIssues?.Select(issue => new IssueDto
                 {
-                    IssueId = issue.IssueId,
                     Title = issue.Title,
                     Description = issue.Description,
                     Priority = issue.Priority.ToString(),
                     ProjectName = issue.Project.ProjectName,
                     CreatedAt = issue.CreatedAt,
                     CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
-                    AssignedToUser = issue.AssignedToUser != null
-                        ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
-                        : null,
-                    Area = new AreaDto
-                    {
-                        AreaId = issue.Area.AreaId,
-                        AreaName = issue.Area.AreaName
-                    },
-                    Labels = issue.Labels.Select(l => new LabelDto
-                    {
-                        LabelId = l.Label.LabelId,
-                        LabelName = l.Label.LabelName
-                    }).ToList(),
-                    Comments = issue.Comments.Select(c => new CommentDto
-                    {
-                        CommentId = c.CommentId,
-                        Message = c.Message,
-                        CreatedAt = c.CreatedAt,
-                        CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
-                    }).ToList(),
-                    RevitElements = issue.RevitElements.Select(r => new RevitElementDto
-                    {
-                        ElementId = r.ElementId,
-                        ElementUniqueId = r.ElementUniqueId,
-                        ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    }).ToList(),
-                    Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
-                        ? new SnapshotDto
-                        {
-                            Path = issue.Snapshots.First().Path,
-                            CreatedAt = issue.Snapshots.First().CreatedAt
-                        }
-                        : null,
                 }).ToList() ?? new List<IssueDto>()
             };
         }
