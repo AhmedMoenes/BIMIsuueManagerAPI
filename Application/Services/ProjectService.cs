@@ -47,7 +47,7 @@
         }
         public async Task<IEnumerable<ProjectDto>> GetByUserIdAsync(string userId)
         {
-            var projects = await _projectRepo.GetByUserIdAsync(userId);
+            IEnumerable<Project> projects = await _projectRepo.GetByUserIdAsync(userId);
 
             return projects.Select(p => new ProjectDto
             {
@@ -113,7 +113,7 @@
         }
         public async Task<bool> UpdateAsync(int id, UpdateProjectDto dto)
         {
-            var p = await _projectRepo.GetByIdAsync(id);
+            Project p = await _projectRepo.GetByIdAsync(id);
             if (p == null) return false;
 
             p.ProjectName = dto.ProjectName;
@@ -126,7 +126,6 @@
         {
             return await _projectRepo.DeleteAsync(id);
         }
-
         public async Task<IEnumerable<ProjectOverviewDto>> GetForSubscriberAsync()
         {
             return await _projectRepo.GetProjectOverviewsAsync(async project =>
@@ -148,7 +147,7 @@
         }
         public async Task<IEnumerable<ProjectOverviewDto>> GetForCompanyAsync(int companyId)
         {
-            var all = await _projectRepo.GetProjectOverviewsAsync(async project =>
+            IEnumerable<ProjectOverviewDto> all = await _projectRepo.GetProjectOverviewsAsync(async project =>
             {
                 return new ProjectOverviewDto
                 {
@@ -169,7 +168,7 @@
         }
         public async Task<IEnumerable<ProjectOverviewDto>> GetForUserAsync(string userId)
         {
-            var all = await _projectRepo.GetProjectOverviewsAsync(async project =>
+            IEnumerable<ProjectOverviewDto> all = await _projectRepo.GetProjectOverviewsAsync(async project =>
             {
                 return new ProjectOverviewDto()
                 {

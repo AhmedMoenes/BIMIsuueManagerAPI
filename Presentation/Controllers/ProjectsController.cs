@@ -5,7 +5,6 @@
     public class ProjectsController : ControllerBase
     {
         private readonly IProjectService _projectService;
-        private readonly IUserService _userService;
 
         public ProjectsController(IProjectService projectService, IUserService userService)
         {
@@ -69,7 +68,7 @@
         }
 
         [HttpGet("overview/subscriber")]
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        //## Hold Tokens in Desktop App ## [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> GetForSubscriber()
         {
             var result = await _projectService.GetForSubscriberAsync();
@@ -77,7 +76,7 @@
         }
 
         [HttpGet("overview/company/{companyId}")]
-        [Authorize(Roles = UserRoles.CompanyAdmin)]
+        //## Hold Tokens in Desktop App ## [Authorize(Roles = UserRoles.CompanyAdmin)]
         public async Task<IActionResult> GetForCompany(int companyId)
         {
             var result = await _projectService.GetForCompanyAsync(companyId);
@@ -85,7 +84,7 @@
         }
 
         [HttpGet("overview/user")]
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        //## Hold Tokens in Desktop App ## [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> GetForUser()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
