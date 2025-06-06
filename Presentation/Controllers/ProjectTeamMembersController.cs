@@ -13,16 +13,34 @@ namespace Presentation.Controllers
             _service = service;
         }
 
-        [HttpGet("project/{projectId}")]
+        [HttpGet("team-project/{projectId}")]
         public async Task<ActionResult<IEnumerable<ProjectTeamMemberDto>>> GetByProjectId(int projectId)
         {
-            var members = await _service.GetByProjectIdAsync(projectId);
+            IEnumerable<ProjectTeamMemberDto> members = await _service.GetByProjectIdAsync(projectId);
             return Ok(members);
         }
 
+        [HttpGet("team-user/{userId}")]
+        public async Task<ActionResult<int>> GetTeamByUserId(string userId)
+        {
+            IEnumerable<ProjectTeamMemberDto> memberships = await _service.GetByUserIdAsync(userId);
+            return Ok(memberships);
+        }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<int>> GetByUserId(string userId)
+        {
+            IEnumerable<ProjectTeamMemberDto> memberships = await _service.GetByUserIdAsync(userId);
 
-        [HttpPost("")]
+            var firstProjectId = memberships?.FirstOrDefault()?.ProjectId ?? 0;
+
+            if (firstProjectId == 0)
+                return NotFound("Project not found for this user.");
+
+            return Ok(firstProjectId);
+        }
+
+        [HttpPost("user-project")]
         public async Task<IActionResult> AssignUserToProject([FromBody] AssignUserToProjectDto dto)
         {
             if (!ModelState.IsValid)
@@ -38,28 +56,14 @@ namespace Presentation.Controllers
             );
         }
 
-
         [HttpDelete("project/{projectId}/user/{userId}")]
-        public async Task<IActionResult> RemoveUserFromProject( int projectId,  string userId)
+        public async Task<IActionResult> RemoveUserFromProject(int projectId,  string userId)
         {
             var removed = await _service.RemoveAsync(projectId, userId);
             if (!removed)
                 return NotFound();
 
             return NoContent();
-        }
-
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<int>> GetProjectIdByUserId(string userId)
-        {
-            var memberships = await _service.GetByUserIdAsync(userId);
-
-            var firstProjectId = memberships?.FirstOrDefault()?.ProjectId ?? 0;
-
-            if (firstProjectId == 0)
-                return NotFound("Project not found for this user.");
-
-            return Ok(firstProjectId);
         }
 
     }
