@@ -161,7 +161,6 @@
                 project.CompanyNames.Any()
             ).ToList();
         }
-
         public async Task<IEnumerable<ProjectOverviewDto>> GetForUserAsync(string userId)
         {
             var all = await _projectRepo.GetProjectOverviewsAsync(async project =>

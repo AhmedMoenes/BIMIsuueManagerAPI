@@ -9,6 +9,5 @@
         public DateTime? EndDate { get; set; }
         public int IssuesCount { get; set; }
         public List<string> CompanyNames { get; set; }
-        public string UserRoleInProject { get; set; }
     }
 }

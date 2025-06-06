@@ -19,7 +19,6 @@
             IEnumerable<ProjectDto> projects = await _projectService.GetAllAsync();
             return Ok(projects);
         }
-       
         
         [HttpGet("{id}")]
         public async Task<ActionResult<ProjectDto>> GetById(int id)
@@ -32,7 +31,6 @@
             return Ok(project);
         }
 
-        
         [HttpPost("create")]
         public async Task<ActionResult> Create([FromBody] CreateProjectDto dto)
         {
@@ -49,7 +47,6 @@
 
             );
         }
-
         
         [HttpPut("edit/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
@@ -63,7 +60,6 @@
             return NoContent();
         }
 
-       
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -104,7 +100,6 @@
             var result = await _projectService.GetByUserIdAsync(userId);
             return Ok(result);
         }
-
 
     }
 }
