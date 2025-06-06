@@ -7,7 +7,6 @@ global using Microsoft.AspNetCore.Identity;
 global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.OpenApi.Models;
 global using Application.Extensions;
-global using Application.Validators;
 global using FluentValidation.AspNetCore;
 global using FluentValidation;
 global using Infrastructure.Extensions;

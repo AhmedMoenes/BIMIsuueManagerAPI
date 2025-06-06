@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using DTOs.Snapshots;
 
 namespace Application.Services
 {
@@ -33,7 +34,6 @@ namespace Application.Services
                 CompanyId = u.CompanyId
             });
         }
-
         public async Task<UserOverviewDto> GetByIdAsync(string id)
         {
             User user = await _userRepo.GetUserOverviewByIdAsync(id);
@@ -53,7 +53,6 @@ namespace Application.Services
             };
 
         }
-
         public async Task<IEnumerable<CompanyUserDto>> GetCompanyUsers(int companyId)
         {
             IEnumerable<User> companyUsers = await _userRepo.GetUsersByCompanyAsync(companyId);
@@ -72,7 +71,6 @@ namespace Application.Services
             }
             return userDtos;
         }
-
         // To Be Deleted
         public async Task<UserDto> RegisterAsync(RegisterUserDto dto)
         {
@@ -108,7 +106,6 @@ namespace Application.Services
                 Role = dto.Role
             };
         }
-
         public async Task<UserDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto)
         {
             int companyId = await _userRepo.GetCompanyIdAsync(adminUserId);
@@ -136,7 +133,6 @@ namespace Application.Services
 
             return user;
         }
-
         public async Task<bool> UpdateAsync(string id, UpdateUserDto dto)
         {
             var user = await _userRepo.GetByIdAsync(id);
@@ -147,12 +143,10 @@ namespace Application.Services
 
             return await _userRepo.UpdateAsync(user);
         }
-
         public async Task<bool> DeleteAsync(string id)
         {
             return await _userRepo.DeleteAsync(id);
         }
-
         public async Task<IEnumerable<UserOverviewDto>> GetUsersOverviewAsync()
         {
             var users = await _userRepo.GetAllWithDetailsAsync(); // include Company, Projects, Issues
@@ -178,36 +172,123 @@ namespace Application.Services
 
             return result;
         }
-
         public async Task<int> GetCompanyIdAsync(string userId)
         {
             User user = await _userRepo.GetByIdAsync(userId);
             return user.CompanyId;
         }
-
         public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
         {
-            var user = await _userManager.FindByEmailAsync(dto.Email);
+            User user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
                 throw new UnauthorizedAccessException("Invalid credentials");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
             if (!result.Succeeded)
                 throw new UnauthorizedAccessException("Invalid credentials");
 
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = _jwtService.GenerateToken(user, roles.First());
+            User loadedUser = await _userRepo.GetUserOverviewByIdAsync(user.Id);
+
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+            string token = _jwtService.GenerateToken(user, roles.First());
 
             return new LoginResponseDto
             {
                 Token = token,
                 Role = roles.First(),
-                FullName = $"{user.FirstName} {user.LastName}",
-                Email = user.Email,
-                UserId = user.Id
+                FullName = $"{loadedUser.FirstName} {loadedUser.LastName}",
+                Email = loadedUser.Email,
+                UserId = loadedUser.Id,
+                CreatedOn = loadedUser.CreatedOn,
+                CompanyName = loadedUser.Company?.CompanyName,
+                CreatedIssues = loadedUser.CreatedIssues?.Select(issue => new IssueDto
+                {
+                    IssueId = issue.IssueId,
+                    Title = issue.Title,
+                    Description = issue.Description,
+                    Priority = issue.Priority.ToString(),
+                    ProjectName = issue.Project.ProjectName,
+                    CreatedAt = issue.CreatedAt,
+                    CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                    AssignedToUser = issue.AssignedToUser != null
+                       ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                       : null,
+                    Area = new AreaDto
+                    {
+                        AreaId = issue.Area.AreaId,
+                        AreaName = issue.Area.AreaName
+                    },
+                    Labels = issue.Labels.Select(l => new LabelDto
+                    {
+                        LabelId = l.Label.LabelId,
+                        LabelName = l.Label.LabelName
+                    }).ToList(),
+                    Comments = issue.Comments.Select(c => new CommentDto
+                    {
+                        CommentId = c.CommentId,
+                        Message = c.Message,
+                        CreatedAt = c.CreatedAt,
+                        CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                    }).ToList(),
+                    RevitElements = issue.RevitElements.Select(r => new RevitElementDto
+                    {
+                        ElementId = r.ElementId,
+                        ElementUniqueId = r.ElementUniqueId,
+                        ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    }).ToList(),
+                    Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
+                       ? new SnapshotDto
+                       {
+                           Path = issue.Snapshots.First().Path,
+                           CreatedAt = issue.Snapshots.First().CreatedAt
+                       }
+                       : null,
+                }).ToList() ?? new List<IssueDto>(),
+                AssignedIssues = loadedUser.AssignedIssues?.Select(issue => new IssueDto
+                {
+                    IssueId = issue.IssueId,
+                    Title = issue.Title,
+                    Description = issue.Description,
+                    Priority = issue.Priority.ToString(),
+                    ProjectName = issue.Project.ProjectName,
+                    CreatedAt = issue.CreatedAt,
+                    CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                    AssignedToUser = issue.AssignedToUser != null
+                        ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                        : null,
+                    Area = new AreaDto
+                    {
+                        AreaId = issue.Area.AreaId,
+                        AreaName = issue.Area.AreaName
+                    },
+                    Labels = issue.Labels.Select(l => new LabelDto
+                    {
+                        LabelId = l.Label.LabelId,
+                        LabelName = l.Label.LabelName
+                    }).ToList(),
+                    Comments = issue.Comments.Select(c => new CommentDto
+                    {
+                        CommentId = c.CommentId,
+                        Message = c.Message,
+                        CreatedAt = c.CreatedAt,
+                        CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                    }).ToList(),
+                    RevitElements = issue.RevitElements.Select(r => new RevitElementDto
+                    {
+                        ElementId = r.ElementId,
+                        ElementUniqueId = r.ElementUniqueId,
+                        ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    }).ToList(),
+                    Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
+                        ? new SnapshotDto
+                        {
+                            Path = issue.Snapshots.First().Path,
+                            CreatedAt = issue.Snapshots.First().CreatedAt
+                        }
+                        : null,
+                }).ToList() ?? new List<IssueDto>()
             };
         }
-
         public async Task<UserDto?> GetByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -223,7 +304,6 @@ namespace Application.Services
                 CompanyId = user.CompanyId
             };
         }
-
         public async Task<IEnumerable<UserDto>> GetByProjectIdAsync(int projectId)
         {
             var users = await _userRepo.GetByProjectIdAsync(projectId);
