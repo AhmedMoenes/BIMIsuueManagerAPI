@@ -88,13 +88,12 @@
             await _companyService.DeleteAsync(id);
             return NoContent();
         }
-        [Authorize(Roles = UserRoles.SuperAdmin)]
-        [HttpGet("overview")]
-        public async Task<IActionResult> GetCompanyOverviewForUser()
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var companies = await _companyService.GetCompaniesForUserAsync(userId);
+        [Authorize(Roles = UserRoles.CompanyAdmin)]
+        [HttpGet("overview/{userId}")]
+        public async Task<IActionResult> GetCompanyOverviewForUser(string userId)
+        {
+            IEnumerable<CompanyOverviewDto> companies = await _companyService.GetCompaniesForUserAsync(userId);
             return Ok(companies);
         }
     }
