@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Validators.Login
+﻿namespace Application.Validators.Login
 {
-    internal class LoginRequestDtoValidator : AbstractValidator<DTOs.Login.LoginRequestDto>
+    internal class LoginRequestDtoValidator : AbstractValidator<LoginRequestDto>
     {
         public LoginRequestDtoValidator()
         {

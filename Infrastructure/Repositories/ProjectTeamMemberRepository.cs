@@ -20,5 +20,13 @@
                          .Include(ptm => ptm.User)
                          .ToListAsync();
         }
+
+        public async Task<IEnumerable<ProjectTeamMember>> GetAllMembersAsync()
+        {
+            return await Context.ProjectTeamMembers
+                .Include(ptm => ptm.User)
+                .Include(ptm => ptm.Project)
+                .ToListAsync();
+        }
     }
 }

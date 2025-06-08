@@ -1,6 +1,4 @@
-﻿
-
-namespace Presentation.Controllers
+﻿namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -11,6 +9,13 @@ namespace Presentation.Controllers
         public ProjectTeamMembersController(IProjectTeamMemberService service)
         {
             _service = service;
+        }
+
+        [HttpGet("")]
+        public async Task<ActionResult<IEnumerable<ProjectTeamMemberDto>>> GetAll()
+        {
+            IEnumerable<ProjectTeamMemberDto> members = await _service.GetAllAsync();
+            return Ok(members);
         }
 
         [HttpGet("team-project/{projectId}")]

@@ -1,7 +1,4 @@
-﻿using Domain.Entities;
-using DTOs.Snapshots;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class UserService : IUserService
     {

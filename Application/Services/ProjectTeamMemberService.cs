@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class ProjectTeamMemberService : IProjectTeamMemberService
     {
@@ -9,6 +7,20 @@ namespace Application.Services
         public ProjectTeamMemberService(IProjectTeamMemberRepository repo)
         {
             _repo = repo;
+        }
+
+        public async Task<IEnumerable<ProjectTeamMemberDto>> GetAllAsync()
+        {
+            IEnumerable<ProjectTeamMember> members = await _repo.GetAllMembersAsync();
+            return members.Select(m => new ProjectTeamMemberDto
+            {
+                ProjectId = m.ProjectId,
+                UserId = m.UserId,
+                FullName = m.User != null ? $"{m.User.FirstName} {m.User.LastName}" : string.Empty,
+                Email = m.User?.Email,
+                ProjectName = m.Project.ProjectName,
+                Role = m.Role
+            });
         }
 
         public async Task<IEnumerable<ProjectTeamMemberDto>> GetByProjectIdAsync(int projectId)
@@ -27,7 +39,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<ProjectTeamMemberDto>> GetByUserIdAsync(string userId)
         {
-            IEnumerable<ProjectTeamMember> memberships = await _repo.GetAllAsync();
+            IEnumerable<ProjectTeamMember> memberships = await _repo.GetByUserIdAsync(userId);
 
             return memberships.Select(pt => new ProjectTeamMemberDto
             {
