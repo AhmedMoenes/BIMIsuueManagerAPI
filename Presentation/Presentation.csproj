@@ -8,20 +8,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Icons\chat.png" />
     <Content Remove="wwwroot\Icons\company.png" />
+    <Content Remove="wwwroot\Icons\issues.png" />
     <Content Remove="wwwroot\Icons\markup.png" />
     <Content Remove="wwwroot\Icons\profile.png" />
     <Content Remove="wwwroot\Icons\projects.png" />
     <Content Remove="wwwroot\Icons\teams.png" />
+    <Content Remove="wwwroot\Icons\user.png" />
     <Content Remove="wwwroot\Icons\viewer.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="wwwroot\Icons\chat.png" />
     <EmbeddedResource Include="wwwroot\Icons\company.png" />
+    <EmbeddedResource Include="wwwroot\Icons\issues.png" />
     <EmbeddedResource Include="wwwroot\Icons\markup.png" />
     <EmbeddedResource Include="wwwroot\Icons\profile.png" />
     <EmbeddedResource Include="wwwroot\Icons\projects.png" />
     <EmbeddedResource Include="wwwroot\Icons\teams.png" />
+    <EmbeddedResource Include="wwwroot\Icons\user.png" />
     <EmbeddedResource Include="wwwroot\Icons\viewer.png" />
   </ItemGroup>
 
