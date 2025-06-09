@@ -37,9 +37,11 @@
             );
         }
 
-        [HttpPost("issue/{issueId}")]
+        [HttpPost("create/issue/{issueId}")]
         public async Task<ActionResult> CreateForIssue(int issueId, [FromBody] CreateCommentDto dto)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            dto.CreatedByUserId = userId;
             dto.IssueId = issueId;
             CommentDto createdComment = await _commentService.CreateAsync(dto);
             return CreatedAtAction(
@@ -48,7 +50,7 @@
                 createdComment);
         }
 
-        [HttpPost("snapshot/{snapshotId}")]
+        [HttpPost("create/snapshot/{snapshotId}")]
         public async Task<ActionResult> CreateForSnapshot(int snapshotId, [FromBody] CreateCommentDto dto)
         {
             dto.SnapshotId = snapshotId;

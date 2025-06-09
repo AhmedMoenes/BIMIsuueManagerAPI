@@ -44,9 +44,12 @@
 
             return new CommentDto
             {
+                CommentId = created.CommentId,
+                IssueId = created.IssueId,
                 Message = created.Message,
                 CreatedAt = created.CreatedAt,
                 CreatedByUserId = created.CreatedByUserId,
+                CreatedBy = created.CreatedByUser.FirstName + " " + created.CreatedByUser.LastName,
                 SnapshotId = created.SnapshotId
             };
         }

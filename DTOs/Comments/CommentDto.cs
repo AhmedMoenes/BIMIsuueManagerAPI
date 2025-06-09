@@ -8,5 +8,7 @@
         public string CreatedByUserId { get; set; }
         public string CreatedBy { get; set; }
         public int? SnapshotId { get; set; }
+        public int IssueId { get; set; }
+
     }
 }
