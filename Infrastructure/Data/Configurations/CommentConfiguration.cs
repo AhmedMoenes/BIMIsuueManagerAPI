@@ -20,7 +20,7 @@
             builder.HasOne(c => c.Snapshot)
                 .WithMany(s => s.Comments)
                 .HasForeignKey(c => c.SnapshotId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(c => c.CreatedByUser)
                 .WithMany(u => u.CommentsCreated)

@@ -52,29 +52,27 @@
         }
         public async Task<IEnumerable<CommentDto>> GetByIssueIdAsync(int issueId)
         {
-            IEnumerable<Comment> all = await _commentRepo.GetAllAsync();
-            return all.Where(c => c.IssueId == issueId)
-                .Select(c => new CommentDto
-                {
-                    CommentId = c.CommentId,
-                    Message = c.Message,
-                    CreatedAt = c.CreatedAt,
-                    CreatedByUserId = c.CreatedByUserId,
-                    SnapshotId = c.SnapshotId
-                });
+            IEnumerable<Comment> comments = await _commentRepo.GetByIssueIdAsync(issueId);
+            return comments.Select(c => new CommentDto
+            {
+                CommentId = c.CommentId,
+                Message = c.Message,
+                CreatedAt = c.CreatedAt,
+                CreatedByUserId = c.CreatedByUserId,
+                SnapshotId = c.SnapshotId
+            }); ;
         }
         public async Task<IEnumerable<CommentDto>> GetBySnapshotIdAsync(int snapshotId)
         {
-            IEnumerable<Comment> all = await _commentRepo.GetAllAsync();
-            return all.Where(c => c.SnapshotId == snapshotId)
-                .Select(c => new CommentDto
-                {
-                    CommentId = c.CommentId,
-                    Message = c.Message,
-                    CreatedAt = c.CreatedAt,
-                    CreatedByUserId = c.CreatedByUserId,
-                    SnapshotId = c.SnapshotId
-                });
+            IEnumerable<Comment> comments = await _commentRepo.GetBySnapshotIdAsync(snapshotId);
+            return comments.Select(c => new CommentDto
+            {
+                CommentId = c.CommentId,
+                Message = c.Message,
+                CreatedAt = c.CreatedAt,
+                CreatedByUserId = c.CreatedByUserId,
+                SnapshotId = c.SnapshotId
+            }); ;
         }
         public async Task<bool> UpdateAsync(int id, CommentDto dto)
         {
