@@ -1,5 +1,4 @@
-﻿
-namespace Infrastructure.Data.Configurations
+﻿namespace Infrastructure.Data.Configurations
 {
     public class SnapshotConfiguration : IEntityTypeConfiguration<Snapshot>
     {
@@ -18,6 +17,10 @@ namespace Infrastructure.Data.Configurations
                 .HasForeignKey(x => x.IssueId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(s => s.Comments)
+                .WithOne(c => c.Snapshot)
+                .HasForeignKey(c => c.SnapshotId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

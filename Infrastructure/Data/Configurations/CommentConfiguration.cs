@@ -17,6 +17,11 @@
                 .HasForeignKey(x => x.IssueId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(c => c.Snapshot)
+                .WithMany(s => s.Comments)
+                .HasForeignKey(c => c.SnapshotId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasOne(c => c.CreatedByUser)
                 .WithMany(u => u.CommentsCreated)
                 .HasForeignKey(f => f.CreatedByUserId)
