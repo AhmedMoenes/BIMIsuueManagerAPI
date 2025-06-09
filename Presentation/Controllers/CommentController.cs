@@ -21,20 +21,33 @@
         [HttpGet("{id}")]
         public async Task<ActionResult<CommentDto>> GetById(int id)
         {
-            var comment = await _commentService.GetByIdAsync(id);
+            CommentDto comment = await _commentService.GetByIdAsync(id);
             return Ok(comment);
         }
 
         [HttpPost("")]
-        public async Task<ActionResult> Create([FromBody] CommentDto dto)
+        public async Task<ActionResult> Create([FromBody] CreateCommentDto dto)
         {
-           var createdComment = await _commentService.CreateAsync(dto);
+            CommentDto createdComment = await _commentService.CreateAsync(dto);
            return CreatedAtAction(
 
                 nameof(GetById),
                 new { id = createdComment.CommentId },
                 createdComment
            );
+        }
+        [HttpGet("issue/{issueId}")]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetByIssueId(int issueId)
+        {
+            IEnumerable<CommentDto> comments = await _commentService.GetByIssueIdAsync(issueId);
+            return Ok(comments);
+        }
+
+        [HttpGet("snapshot/{snapshotId}")]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetBySnapshotId(int snapshotId)
+        {
+            IEnumerable<CommentDto> comments = await _commentService.GetBySnapshotIdAsync(snapshotId);
+            return Ok(comments);
         }
 
         [HttpPatch("{id}")]

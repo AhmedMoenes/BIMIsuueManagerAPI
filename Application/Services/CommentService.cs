@@ -8,43 +8,74 @@
         {
             _commentRepo = commentRepo;
         }
-
         public async Task<IEnumerable<CommentDto>> GetAllAsync()
         {
             IEnumerable<Comment> comments = await _commentRepo.GetAllAsync();
             return comments.Select(comment => new CommentDto
             {
                 CommentId = comment.CommentId,
-                Message = comment.Message
+                Message = comment.Message,
+                SnapshotId = comment.SnapshotId
             });
         }
-
         public async Task<CommentDto> GetByIdAsync(int id)
         {
             Comment comment = await _commentRepo.GetByIdAsync(id);
             return new CommentDto()
             {
                 CommentId = comment.CommentId,
-                Message = comment.Message
+                Message = comment.Message,
+                SnapshotId = comment.SnapshotId
             };
         }
-
-        public async Task<CommentDto> CreateAsync(CommentDto dto)
+        public async Task<CommentDto> CreateAsync(CreateCommentDto dto)
         {
-            var comment = new Comment
+            Comment comment = new Comment
             {
-                Message = dto.Message
+                Message = dto.Message,
+                IssueId = dto.IssueId,
+                SnapshotId = dto.SnapshotId,
+                CreatedByUserId = dto.CreatedByUserId,
+                CreatedAt = DateTime.UtcNow
             };
 
-            var created = await _commentRepo.AddAsync(comment);
+            Comment created = await _commentRepo.AddAsync(comment);
+            await _commentRepo.SaveChangesAsync();
 
             return new CommentDto
             {
-                CommentId = created.CommentId,
-                Message = created.Message
+                Message = created.Message,
+                CreatedAt = created.CreatedAt,
+                CreatedByUserId = created.CreatedByUserId,
+                SnapshotId = created.SnapshotId
             };
         }
-
+        public async Task<IEnumerable<CommentDto>> GetByIssueIdAsync(int issueId)
+        {
+            IEnumerable<Comment> all = await _commentRepo.GetAllAsync();
+            return all.Where(c => c.IssueId == issueId)
+                .Select(c => new CommentDto
+                {
+                    CommentId = c.CommentId,
+                    Message = c.Message,
+                    CreatedAt = c.CreatedAt,
+                    CreatedByUserId = c.CreatedByUserId,
+                    SnapshotId = c.SnapshotId
+                });
+        }
+        public async Task<IEnumerable<CommentDto>> GetBySnapshotIdAsync(int snapshotId)
+        {
+            IEnumerable<Comment> all = await _commentRepo.GetAllAsync();
+            return all.Where(c => c.SnapshotId == snapshotId)
+                .Select(c => new CommentDto
+                {
+                    CommentId = c.CommentId,
+                    Message = c.Message,
+                    CreatedAt = c.CreatedAt,
+                    CreatedByUserId = c.CreatedByUserId,
+                    SnapshotId = c.SnapshotId
+                });
+        }
         public async Task<bool> UpdateAsync(int id, CommentDto dto)
         {
             var comment = await _commentRepo.GetByIdAsync(id);
@@ -54,7 +85,6 @@
 
             return await _commentRepo.UpdateAsync(comment);
         }
-
         public async Task<bool> DeleteAsync(int id)
         {
             return await _commentRepo.DeleteAsync(id);

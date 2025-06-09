@@ -53,7 +53,8 @@ namespace Application.Services
                     CommentId = c.CommentId,
                     Message = c.Message,
                     CreatedAt = c.CreatedAt,
-                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}",
+                    SnapshotId = c.SnapshotId
                 }).ToList(),
                 RevitElements = issue.RevitElements.Select(r => new RevitElementDto
                 {
@@ -94,7 +95,8 @@ namespace Application.Services
                     CommentId = c.CommentId,
                     Message = c.Message,
                     CreatedAt = c.CreatedAt,
-                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}",
+                    SnapshotId = c.SnapshotId
                 }).ToList(),
                 RevitElements = issue.RevitElements.Select(r => new RevitElementDto
                 {
@@ -218,7 +220,8 @@ namespace Application.Services
                     CommentId = c.CommentId,
                     Message = c.Message,
                     CreatedAt = c.CreatedAt,
-                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}",
+                    SnapshotId = c.SnapshotId
                 }).ToList(),
                 RevitElements = issue.RevitElements.Select(r => new RevitElementDto
                 {
@@ -236,7 +239,6 @@ namespace Application.Services
 
             });
         }
-
         public async Task<IEnumerable<IssueDto>> GetByUserIdAsync(string userId)
         {
             IEnumerable<Issue> filteredIssues = await _issueRepoitory.GetByUserIdDetailedAsync(userId);
@@ -268,7 +270,8 @@ namespace Application.Services
                     CommentId = c.CommentId,
                     Message = c.Message,
                     CreatedAt = c.CreatedAt,
-                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}"
+                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}",
+                    SnapshotId = c.SnapshotId
                 }).ToList(),
                 RevitElements = issue.RevitElements.Select(r => new RevitElementDto
                 {
