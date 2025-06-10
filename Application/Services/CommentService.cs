@@ -39,18 +39,20 @@
                 CreatedAt = DateTime.UtcNow
             };
 
-            Comment created = await _commentRepo.AddAsync(comment);
+            await _commentRepo.AddAsync(comment);
             await _commentRepo.SaveChangesAsync();
+
+            Comment createdComment = await _commentRepo.GetByIdWithUserAsync(comment.CommentId);
 
             return new CommentDto
             {
-                CommentId = created.CommentId,
-                IssueId = created.IssueId,
-                Message = created.Message,
-                CreatedAt = created.CreatedAt,
-                CreatedByUserId = created.CreatedByUserId,
-                CreatedBy = created.CreatedByUser.FirstName + " " + created.CreatedByUser.LastName,
-                SnapshotId = created.SnapshotId
+                CommentId = createdComment.CommentId,
+                IssueId = createdComment.IssueId,
+                Message = createdComment.Message,
+                CreatedAt = createdComment.CreatedAt,
+                CreatedByUserId = createdComment.CreatedByUserId,
+                CreatedBy = createdComment.CreatedByUser.FirstName + " " + createdComment.CreatedByUser.LastName,
+                SnapshotId = createdComment.SnapshotId
             };
         }
         public async Task<IEnumerable<CommentDto>> GetByIssueIdAsync(int issueId)

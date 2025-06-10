@@ -6,5 +6,6 @@ namespace Domain.Interfaces
     {
         Task<IEnumerable<Comment>> GetByIssueIdAsync(int issueId);
         Task<IEnumerable<Comment>> GetBySnapshotIdAsync(int snapshotId);
+        Task<Comment> GetByIdWithUserAsync(int commentId);
     }
 }

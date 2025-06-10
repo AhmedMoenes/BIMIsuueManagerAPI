@@ -20,7 +20,7 @@
             builder.HasMany(s => s.Comments)
                 .WithOne(c => c.Snapshot)
                 .HasForeignKey(c => c.SnapshotId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
