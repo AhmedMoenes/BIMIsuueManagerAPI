@@ -53,14 +53,14 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("issue/{issueId}")]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetByIssueId(int issueId)
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetByIssue(int issueId)
         {
             IEnumerable<CommentDto> comments = await _commentService.GetByIssueIdAsync(issueId);
             return Ok(comments);
         }
 
         [HttpGet("snapshot/{snapshotId}")]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetBySnapshotId(int snapshotId)
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetBySnapshot(int snapshotId)
         {
             IEnumerable<CommentDto> comments = await _commentService.GetBySnapshotIdAsync(snapshotId);
             return Ok(comments);

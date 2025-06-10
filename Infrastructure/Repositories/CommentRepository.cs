@@ -7,6 +7,9 @@
         {
             return await Context.Comments
                 .Where(c => c.IssueId == issueId)
+                .Include(c => c.Issue)          
+                .Include(c => c.Snapshot)       
+                .Include(c => c.CreatedByUser)  
                 .ToListAsync();
         }
 
@@ -14,6 +17,9 @@
         {
             return await Context.Comments
                 .Where(c => c.SnapshotId == snapshotId)
+                .Include(c => c.Issue)
+                .Include(c => c.Snapshot)
+                .Include(c => c.CreatedByUser)
                 .ToListAsync();
         }
     }

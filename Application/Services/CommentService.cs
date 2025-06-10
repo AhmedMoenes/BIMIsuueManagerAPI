@@ -62,6 +62,7 @@
                 Message = c.Message,
                 CreatedAt = c.CreatedAt,
                 CreatedByUserId = c.CreatedByUserId,
+                CreatedBy = c.CreatedByUser.FirstName + " " + c.CreatedByUser.LastName,
                 SnapshotId = c.SnapshotId
             }); ;
         }
