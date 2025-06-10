@@ -10,9 +10,6 @@
             RuleFor(x => x.IssueId)
                 .NotEmpty().GreaterThan(1)
                 .WithMessage("Issue ID can't be zero or negative.");
-
-            RuleFor(x => x.CreatedByUserId)
-                .NotEmpty().WithMessage("CreatedByUserId is required.");
         }
     }
 }

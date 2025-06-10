@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Presentation.Controllers
+﻿namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -45,6 +43,7 @@ namespace Presentation.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             dto.CreatedByUserId = userId;
             dto.IssueId = issueId;
+            dto.SnapshotId ??= null;
             CommentDto createdComment = await _commentService.CreateAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
