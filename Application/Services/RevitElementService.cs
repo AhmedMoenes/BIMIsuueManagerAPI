@@ -20,6 +20,8 @@
                 ElementId = e.ElementId,
                 ElementUniqueId = e.ElementUniqueId,
                 ViewpointCameraPosition = e.ViewpointCameraPosition,
+                ViewpointForwardDirection = e.ViewpointForwardDirection,
+                ViewpointUpDirection = e.ViewpointUpDirection,
                 IssueId = e.IssueId
             });
         }
@@ -31,6 +33,8 @@
                 ElementId = dto.ElementId,
                 ElementUniqueId = dto.ElementUniqueId,
                 ViewpointCameraPosition = dto.ViewpointCameraPosition,
+                ViewpointForwardDirection = dto.ViewpointForwardDirection,
+                ViewpointUpDirection = dto.ViewpointUpDirection,
                 IssueId = dto.IssueId
             };
 
@@ -42,6 +46,8 @@
                 ElementId = created.ElementId,
                 ElementUniqueId = created.ElementUniqueId,
                 ViewpointCameraPosition = created.ViewpointCameraPosition,
+                ViewpointForwardDirection = created.ViewpointForwardDirection,
+                ViewpointUpDirection = created.ViewpointUpDirection,
                 IssueId = created.IssueId
             };
         }

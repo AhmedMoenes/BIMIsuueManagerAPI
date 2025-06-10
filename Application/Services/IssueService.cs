@@ -61,6 +61,8 @@ namespace Application.Services
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    ViewpointUpDirection = r.ViewpointUpDirection,
+                    ViewpointForwardDirection = r.ViewpointForwardDirection
                 }).ToList()
             });
         }
@@ -103,6 +105,8 @@ namespace Application.Services
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    ViewpointUpDirection = r.ViewpointUpDirection,
+                    ViewpointForwardDirection = r.ViewpointForwardDirection
                 }).ToList()
             };
         }
@@ -143,6 +147,8 @@ namespace Application.Services
                 ElementId = r.ElementId,
                 ElementUniqueId = r.ElementUniqueId,
                 ViewpointCameraPosition = r.ViewpointCameraPosition,
+                ViewpointUpDirection = r.ViewpointUpDirection,
+                ViewpointForwardDirection = r.ViewpointForwardDirection
             }).ToList();
             await _revitElementRepository.AddRangeAsync(revitElements);
 
@@ -228,6 +234,8 @@ namespace Application.Services
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    ViewpointUpDirection = r.ViewpointUpDirection,
+                    ViewpointForwardDirection = r.ViewpointForwardDirection
                 }).ToList(),
                 Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
                ? new SnapshotDto
@@ -278,6 +286,8 @@ namespace Application.Services
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    ViewpointUpDirection = r.ViewpointUpDirection,
+                    ViewpointForwardDirection = r.ViewpointForwardDirection
                 }).ToList(),
                 Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
                     ? new SnapshotDto

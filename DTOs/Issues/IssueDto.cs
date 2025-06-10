@@ -21,6 +21,6 @@ namespace DTOs.Issues
         public List<RevitElementDto> RevitElements { get; set; } = new();
         public List<CommentDto> Comments { get; set; } = new();
         public SnapshotDto? Snapshot { get; set; }
-        public string? ImagePath => Snapshot?.ImagePath;
+        public string? ImagePath => Snapshot?.Path;
     }
 }
