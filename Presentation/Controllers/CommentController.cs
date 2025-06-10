@@ -37,13 +37,9 @@
             );
         }
 
-        [HttpPost("create/issue/{issueId}")]
+        [HttpPost("issue/{issueId}/create")]
         public async Task<ActionResult> CreateForIssue(int issueId, [FromBody] CreateCommentDto dto)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            dto.CreatedByUserId = userId;
-            dto.IssueId = issueId;
-            dto.SnapshotId ??= null;
             CommentDto createdComment = await _commentService.CreateAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),

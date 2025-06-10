@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Repositories
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Repositories
 {
     public class CommentRepository : Repository<Comment>, ICommentRepository
     {
@@ -21,6 +23,15 @@
                 .Include(c => c.Snapshot)
                 .Include(c => c.CreatedByUser)
                 .ToListAsync();
+        }
+
+        public async Task<Comment> GetByIdWithUserAsync(int commentId)
+        {
+            return await Context.Comments
+                .Include(c => c.CreatedByUser)
+                .Include(c => c.Issue)
+                .Include(c => c.Snapshot)
+                .FirstOrDefaultAsync(c => c.CommentId == commentId);
         }
     }
 }
