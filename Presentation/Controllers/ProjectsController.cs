@@ -84,9 +84,8 @@
 
         [HttpGet("overview/user")]
         [Authorize(Roles = UserRoles.SuperAdmin)]
-        public async Task<IActionResult> GetForUser()
+        public async Task<IActionResult> GetForUser(string userId)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var result = await _projectService.GetForUserAsync(userId);
             return Ok(result);
         }
