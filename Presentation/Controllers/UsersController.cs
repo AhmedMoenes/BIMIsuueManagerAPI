@@ -18,7 +18,7 @@
             return Ok(users);
         }
         
-        [HttpGet ("{id:alpha}")]
+        [HttpGet ("{id}")]
         public async Task<ActionResult<UserOverviewDto>> GetById(string id )
         {
             UserOverviewDto user = await _userService.GetByIdAsync(id);
@@ -33,7 +33,7 @@
         [HttpPost ("register")]
         public async Task<ActionResult> Create([FromBody] RegisterUserDto dto)
         {
-            if (!ModelState.IsValid)
+                if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
