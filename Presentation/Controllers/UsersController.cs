@@ -38,7 +38,7 @@
                 return BadRequest(ModelState);
             }
 
-            UserDto createdUser = await _userService.RegisterAsync(dto);
+            UserOverviewDto createdUser = await _userService.RegisterAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
                 controllerName:"Users",

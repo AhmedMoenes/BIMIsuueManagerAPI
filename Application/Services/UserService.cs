@@ -69,7 +69,7 @@
             return userDtos;
         }
         // To Be Deleted
-        public async Task<UserDto> RegisterAsync(RegisterUserDto dto)
+        public async Task<UserOverviewDto> RegisterAsync(RegisterUserDto dto)
         {
             var user = new User
             {
@@ -92,14 +92,12 @@
                 await _userManager.AddToRoleAsync(user, dto.Role);
             }
 
-            return new UserDto
+            return new UserOverviewDto
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                UserName = user.UserName,
                 Email = user.Email,
-                CompanyId = user.CompanyId,
                 Role = dto.Role
             };
         }
@@ -170,7 +168,7 @@
 
             };
         }
-        public async Task<UserDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto)
+        public async Task<UserOverviewDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto)
         {
             int companyId = await _userRepo.GetCompanyIdAsync(adminUserId);
 
@@ -185,7 +183,7 @@
                 CompanyId = companyId
             };
 
-            UserDto user = await RegisterAsync(registerUser);
+            UserOverviewDto user = await RegisterAsync(registerUser);
 
             var memberships = dto.ProjectAssignments.Select(p => new ProjectTeamMember
             {

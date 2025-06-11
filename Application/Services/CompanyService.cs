@@ -110,7 +110,7 @@
                     Role = UserRoles.CompanyAdmin,
                 };
 
-                UserDto companyAdmin = await _userService.RegisterAsync(user);
+                UserOverviewDto companyAdmin = await _userService.RegisterAsync(user);
 
                 CompanyDto companyDto = new CompanyDto
                 {
