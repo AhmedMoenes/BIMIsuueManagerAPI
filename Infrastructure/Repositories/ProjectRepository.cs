@@ -15,7 +15,8 @@
                 .Include(p => p.Issues)
                 .Include(p => p.ProjectTeamMembers)
                 .ThenInclude(m => m.User)
-                .ThenInclude(u => u.Company)
+                .Include(u => u.CompanyProjects)
+                .ThenInclude(cp => cp.Company)
                 .ToListAsync();
 
             List<T>result = new List<T>();
