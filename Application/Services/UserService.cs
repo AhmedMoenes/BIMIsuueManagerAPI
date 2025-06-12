@@ -211,7 +211,7 @@
         }
         public async Task<IEnumerable<UserOverviewDto>> GetUsersOverviewAsync()
         {
-            var users = await _userRepo.GetAllWithDetailsAsync(); // include Company, Projects, Issues
+            var users = await _userRepo.GetUsersOverviewAsync(); 
 
             var result = new List<UserOverviewDto>();
             foreach (var user in users)

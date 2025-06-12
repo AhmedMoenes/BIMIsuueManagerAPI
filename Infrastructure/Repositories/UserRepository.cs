@@ -20,7 +20,6 @@
                                       .ToListAsync();
             return users;
         }
-
         public async Task<IEnumerable<User>> GetUsersByCompanyAsync(int companyId)
         {
             IEnumerable<User> companyUsers = await _context.Users.Where(u => u.CompanyId == companyId)
@@ -31,7 +30,6 @@
             return companyUsers;
 
         }
-
         public async Task<User> GetUserOverviewByIdAsync(string userId)
         {
             User user = await Context.Users
@@ -62,7 +60,12 @@
 
             return companyId;
         }
-
+        public async Task<IEnumerable<User>> GetByProjectIdAsync(int projectId)
+        {
+            return await Context.Users
+                .Where(u => u.ProjectMemberships.Any(pm => pm.ProjectId == projectId))
+                .ToListAsync();
+        }
         public async Task AddUserToProjectsAsync(string userId, List<ProjectTeamMember> memberships)
         {
             foreach (ProjectTeamMember member in memberships)
@@ -70,18 +73,6 @@
 
             await _context.ProjectTeamMembers.AddRangeAsync(memberships);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<User>> GetByProjectIdAsync(int projectId)
-        {
-            return await Context.Users
-                .Where(u => u.ProjectMemberships.Any(pm => pm.ProjectId == projectId))
-                .ToListAsync();
-        }
-
-        public Task<IEnumerable<User>> GetAllWithDetailsAsync()
-        {
-            throw new NotImplementedException();
         }
     }
 }
