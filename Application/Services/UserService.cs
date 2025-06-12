@@ -68,7 +68,6 @@
             }
             return userDtos;
         }
-        // To Be Deleted
         public async Task<UserOverviewDto> RegisterAsync(RegisterUserDto dto)
         {
             var user = new User

@@ -3,7 +3,6 @@
     public class ProjectTeamMemberService : IProjectTeamMemberService
     {
         private readonly IProjectTeamMemberRepository _repo;
-
         public ProjectTeamMemberService(IProjectTeamMemberRepository repo)
         {
             _repo = repo;
@@ -22,7 +21,6 @@
                 Role = m.Role
             });
         }
-
         public async Task<IEnumerable<ProjectTeamMemberDto>> GetByProjectIdAsync(int projectId)
         {
             IEnumerable<ProjectTeamMember> members = await _repo.GetByProjectIdAsync(projectId);
@@ -36,7 +34,6 @@
                 Role = m.Role
             });
         }
-
         public async Task<IEnumerable<ProjectTeamMemberDto>> GetByUserIdAsync(string userId)
         {
             IEnumerable<ProjectTeamMember> memberships = await _repo.GetByUserIdAsync(userId);
@@ -51,7 +48,6 @@
                 Role = pt.Role
             });
         }
-
         public async Task<ProjectTeamMemberDto> AssignAsync(AssignUserToProjectDto dto)
         {
             var member = new ProjectTeamMember
@@ -70,7 +66,6 @@
                 Role = dto.Role
             };
         }
-
         public async Task<bool> RemoveAsync(int projectId, string userId)
         {
             var member = await _repo.GetByIdAsync(new { projectId, userId });

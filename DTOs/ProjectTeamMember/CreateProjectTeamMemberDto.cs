@@ -4,6 +4,5 @@
     {
         public int ProjectId { get; set; }
         public string? Role { get; set; }
-
     }
 }
