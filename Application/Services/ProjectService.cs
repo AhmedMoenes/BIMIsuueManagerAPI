@@ -138,8 +138,8 @@
                     StartDate = project.StartDate,
                     EndDate = project.EndDate,
                     IssuesCount = project.Issues?.Count ?? 0,
-                    CompanyNames = project.ProjectTeamMembers
-                        .Select(m => m.User.Company.CompanyName)
+                    CompanyNames = project.CompanyProjects
+                        .Select(c => c.Company.CompanyName)
                         .Distinct()
                         .ToList()
                 };
