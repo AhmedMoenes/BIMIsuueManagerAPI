@@ -1,6 +1,4 @@
-﻿using DTOs.Snapshots;
-
-namespace Application.Services
+﻿namespace Application.Services
 {
     public class IssueService : IIssueService
     {
@@ -25,241 +23,174 @@ namespace Application.Services
 
         public async Task<IEnumerable<IssueDto>> GetAllAsync()
         {
-            IEnumerable<Issue> issues = await _issueRepoitory.GetAllDetailed();
-            return issues.Select(issue => new IssueDto
-            {
-                IssueId = issue.IssueId,
-                Title = issue.Title,
-                Description = issue.Description,
-                Priority = issue.Priority.ToString(),
-                ProjectName = issue.Project.ProjectName,
-                CreatedAt = issue.CreatedAt,
-                CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
-                AssignedToUser = issue.AssignedToUser != null
-                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
-                    : null,
-                Area = new AreaDto
-                {
-                    AreaId = issue.Area.AreaId,
-                    AreaName = issue.Area.AreaName
-                },
-                Labels = issue.Labels.Select(l => new LabelDto
-                {
-                    LabelId = l.Label.LabelId,
-                    LabelName = l.Label.LabelName
-                }).ToList(),
-                Comments = issue.Comments.Select(c => new CommentDto
-                {
-                    CommentId = c.CommentId,
-                    Message = c.Message,
-                    CreatedAt = c.CreatedAt,
-                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}",
-                    SnapshotId = c.SnapshotId
-                }).ToList(),
-                RevitElements = issue.RevitElements.Select(r => new RevitElementDto
-                {
-                    ElementId = r.ElementId,
-                    ElementUniqueId = r.ElementUniqueId,
-                    ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    ViewpointUpDirection = r.ViewpointUpDirection,
-                    ViewpointForwardDirection = r.ViewpointForwardDirection
-                }).ToList()
-            });
+            var issues = await _issueRepoitory.GetAllDetailed();
+            return issues.Select(issue => ToIssueDto(issue));
+
         }
+
         public async Task<IssueDto> GetByIdAsync(int id)
         {
-            Issue issue = await _issueRepoitory.GetByIdDetailed(id);
-            if (issue == null) return null;
-
-            return new IssueDto()
-            {
-                IssueId = issue.IssueId,
-                Title = issue.Title,
-                Description = issue.Description,
-                Priority = issue.Priority.ToString(),
-                CreatedAt = issue.CreatedAt,
-                CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
-                AssignedToUser = issue.AssignedToUser != null
-                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
-                    : null,
-                Area = new AreaDto
-                {
-                    AreaId = issue.Area.AreaId,
-                    AreaName = issue.Area.AreaName
-                },
-                Labels = issue.Labels.Select(l => new LabelDto
-                {
-                    LabelId = l.Label.LabelId,
-                    LabelName = l.Label.LabelName
-                }).ToList(),
-                Comments = issue.Comments.Select(c => new CommentDto
-                {
-                    CommentId = c.CommentId,
-                    Message = c.Message,
-                    CreatedAt = c.CreatedAt,
-                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}",
-                    SnapshotId = c.SnapshotId
-                }).ToList(),
-                RevitElements = issue.RevitElements.Select(r => new RevitElementDto
-                {
-                    ElementId = r.ElementId,
-                    ElementUniqueId = r.ElementUniqueId,
-                    ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    ViewpointUpDirection = r.ViewpointUpDirection,
-                    ViewpointForwardDirection = r.ViewpointForwardDirection
-                }).ToList()
-            };
+            var issue = await _issueRepoitory.GetByIdDetailed(id);
+            return issue == null ? null : ToIssueDto(issue);
         }
+
         public async Task<IssueDto> CreateAsync(CreateIssueDto dto)
         {
             await _unitOfWork.BeginTransactionAsync();
 
-            Issue entity = new Issue
+            var issue = new Issue
             {
                 Title = dto.Title,
                 Description = dto.Description,
                 AreaId = dto.AreaId,
-                Priority = (Domain.Entities.Priority)dto.Priority,
-                AssignedToUserId = dto.AssignedToUserId,
                 ProjectId = dto.ProjectId,
                 CreatedByUserId = dto.CreatedByUserId,
-                CreatedAt = DateTime.UtcNow
+                AssignedToUserId = dto.AssignedToUserId,
+                CreatedAt = DateTime.UtcNow,
+                Priority = (Domain.Entities.Priority)dto.Priority,
+                IsResolved = dto.IsResolved,
+                IsDeleted = false
             };
 
-            Issue created = await _issueRepoitory.AddAsync(entity);
+            var created = await _issueRepoitory.AddAsync(issue);
             await _unitOfWork.SaveChangesAsync();
 
-            IEnumerable<IssueLabel> labels = dto.Labels?.Select(i => new IssueLabel
+            if (dto.Labels?.Any() == true)
             {
-                LabelId = i.LabelId,
-                IssueId = created.IssueId
-            }).ToList();
-
-
-            if (labels != null && labels.Any())
-            {
+                var labels = dto.Labels.Select(l => new IssueLabel
+                {
+                    IssueId = created.IssueId,
+                    LabelId = l.LabelId
+                }).ToList();
                 await _issueLabelRepository.AddRangeAsync(labels);
             }
 
-            IEnumerable<RevitElement> revitElements = dto.RevitElements?.Select(r => new RevitElement
+            if (dto.RevitElements?.Any() == true)
             {
-                IssueId = created.IssueId,
-                ElementId = r.ElementId,
-                ElementUniqueId = r.ElementUniqueId,
-                ViewpointCameraPosition = r.ViewpointCameraPosition,
-                ViewpointUpDirection = r.ViewpointUpDirection,
-                ViewpointForwardDirection = r.ViewpointForwardDirection
-            }).ToList();
-            await _revitElementRepository.AddRangeAsync(revitElements);
+                var elements = dto.RevitElements.Select(r => new RevitElement
+                {
+                    IssueId = created.IssueId,
+                    ElementId = r.ElementId,
+                    ElementUniqueId = r.ElementUniqueId,
+                    ViewpointCameraPosition = r.ViewpointCameraPosition,
+                    ViewpointForwardDirection = r.ViewpointForwardDirection,
+                    ViewpointUpDirection = r.ViewpointUpDirection
+                }).ToList();
+                await _revitElementRepository.AddRangeAsync(elements);
+            }
 
-            Snapshot snapshot = new Snapshot()
+            Snapshot? snapshot = null;
+            if (dto.Snapshot is not null)
             {
-                Path = dto.Snapshot.Path,
-                IssueId = created.IssueId,
-                CreatedAt = dto.CreatedAt
-            };
-            await _snapshotRepository.AddAsync(snapshot);
+                snapshot = new Snapshot
+                {
+                    IssueId = created.IssueId,
+                    Path = dto.Snapshot.Path,
+                    CreatedAt = dto.Snapshot.CreatedAt
+                };
+                await _snapshotRepository.AddAsync(snapshot);
+            }
 
             await _unitOfWork.SaveChangesAsync();
             await _unitOfWork.CommitAsync();
 
-            return new IssueDto
-            {
-                IssueId = created.IssueId,
-                Title = created.Title,
-                Description = created.Description,
-                Priority = created.Priority.ToString(),
-                CreatedByUser = created.CreatedByUserId,
-                AssignedToUser = created.AssignedToUserId,
-                CreatedAt = created.CreatedAt,
-                Snapshot = new SnapshotDto
-                {
-                    Path = snapshot.Path,
-                    CreatedAt = snapshot.CreatedAt
-                }
-            };
+            return ToIssueDto(created, snapshot);
         }
+
         public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)
         {
-            Issue issue = await _issueRepoitory.GetByIdAsync(id);
-            if (issue == null) return false;
+            var issue = await _issueRepoitory.GetByIdAsync(id);
+            if (issue == null || issue.IsDeleted) return false;
 
             issue.Title = dto.Title;
             issue.Description = dto.Description;
+            issue.AreaId = dto.AreaId;
             issue.AssignedToUserId = dto.AssignedToUserId;
+            issue.Priority = (Domain.Entities.Priority)dto.Priority;
+            issue.IsResolved = dto.IsResolved;
+            issue.IsDeleted = dto.IsDeleted;
 
             return await _issueRepoitory.UpdateAsync(issue);
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             return await _issueRepoitory.DeleteAsync(id);
         }
+
+        public async Task<bool> MarkAsResolvedAsync(int id)
+        {
+            var issue = await _issueRepoitory.GetByIdAsync(id);
+            if (issue == null || issue.IsDeleted) return false;
+
+            issue.IsResolved = true;
+            return await _issueRepoitory.UpdateAsync(issue);
+        }
+
+        public async Task<bool> RestoreAsync(int id)
+        {
+            var issue = await _issueRepoitory.GetByIdAsync(id);
+            if (issue == null || !issue.IsDeleted) return false;
+
+            issue.IsDeleted = false;
+            return await _issueRepoitory.UpdateAsync(issue);
+        }
+
+        public async Task<IEnumerable<IssueDto>> GetResolvedIssuesAsync()
+        {
+            var issues = await _issueRepoitory.GetAllDetailed();
+            return issues
+                .Where(i => i.IsResolved && !i.IsDeleted)
+                .Select(issue => ToIssueDto(issue));
+
+        }
+
+        public async Task<IEnumerable<IssueDto>> GetUnresolvedIssuesAsync()
+        {
+            var issues = await _issueRepoitory.GetAllDetailed();
+            return issues
+                .Where(i => !i.IsResolved && !i.IsDeleted)
+                .Select(issue => ToIssueDto(issue));
+        }
+
+        public async Task<IEnumerable<IssueDto>> GetDeletedIssuesAsync()
+        {
+            var issues = await _issueRepoitory.GetAllDetailed();
+            return issues
+                .Where(i => i.IsDeleted)
+                .Select(issue => ToIssueDto(issue));
+
+        }
+
         public async Task<IEnumerable<IssueDto>> GetByProjectIdAsync(int projectId)
         {
-            IEnumerable<Issue> filteredIssues = await _issueRepoitory.GetByProjectIdDetailedAsync(projectId);
+            var issues = await _issueRepoitory.GetByProjectIdDetailedAsync(projectId);
+            return issues.Select(issue => ToIssueDto(issue));
 
-
-            return filteredIssues.Select(issue => new IssueDto
-            {
-                IssueId = issue.IssueId,
-                Title = issue.Title,
-                Description = issue.Description,
-                Priority = issue.Priority.ToString(),
-                ProjectName = issue.Project.ProjectName,
-                CreatedAt = issue.CreatedAt,
-                CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
-                AssignedToUser = issue.AssignedToUser != null
-                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
-                    : null,
-                Area = new AreaDto
-                {
-                    AreaId = issue.Area.AreaId,
-                    AreaName = issue.Area.AreaName
-                },
-                Labels = issue.Labels.Select(l => new LabelDto
-                {
-                    LabelId = l.Label.LabelId,
-                    LabelName = l.Label.LabelName
-                }).ToList(),
-                Comments = issue.Comments.Select(c => new CommentDto
-                {
-                    CommentId = c.CommentId,
-                    Message = c.Message,
-                    CreatedAt = c.CreatedAt,
-                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}",
-                    SnapshotId = c.SnapshotId
-                }).ToList(),
-                RevitElements = issue.RevitElements.Select(r => new RevitElementDto
-                {
-                    ElementId = r.ElementId,
-                    ElementUniqueId = r.ElementUniqueId,
-                    ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    ViewpointUpDirection = r.ViewpointUpDirection,
-                    ViewpointForwardDirection = r.ViewpointForwardDirection
-                }).ToList(),
-                Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
-               ? new SnapshotDto
-               {
-                   Path = issue.Snapshots.First().Path,
-                   CreatedAt = issue.Snapshots.First().CreatedAt
-               }
-               : null,
-
-            });
         }
+
         public async Task<IEnumerable<IssueDto>> GetByUserIdAsync(string userId)
         {
-            IEnumerable<Issue> filteredIssues = await _issueRepoitory.GetByUserIdDetailedAsync(userId);
+            var issues = await _issueRepoitory.GetByUserIdDetailedAsync(userId);
+            return issues.Select(issue => ToIssueDto(issue));
 
-            return filteredIssues.Select(issue => new IssueDto
+        }
+
+        private static IssueDto ToIssueDto(Issue issue, Snapshot? singleSnapshot = null)
+        {
+            var snapshot = singleSnapshot ?? issue.Snapshots?.FirstOrDefault();
+
+            return new IssueDto
             {
                 IssueId = issue.IssueId,
                 Title = issue.Title,
                 Description = issue.Description,
-                Priority = issue.Priority.ToString(),
-                ProjectName = issue.Project.ProjectName,
                 CreatedAt = issue.CreatedAt,
-                CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                Priority = (DTOs.Issues.Priority)issue.Priority,
+                IsResolved = issue.IsResolved,
+                IsDeleted = issue.IsDeleted,
+                ProjectName = issue.Project?.ProjectName ?? "",
+                CreatedByUser = $"{issue.CreatedByUser?.FirstName} {issue.CreatedByUser?.LastName}",
                 AssignedToUser = issue.AssignedToUser != null
                     ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
                     : null,
@@ -268,36 +199,35 @@ namespace Application.Services
                     AreaId = issue.Area.AreaId,
                     AreaName = issue.Area.AreaName
                 },
-                Labels = issue.Labels.Select(l => new LabelDto
+                Labels = issue.Labels?.Select(l => new LabelDto
                 {
                     LabelId = l.Label.LabelId,
                     LabelName = l.Label.LabelName
-                }).ToList(),
-                Comments = issue.Comments.Select(c => new CommentDto
+                }).ToList() ?? new(),
+                Comments = issue.Comments?.Select(c => new CommentDto
                 {
                     CommentId = c.CommentId,
                     Message = c.Message,
                     CreatedAt = c.CreatedAt,
-                    CreatedBy = $"{c.CreatedByUser.FirstName} {c.CreatedByUser.LastName}",
+                    CreatedBy = $"{c.CreatedByUser?.FirstName} {c.CreatedByUser?.LastName}",
                     SnapshotId = c.SnapshotId
-                }).ToList(),
-                RevitElements = issue.RevitElements.Select(r => new RevitElementDto
+                }).ToList() ?? new(),
+                RevitElements = issue.RevitElements?.Select(r => new RevitElementDto
                 {
                     ElementId = r.ElementId,
                     ElementUniqueId = r.ElementUniqueId,
                     ViewpointCameraPosition = r.ViewpointCameraPosition,
-                    ViewpointUpDirection = r.ViewpointUpDirection,
-                    ViewpointForwardDirection = r.ViewpointForwardDirection
-                }).ToList(),
-                Snapshot = issue.Snapshots != null && issue.Snapshots.Any()
+                    ViewpointForwardDirection = r.ViewpointForwardDirection,
+                    ViewpointUpDirection = r.ViewpointUpDirection
+                }).ToList() ?? new(),
+                Snapshot = snapshot != null
                     ? new SnapshotDto
                     {
-                        Path = issue.Snapshots.First().Path,
-                        CreatedAt = issue.Snapshots.First().CreatedAt
+                        Path = snapshot.Path,
+                        CreatedAt = snapshot.CreatedAt
                     }
-                    : null,
-
-            });
+                    : null
+            };
         }
     }
 }

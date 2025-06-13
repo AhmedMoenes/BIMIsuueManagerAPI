@@ -14,7 +14,7 @@
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<IssueDto>>> GetAll()
         {
-          IEnumerable<IssueDto> issues = await _issueService.GetAllAsync();
+            IEnumerable<IssueDto> issues = await _issueService.GetAllAsync();
             return Ok(issues);
         }
 
@@ -38,7 +38,6 @@
                 result);
         }
 
-      
         [HttpPut("edit/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] UpdateIssueDto dto)
         {
@@ -46,12 +45,11 @@
             {
                 return BadRequest(ModelState);
             }
-          
+
             await _issueService.UpdateAsync(id, dto);
             return NoContent();
         }
 
-        
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -73,6 +71,41 @@
             return Ok(issues);
         }
 
+        [HttpGet("resolved")]
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetResolved()
+        {
+            var issues = await _issueService.GetResolvedIssuesAsync();
+            return Ok(issues);
+        }
 
+        [HttpGet("unresolved")]
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetUnresolved()
+        {
+            var issues = await _issueService.GetUnresolvedIssuesAsync();
+            return Ok(issues);
+        }
+
+        [HttpGet("deleted")]
+        public async Task<ActionResult<IEnumerable<IssueDto>>> GetDeleted()
+        {
+            var issues = await _issueService.GetDeletedIssuesAsync();
+            return Ok(issues);
+        }
+
+        [HttpPut("resolve/{id}")]
+        public async Task<IActionResult> MarkAsResolved(int id)
+        {
+            bool success = await _issueService.MarkAsResolvedAsync(id);
+            if (!success) return NotFound();
+            return NoContent();
+        }
+
+        [HttpPut("restore/{id}")]
+        public async Task<IActionResult> Restore(int id)
+        {
+            bool success = await _issueService.RestoreAsync(id);
+            if (!success) return NotFound();
+            return NoContent();
+        }
     }
 }

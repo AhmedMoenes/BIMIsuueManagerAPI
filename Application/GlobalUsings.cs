@@ -16,3 +16,5 @@ global using DTOs.RevitElements;
 global using DTOs.Users;
 global using DTOs.ProjectTeamMember;
 global using DTOs.CompanyProject;
+global using DTOs.Snapshots;
+

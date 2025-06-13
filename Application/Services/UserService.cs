@@ -144,7 +144,7 @@
                     IssueId = issue.IssueId,
                     Title = issue.Title,
                     Description = issue.Description,
-                    Priority = issue.Priority.ToString(),
+                    Priority = (DTOs.Issues.Priority)issue.Priority,
                     ProjectName = issue.Project.ProjectName,
                     CreatedAt = issue.CreatedAt,
                     AssignedToUser = issue.AssignedToUser != null
@@ -158,7 +158,7 @@
                     IssueId = issue.IssueId,
                     Title = issue.Title,
                     Description = issue.Description,
-                    Priority = issue.Priority.ToString(),
+                    Priority = (DTOs.Issues.Priority)issue.Priority,
                     ProjectName = issue.Project.ProjectName,
                     CreatedAt = issue.CreatedAt,
                     CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",

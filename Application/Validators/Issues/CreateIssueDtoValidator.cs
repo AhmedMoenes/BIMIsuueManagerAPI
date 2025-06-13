@@ -23,6 +23,9 @@
 
             RuleFor(x => x.Priority)
                 .IsInEnum().WithMessage("Invalid priority value.");
+
+            RuleFor(x => x.IsResolved)
+                .Equal(false).WithMessage("Issue cannot be marked as resolved on creation.");
         }
     }
 }

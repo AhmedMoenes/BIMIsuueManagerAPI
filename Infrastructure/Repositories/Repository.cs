@@ -36,10 +36,19 @@
         public async Task<bool> DeleteAsync(object id)
         {
             var entity = await GetByIdAsync(id);
-            if (entity == null)
-                return false;
+            if (entity == null) return false;
 
-            DbSet.Remove(entity);
+            var isDeletedProp = typeof(T).GetProperty("IsDeleted");
+            if (isDeletedProp != null && isDeletedProp.PropertyType == typeof(bool))
+            {
+                isDeletedProp.SetValue(entity, true);
+                DbSet.Update(entity);
+            }
+            else
+            {
+                DbSet.Remove(entity);
+            }
+
             return await Context.SaveChangesAsync() > 0;
         }
 
