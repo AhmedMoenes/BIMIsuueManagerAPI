@@ -167,6 +167,10 @@
 
             };
         }
+        public async Task LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+        }
         public async Task<UserOverviewDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto)
         {
             int companyId = await _userRepo.GetCompanyIdAsync(adminUserId);
