@@ -74,14 +74,6 @@
             return Ok(result);
         }
 
-        [HttpGet("overview/company/{companyId}")]
-        [Authorize(Roles = UserRoles.CompanyAdmin)]
-        public async Task<IActionResult> GetForCompany(int companyId)
-        {
-            var result = await _projectService.GetForCompanyAsync(companyId);
-            return Ok(result);
-        }
-
         [HttpGet("overview/user")]
         [Authorize(Roles = UserRoles.SuperAdmin)]
         public async Task<IActionResult> GetForUser(string userId)
@@ -89,6 +81,7 @@
             var result = await _projectService.GetForUserAsync(userId);
             return Ok(result);
         }
+
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetByUserId(string userId)
         {

@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using System.Collections;
+
+namespace Application.Services
 {
     public class ProjectService : IProjectService
     {
@@ -146,29 +148,6 @@
                                   .ToList()
                 };
             });
-        }
-        public async Task<IEnumerable<ProjectOverviewDto>> GetForCompanyAsync(int companyId)
-        {
-            IEnumerable<ProjectOverviewDto> all = await _projectRepo.GetProjectOverviewsAsync(async project =>
-            {
-                return new ProjectOverviewDto
-                {
-                    ProjectId = project.ProjectId,
-                    ProjectName = project.ProjectName,
-                    Description = project.Description,
-                    StartDate = project.StartDate,
-                    EndDate = project.EndDate,
-                    IssuesCount = project.Issues?.Count ?? 0,
-                    MembersCount = project.ProjectTeamMembers.
-                                   Select(pm => pm.User.FirstName).Count(),
-                    CompanyNames = project.CompanyProjects
-                                   .Select(c => c.Company.CompanyName)
-                                   .Distinct()
-                                   .ToList()
-                };
-            });
-
-            return all;
         }
         public async Task<IEnumerable<ProjectOverviewDto>> GetForUserAsync(string userId)
         {

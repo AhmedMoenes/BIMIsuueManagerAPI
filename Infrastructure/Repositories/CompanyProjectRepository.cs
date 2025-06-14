@@ -20,5 +20,18 @@
 
             await Context.CompanyProjects.AddRangeAsync(newLinks);
         }
+
+        public async Task<IEnumerable<Project>> GetByCompanyIdAsync(int companyId)
+        {
+            return await Context.CompanyProjects
+                .Where(cp => cp.CompanyId == companyId)
+                .Select(cp => cp.Project)
+                .Include(p => p.Issues)
+                .Include(p => p.ProjectTeamMembers)
+                .ThenInclude(m => m.User)
+                .Include(p => p.CompanyProjects)
+                .ThenInclude(cp => cp.Company)
+                .ToListAsync();
+        }
     }
 }

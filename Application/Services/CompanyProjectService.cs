@@ -11,7 +11,6 @@
             _unitOfWork = unitOfWork;
         }
 
-
         public async Task AssignCompaniesAsync(AssignCompaniesToProjectDto dto)
         {
             await _unitOfWork.BeginTransactionAsync();
@@ -27,6 +26,29 @@
                 await _unitOfWork.RollbackAsync();
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<ProjectOverviewDto>> GetForCompanyAsync(int companyId)
+        {
+            IEnumerable<Project> allProjects = await _repo.GetByCompanyIdAsync(companyId);
+
+            IEnumerable<ProjectOverviewDto> projects = allProjects.Select(project => new ProjectOverviewDto
+            {
+                ProjectId = project.ProjectId,
+                ProjectName = project.ProjectName,
+                Description = project.Description,
+                StartDate = project.StartDate,
+                EndDate = project.EndDate,
+                IssuesCount = project.Issues?.Count ?? 0,
+                MembersCount = project.ProjectTeamMembers
+                               .Select(pm => pm.User.FirstName)
+                               .Count(),
+                CompanyNames = project.CompanyProjects
+                               .Select(c => c.Company.CompanyName)
+                               .Distinct()
+                               .ToList()
+            });
+            return projects;
         }
     }
 }
