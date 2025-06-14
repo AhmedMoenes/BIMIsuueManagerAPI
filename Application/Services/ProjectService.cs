@@ -91,7 +91,7 @@
                 }).ToList();
 
                 if (areas != null && areas.Any())
-                   await _areaRepo.AddRangeAsync(areas);
+                    await _areaRepo.AddRangeAsync(areas);
 
                 await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitAsync();
@@ -138,10 +138,12 @@
                     StartDate = project.StartDate,
                     EndDate = project.EndDate,
                     IssuesCount = project.Issues?.Count ?? 0,
+                    MembersCount = project.ProjectTeamMembers.
+                                   Select(pm => pm.User.FirstName).Count(),
                     CompanyNames = project.CompanyProjects
-                        .Select(c => c.Company.CompanyName)
-                        .Distinct()
-                        .ToList()
+                                  .Select(c => c.Company.CompanyName)
+                                  .Distinct()
+                                  .ToList()
                 };
             });
         }
@@ -157,8 +159,10 @@
                     StartDate = project.StartDate,
                     EndDate = project.EndDate,
                     IssuesCount = project.Issues?.Count ?? 0,
-                    CompanyNames = project.ProjectTeamMembers
-                                   .Select(m => m.User.Company.CompanyName)
+                    MembersCount = project.ProjectTeamMembers.
+                                   Select(pm => pm.User.FirstName).Count(),
+                    CompanyNames = project.CompanyProjects
+                                   .Select(c => c.Company.CompanyName)
                                    .Distinct()
                                    .ToList()
                 };
@@ -178,12 +182,12 @@
                     StartDate = project.StartDate,
                     EndDate = project.EndDate,
                     IssuesCount = project.Issues?.Count ?? 0,
-                    CompanyNames = project.ProjectTeamMembers
-                        .Select(m => m.User.Company.CompanyName)
-                        .Distinct()
-                        .ToList(),
+                    CompanyNames = project.CompanyProjects
+                                   .Select(c => c.Company.CompanyName)
+                                   .Distinct()
+                                   .ToList(),
                     UserRoleInProject = project.ProjectTeamMembers
-                        .FirstOrDefault(m => m.UserId == userId)?.Role
+                                        .FirstOrDefault(m => m.UserId == userId)?.Role
                 };
             });
             return all.Where(p => p.UserRoleInProject != null);
