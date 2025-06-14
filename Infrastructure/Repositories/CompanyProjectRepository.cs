@@ -23,9 +23,8 @@
 
         public async Task<IEnumerable<Project>> GetByCompanyIdAsync(int companyId)
         {
-            return await Context.CompanyProjects
-                .Where(cp => cp.CompanyId == companyId)
-                .Select(cp => cp.Project)
+            return await Context.Projects
+                .Where(p => p.CompanyProjects.Any(cp => cp.CompanyId == companyId))
                 .Include(p => p.Issues)
                 .Include(p => p.ProjectTeamMembers)
                 .ThenInclude(m => m.User)
