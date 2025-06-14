@@ -94,7 +94,7 @@
             return Ok(users);
         }
 
-        [HttpGet("company-users")]
+        [HttpGet("company-users/{companyId}")]
         public async Task<ActionResult<IEnumerable<CompanyUserDto>>> GetUsersByCompany(int companyId)
         {
             IEnumerable<CompanyUserDto> companyUsers = await _userService.GetCompanyUsers(companyId);
