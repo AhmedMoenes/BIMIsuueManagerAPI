@@ -11,6 +11,7 @@
         Task<bool> DeleteAsync(string id);
         Task<int> GetCompanyIdAsync(string userId);
         Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);
+        Task LogoutAsync();
         Task<UserOverviewDto> CreateUserWithProjectsAsync(string adminUserId, CreateUserWithProjectsDto dto);
         Task<UserDto?> GetByEmailAsync(string email);
         Task<IEnumerable<UserDto>> GetByProjectIdAsync(int projectId);
