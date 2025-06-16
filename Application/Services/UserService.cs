@@ -148,10 +148,13 @@
                     ProjectName = issue.Project.ProjectName,
                     CreatedAt = issue.CreatedAt,
                     AssignedToUser = issue.AssignedToUser != null
-                    ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
-                    : null
+                        ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
+                        : null,
+                    IsResolved = issue.IsResolved,
+                    IsDeleted = issue.IsDeleted
                 })
                     .ToList() ?? new List<IssueDto>(),
+
 
                 AssignedIssues = loadedUser.AssignedIssues?.Select(issue => new IssueDto
                 {
@@ -162,8 +165,11 @@
                     ProjectName = issue.Project.ProjectName,
                     CreatedAt = issue.CreatedAt,
                     CreatedByUser = $"{issue.CreatedByUser.FirstName} {issue.CreatedByUser.LastName}",
+                    IsResolved = issue.IsResolved,
+                    IsDeleted = issue.IsDeleted
                 })
                     .ToList() ?? new List<IssueDto>()
+
 
             };
         }

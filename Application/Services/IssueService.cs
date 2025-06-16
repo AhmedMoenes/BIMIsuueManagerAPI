@@ -94,7 +94,8 @@
             await _unitOfWork.SaveChangesAsync();
             await _unitOfWork.CommitAsync();
 
-            return ToIssueDto(created, snapshot);
+            var full = await _issueRepoitory.GetByIdDetailed(created.IssueId);
+            return ToIssueDto(full, snapshot);
         }
 
         public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)
