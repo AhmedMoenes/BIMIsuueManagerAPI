@@ -195,6 +195,7 @@
                 AssignedToUser = issue.AssignedToUser != null
                     ? $"{issue.AssignedToUser.FirstName} {issue.AssignedToUser.LastName}"
                     : null,
+                AssignedToUserId = issue.AssignedToUserId,
                 Area = new AreaDto
                 {
                     AreaId = issue.Area.AreaId,

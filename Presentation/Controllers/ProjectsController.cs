@@ -89,6 +89,13 @@
             return Ok(result);
         }
 
+        [HttpGet("issue/{issueId}")]
+        public async Task<IActionResult> GetByIssueId(int issueId)
+        {
+            var result = await _projectService.GetByIssueIdAsync(issueId);
+            return Ok(result);
+        }
+
     }
 }
 

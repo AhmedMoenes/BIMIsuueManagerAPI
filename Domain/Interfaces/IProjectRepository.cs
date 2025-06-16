@@ -11,5 +11,6 @@ namespace Domain.Interfaces
             List<ProjectTeamMember> teamMembers);
         Task<IEnumerable<Project>> GetAllWithCompaniesAsync();
         Task<IEnumerable<Project>> GetByUserIdAsync(string userId);
+        Task<Project> GetByIssueIdAsync(int issueId);
     }
 }

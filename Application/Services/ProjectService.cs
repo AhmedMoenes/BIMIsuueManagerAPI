@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Domain.Entities;
+using System.Collections;
 
 namespace Application.Services
 {
@@ -172,5 +173,17 @@ namespace Application.Services
             return all.Where(p => p.UserRoleInProject != null);
         }
 
+        public async Task<ProjectDto> GetByIssueIdAsync(int issueId)
+        {
+            Project p = await _projectRepo.GetByIssueIdAsync(issueId);
+            
+            return new ProjectDto
+            {
+                ProjectId = p.ProjectId,
+                ProjectName = p.ProjectName,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate
+            };
+        }
     }
 }

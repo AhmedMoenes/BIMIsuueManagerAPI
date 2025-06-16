@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Repositories
+﻿using Domain.Entities;
+
+namespace Infrastructure.Repositories
 {
     public class ProjectRepository : Repository<Project>, IProjectRepository
     {
@@ -79,6 +81,14 @@
                          .Distinct()
                          .ToListAsync();
         }
-       
+
+        public async Task<Project?> GetByIssueIdAsync(int issueId)
+        {
+            return await Context.Issues
+                .Where(i => i.IssueId == issueId)
+                .Select(i => i.Project)
+                .FirstOrDefaultAsync();
+        }
+
     }
 }

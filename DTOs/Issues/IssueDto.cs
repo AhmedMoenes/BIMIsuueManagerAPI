@@ -17,6 +17,7 @@ namespace DTOs.Issues
         public DateTime CreatedAt { get; set; }
         public string CreatedByUser { get; set; }
         public string? AssignedToUser { get; set; }
+        public string? AssignedToUserId { get; set; }
         public string ProjectName { get; set; }
 
         public bool IsResolved { get; set; } 
