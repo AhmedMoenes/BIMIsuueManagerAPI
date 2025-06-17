@@ -100,7 +100,7 @@
 
         public async Task<bool> UpdateAsync(int id, UpdateIssueDto dto)
         {
-            var issue = await _issueRepoitory.GetByIdAsync(id);
+            var issue = await _issueRepoitory.GetByIdDetailed(id);
             if (issue == null || issue.IsDeleted) return false;
 
             issue.Title = dto.Title;
@@ -111,8 +111,23 @@
             issue.IsResolved = dto.IsResolved;
             issue.IsDeleted = dto.IsDeleted;
 
+            if (issue.Labels is not null && issue.Labels.Any())
+                await _issueLabelRepository.DeleteByIssueIdAsync(id);
+
+            if (dto.Labels?.Any() == true)
+            {
+                var newLabels = dto.Labels.Select(l => new IssueLabel
+                {
+                    IssueId = id,
+                    LabelId = l.LabelId
+                }).ToList();
+
+                await _issueLabelRepository.AddRangeAsync(newLabels);
+            }
+
             return await _issueRepoitory.UpdateAsync(issue);
         }
+
 
         public async Task<bool> DeleteAsync(int id)
         {
