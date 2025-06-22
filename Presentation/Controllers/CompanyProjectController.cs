@@ -18,7 +18,7 @@
         }
 
         [HttpGet("overview/company/{companyId}")]
-        [Authorize(Roles = UserRoles.CompanyAdmin)]
+        //[Authorize(Roles = UserRoles.CompanyAdmin)]
         public async Task<IActionResult> GetForCompany(int companyId)
         {
             var result = await _companyProjectService.GetForCompanyAsync(companyId);
