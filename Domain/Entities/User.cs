@@ -6,6 +6,7 @@ namespace Domain.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string? Position { get; set; }
         public int CompanyId { get; set; }
         public Company Company { get; set; }
         public DateTime CreatedOn { get; set; }

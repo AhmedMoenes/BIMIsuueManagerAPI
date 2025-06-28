@@ -11,6 +11,8 @@ namespace DTOs.Users
         public string Email { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CompanyId { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Position { get; set; }
         public string CompanyName { get; set; }
         public List<ProjectTeamMemberDto> ProjectMemberships { get; set; } = new();
         public List<IssueDto> CreatedIssues { get; set; } = new();

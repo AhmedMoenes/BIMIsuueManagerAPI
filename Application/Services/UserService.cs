@@ -1,4 +1,6 @@
-﻿namespace Application.Services
+﻿using Domain.Entities;
+
+namespace Application.Services
 {
     public class UserService : IUserService
     {
@@ -27,6 +29,8 @@
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 Email = u.Email,
+                PhoneNumber = u.PhoneNumber,
+                Position = u.Position,
                 UserName = u.UserName,
                 CompanyId = u.CompanyId
             });
@@ -42,6 +46,8 @@
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Position = user.Position,
                 CompanyName = user.Company?.CompanyName,
                 Role = role,
                 CreatedOn = user.CreatedOn,
@@ -62,6 +68,7 @@
                 {
                     FullName = $"{user.FirstName} {user.LastName}",
                     Email = user.Email,
+                    Id= user.Id,
                     Projects = string.Join(", ", user.ProjectMemberships.Select(pm => pm.Project.ProjectName)),
                     Role = roles.FirstOrDefault()
                 });
@@ -75,6 +82,8 @@
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 UserName = dto.UserName,
+                PhoneNumber = dto.PhoneNumber,
+                Position = dto.Position,
                 Email = dto.Email,
                 CompanyId = dto.CompanyId
             };
@@ -97,6 +106,8 @@
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Position = user.Position,
                 Role = dto.Role
             };
         }
@@ -187,6 +198,8 @@
                 LastName = dto.LastName,
                 Email = dto.Email,
                 UserName = dto.UserName,
+                PhoneNumber = dto.PhoneNumber,
+                Position = dto.Position,
                 Password = dto.Password,
                 Role = dto.Role,
                 CompanyId = companyId
@@ -211,6 +224,8 @@
 
             user.FirstName = dto.FirstName;
             user.LastName = dto.LastName;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.Position = dto.Position;
 
             return await _userRepo.UpdateAsync(user);
         }
@@ -233,6 +248,8 @@
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Position = user.Position,
                     CompanyName = user.Company?.CompanyName,
                     Role = role,
                     CreatedOn = user.CreatedOn,
@@ -258,7 +275,8 @@
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-
+                PhoneNumber = user.PhoneNumber,
+                Position = user.Position,
                 UserName = user.UserName,
                 CompanyId = user.CompanyId
             };
@@ -272,6 +290,8 @@
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 Email = u.Email,
+                PhoneNumber = u.PhoneNumber,
+                Position = u.Position,
                 UserName = u.UserName,
                 CompanyId = u.CompanyId
             });

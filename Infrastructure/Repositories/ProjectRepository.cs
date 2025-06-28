@@ -7,9 +7,16 @@ namespace Infrastructure.Repositories
         private readonly IAreaRepository _areaRepository;
         private readonly IProjectTeamMemberRepository _ProjectTeamMemberRepository;
         private readonly ILabelRepository _labelRepository;
+
         public ProjectRepository(AppDbContext context, IAreaRepository areaRepository,
             IProjectTeamMemberRepository iProjectTeamMemberRepository,
-            ILabelRepository labelRepository) : base(context) { }
+            ILabelRepository labelRepository) : base(context)
+        {
+            _areaRepository = areaRepository;
+            _ProjectTeamMemberRepository = iProjectTeamMemberRepository;
+            _labelRepository = labelRepository;
+        }
+        
 
         public async Task<IEnumerable<T>> GetProjectOverviewsAsync<T>(Func<Project, Task<T>> selector)
         {

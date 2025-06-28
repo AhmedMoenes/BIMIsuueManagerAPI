@@ -58,6 +58,7 @@
             };
 
             var created = await _repo.AddAsync(member);
+            await _repo.SaveChangesAsync();
 
             return new ProjectTeamMemberDto
             {
