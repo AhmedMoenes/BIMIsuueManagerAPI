@@ -20,6 +20,12 @@
                 .NotEmpty()
                 .MinimumLength(6);
 
+            RuleFor(x => x.PhoneNumber)
+                .MaximumLength(50);
+
+            RuleFor(x => x.Position)
+                .MaximumLength(100);
+
             RuleFor(x => x.CompanyId)
                 .GreaterThan(0);
         }
