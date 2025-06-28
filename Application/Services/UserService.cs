@@ -68,6 +68,7 @@ namespace Application.Services
                 {
                     FullName = $"{user.FirstName} {user.LastName}",
                     Email = user.Email,
+                    Id= user.Id,
                     Projects = string.Join(", ", user.ProjectMemberships.Select(pm => pm.Project.ProjectName)),
                     Role = roles.FirstOrDefault()
                 });
