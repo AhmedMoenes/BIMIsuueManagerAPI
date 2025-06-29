@@ -11,6 +11,7 @@
         public string? PhoneNumber { get; set; }
         public string? Position { get; set; }
         public int CompanyId { get; set; }
-       // public List<ProjectTeamMemberDto>? ProjectMemberships { get; set; }
+        public string FullName => $"{FirstName} {LastName}";
+        // public List<ProjectTeamMemberDto>? ProjectMemberships { get; set; }
     }
 }
