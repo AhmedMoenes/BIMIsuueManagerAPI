@@ -26,7 +26,7 @@ namespace DTOs.Issues
         public AreaDto Area { get; set; }
 
         public List<LabelDto> Labels { get; set; } = new();
-        public List<RevitElementDto> RevitElements { get; set; } = new();
+        public List<RevitElementDto>? RevitElements { get; set; } = new();
         public List<CommentDto> Comments { get; set; } = new();
         public SnapshotDto? Snapshot { get; set; }
 

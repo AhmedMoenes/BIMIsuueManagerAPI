@@ -29,7 +29,7 @@ namespace DTOs.Issues
         public bool IsResolved { get; set; } = false; 
 
         public List<AssignLabelToIssueDto> Labels { get; set; }
-        public List<IssueRevitElementDto> RevitElements { get; set; }
+        public List<IssueRevitElementDto>? RevitElements { get; set; }
 
         public SnapshotDto Snapshot { get; set; }
     }
